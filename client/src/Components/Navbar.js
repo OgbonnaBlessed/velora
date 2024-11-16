@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { FaAngleDown, FaBars, FaBell, FaBriefcase, FaCar, FaClone, FaGlobe, FaHotel, FaSearch, FaTelegramPlane } from 'react-icons/fa'
+import { X } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [services, setServices] = useState(false);
     const [sidebarServices, setSidebarServices] = useState(false);
+    const [languageModal, setLanguageModal] = useState(false);
     const sidebarRef = useRef(null);
     const servicesRef = useRef(null);
     const sidebarServicesRef = useRef(null);
+    const languageRef = useRef(null);
 
     // Function to toggle the services drop down
     const toggleServices = () => {
@@ -49,6 +53,10 @@ const Navbar = () => {
           if (sidebarServicesRef.current && !sidebarServicesRef.current.contains(event.target)) {
             setSidebarServices(false);
           }
+
+          if (languageRef.current && !languageRef.current.contains(event.target)) {
+            setLanguageModal(false);
+          }
         }
   
         document.addEventListener('mousedown', closeSidebar);
@@ -60,7 +68,7 @@ const Navbar = () => {
 
   return (
     <nav ref={sidebarRef} >
-        <div className='lg:px-20 px-6 py-6 bg-[#48aadf] flex justify-between items-center font-medium z-50'>
+        <div className='lg:px-20 px-6 py-6 bg-[#48aadf] flex justify-between items-center font-medium'>
             <div className='flex items-center gap-14'>
 
                 {/* Logo */}
@@ -159,9 +167,14 @@ const Navbar = () => {
             </div>
 
             <div className='hidden lg:flex items-center gap-14 text-white text-[.9rem]'>
-                <div className='flex gap-2 items-center cursor-pointer'>
-                    <FaGlobe/>
-                    <p>English</p>
+                <div>
+                    <div 
+                        className='flex gap-2 items-center cursor-pointer'
+                        onClick={() => setLanguageModal(!languageModal)}
+                    >
+                        <FaGlobe/>
+                        <p>English</p>
+                    </div>
                 </div>
                 <Link to='/'>List your property</Link>
                 <Link>Trips</Link>
@@ -290,9 +303,11 @@ const Navbar = () => {
                         </div>
                     </div>
                     <Link 
-                        to="/shop" 
                         className='text-white flex items-center gap-2'
-                        onClick={toggleSidebar}
+                        onClick={() => {
+                            toggleSidebar()
+                            setLanguageModal(!languageModal)
+                        }}
                     >
                         <FaGlobe /> English
                     </Link>
@@ -322,6 +337,84 @@ const Navbar = () => {
                 </div>
             </nav>
         </aside>
+
+        <AnimatePresence>
+            {languageModal &&
+                <motion.div
+                    initial={{
+                        opacity: 0
+                    }}
+                    animate={{
+                        opacity: 1
+                    }}
+                    exit={{
+                        opacity: 0
+                    }}
+                    transition={{
+                        duration: .5,
+                        ease: "easeInOut"
+                    }}
+                    className='fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center'
+                >
+                    <motion.div
+                        initial={{
+                            opacity: 0,
+                            y: -50
+                        }}
+                        animate={{
+                            opacity: 1,
+                            y: 0
+                        }}
+                        exit={{
+                            opacity: 0,
+                            y: -50
+                        }}
+                        transition={{
+                            duration: .5,
+                            ease: "easeInOut"
+                        }}
+                        className='rounded-lg p-4 flex flex-col gap-3 bg-white w-96 max-w-[90%]'
+                        ref={languageRef}
+                    >
+                        <div className='flex items-center gap-3'>
+                            <div 
+                                className='bg-gray-200 p-3 rounded-full cursor-pointer'
+                                onClick={() => {
+                                    setLanguageModal(false)
+                                }}
+                            >
+                                <X />
+                            </div>
+                            <p>Language settings</p>
+                        </div>
+                        <div className='flex flex-col border border-black rounded-lg p-2'>
+                            <p className='text-[.75rem]'>Region</p>
+                            <select className='w-full'>
+                                <option value="United states">United states</option>
+                            </select>
+                        </div>
+                        <div className='flex flex-col border border-black rounded-lg p-2'>
+                            <p className='text-[.75rem]'>Language</p>
+                            <select>
+                                <option value="English">English</option>
+                            </select>
+                        </div>
+                        <div className='flex flex-col border border-slate-600 rounded-lg p-2'>
+                            <p className='text-[.75rem] text-slate-600'>Currency</p>
+                            <select disabled="disabled">
+                                <option value="USD $">USD $</option>
+                            </select>
+                        </div>
+                        <button 
+                            type="submit"
+                            className='bg-[#1158a6] text-white rounded-full py-2 cursor-pointer'
+                        >
+                            Save
+                        </button>
+                    </motion.div>
+                </motion.div>
+            }
+        </AnimatePresence>
     </nav>
   )
 }
