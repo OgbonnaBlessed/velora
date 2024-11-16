@@ -1,10 +1,14 @@
 import React from 'react'
+import { HashRouter as Router } from 'react-router-dom';
+import Navbar from './Components/Navbar';
+import AnimatedRoutes from './Components/AnimatedRoutes';
 
 const App = () => {
   return (
-    <div>
-      Valero
-    </div>
+    <Router>
+      <Navbar/>
+      <AnimatedRoutes/>
+    </Router>
   )
 }
 
