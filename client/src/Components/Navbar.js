@@ -67,8 +67,8 @@ const Navbar = () => {
     }, []);
 
   return (
-    <nav ref={sidebarRef} >
-        <div className='lg:px-20 px-6 py-6 bg-[#48aadf] flex justify-between items-center font-medium'>
+    <nav ref={sidebarRef}>
+        <div className='lg:px-20 px-6 py-6 bg-[#48aadf] flex justify-between items-center font-medium fixed top-0 w-full z-20'>
             <div className='flex items-center gap-14'>
 
                 {/* Logo */}
@@ -78,10 +78,10 @@ const Navbar = () => {
                 >
                     <img 
                         src={`${process.env.PUBLIC_URL}/images/logo.png`} 
-                        alt="Valero logo" 
+                        alt="Velora logo" 
                         className='w-8 bg-black p-1 rounded-md'
                     />
-                    <h1 className='text-xl font-sans text-white'>valero</h1>
+                    <h1 className='text-xl font-sans text-white'>velora</h1>
                 </Link>
 
                 <div className='relative' ref={servicesRef}>
@@ -199,11 +199,11 @@ const Navbar = () => {
         {/* Sidebar */}
         <aside 
             ref={sidebarServicesRef} 
-            className={`absolute top-[4.8rem] left-0 w-96 max-w-full h-[100vh] bg-gradient-to-b bg-[#4078bc] text-white lg:hidden transition-all duration-700 ease-in-out transform 
+            className={`z-20 fixed overflow-auto top-[4.8rem] left-0 w-96 max-w-full h-[100vh] bg-gradient-to-b bg-[#4078bc] text-white lg:hidden transition-all duration-700 ease-in-out transform 
                 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`
             }
         >
-            <nav className='flex flex-col space-y-8 mt-4 justify-center items-center'>
+            <nav className='flex flex-col space-y-8 mt-4 justify-center items-center overflow-auto'>
                 <Link 
                     to="/signup" 
                     className="text-white relative"
@@ -354,7 +354,7 @@ const Navbar = () => {
                         duration: .5,
                         ease: "easeInOut"
                     }}
-                    className='fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center'
+                    className='fixed inset-0 bg-black bg-opacity-50 z-20 flex items-center justify-center'
                 >
                     <motion.div
                         initial={{
