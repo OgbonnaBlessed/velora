@@ -1,10 +1,43 @@
 import mongoose from "mongoose";
 
 const tempUserSchema = new mongoose.Schema({
-    username: {
+    firstName: {
         type: String,
         required: true,
         unique: true,
+    },
+    lastName: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    bio: {
+        type: String,
+        default: 'Not provided',
+    },
+    DOB: {
+        type: String,
+        default: 'Not provided',
+    },
+    gender: {
+        type: String,
+        default: 'Not provided',
+    },
+    needs: {
+        type: String,
+        default: 'Not provided',
+    },
+    number: {
+        type: String,
+        default: 'Not provided',
+    },
+    emergency: [{
+        type: String,
+        default: 'Not provided',
+    }],
+    address: {
+        type: String,
+        default: 'Not provided',
     },
     email: {
         type: String,
@@ -30,6 +63,7 @@ const tempUserSchema = new mongoose.Schema({
     otpExpires: {
         type: Date,
         required: true,
+        index: { expires: '0s' }, // This will automatically delete the document when the otpExpires is reached
     },
 }, { timestamps: true });
 

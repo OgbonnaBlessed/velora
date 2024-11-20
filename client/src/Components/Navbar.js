@@ -378,7 +378,7 @@ const Navbar = () => {
                     >
                         <div className='flex items-center gap-3'>
                             <div 
-                                className='bg-gray-200 p-3 rounded-full cursor-pointer'
+                                className='bg-[#48aadf13] p-2.5 rounded-full cursor-pointer text-[#48aadf]'
                                 onClick={() => {
                                     setLanguageModal(false)
                                 }}

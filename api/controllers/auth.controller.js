@@ -10,19 +10,14 @@ import TempUser from '../models/tempUser.model.js'; // Ensure TempUser model is 
 const verificationCodes = {};
 
 export const signup = async (req, res, next) => {
-    const { username, email, password } = req.body;
+    const { firstName, lastName, email, password } = req.body;
 
-    if (!username || !email || !password || username === '' || email === '' || password === '') {
+    if (!firstName || !lastName || !email || !password || firstName === '' || lastName === '' || email === '' || password === '') {
         return next(errorHandler(400, 'All fields are required'));
     }
 
     try {
-        // Check if the username or email already exists
-        const validUsername = await User.findOne({ username });
-        if (validUsername) {
-            return next(errorHandler(400, 'Username already exists'));
-        }
-
+        // Check if the email already exists
         const validUser = await User.findOne({ email });
         if (validUser) {
             return next(errorHandler(400, 'Email already exists'));
@@ -36,7 +31,8 @@ export const signup = async (req, res, next) => {
   
         // Save OTP and user data to the temporary user collection
         await TempUser.create({
-            username,
+            firstName,
+            lastName,
             email,
             password: hashedPassword,
             otp,
@@ -85,7 +81,7 @@ export const verifyOTP = async (req, res, next) => {
         const tempUser = await TempUser.findOne({ email });
 
         if (!tempUser) {
-            return res.status(400).json({ success: false, message: 'Invalid email or OTP' });
+            return res.status(400).json({ success: false, message: 'Invalid OTP' });
         }
 
         // Check if OTP is valid and not expired
@@ -95,7 +91,8 @@ export const verifyOTP = async (req, res, next) => {
 
         // Create the actual user and delete temporary user data
         await User.create({
-            username: tempUser.username,
+            firstName: tempUser.firstName,
+            lastName: tempUser.lastName,
             email: tempUser.email,
             password: tempUser.password
         });
@@ -103,6 +100,7 @@ export const verifyOTP = async (req, res, next) => {
         await TempUser.deleteOne({ email });
 
         res.status(200).json({ success: true, message: 'Verification successful, account created' });
+
     } catch (error) {
         next(error);
     }
@@ -212,8 +210,12 @@ export const google = async (req, res, next) => {
             const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
             const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
             
-            const newUser = new User ({
-                username: name.toLowerCase().split(' ').join('') + Math.random().toString(9).slice(-4),
+            const [firstName, ...lastNameArr] = name.split(' ');
+            const lastName = lastNameArr.join(' ') || ''; // In case there's no last name
+
+            const newUser = new User({
+                firstName,
+                lastName,
                 email,
                 password: hashedPassword,
                 profilePicture: googlePhotoUrl,
@@ -231,47 +233,6 @@ export const google = async (req, res, next) => {
         next(error);
     }
 }
-
-export const facebook = async (req, res, next) => {
-    const { email, name, facebookPhotoUrl } = req.body;
-    console.log("Received data:", { email, name, facebookPhotoUrl }); // Log the received data
-
-    try {
-        const user = await User.findOne({ email });
-
-        if (user) {
-            const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.JWT_SECRET);
-            const { password, ...rest } = user._doc;
-
-            res.status(200).cookie('access_token', token, {
-                httpOnly: true,
-            }).json(rest);
-            
-        } else {
-            const generatedPassword = Math.random().toString(36).slice(-8);
-            const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
-            
-            const newUser = new User ({
-                username: name.toLowerCase().split(' ').join('') + Math.random().toString(9).slice(-4),
-                email,
-                password: hashedPassword,
-                profilePicture: facebookPhotoUrl,
-            });
-
-            await newUser.save();
-            const token = jwt.sign({ id: newUser._id, isAdmin: newUser.isAdmin }, process.env.JWT_SECRET);
-            const { password, ...rest } = newUser._doc;
-
-            res.status(200).cookie('access_token', token, {
-                httpOnly: true,
-            }).json(rest);
-        }
-
-    } catch (error) {
-        console.error("Error in facebook auth:", error); // Log error
-        next(error);
-    }
-};
 
 // Controller method for handling password reset request
 export const handlePasswordResetRequest = async (req, res, next) => {
