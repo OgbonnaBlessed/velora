@@ -208,7 +208,7 @@ const Policy = () => {
             </div>
         </div>
         
-        <Link to='/user-data-deletion' className='text-[#48aadf] flex items-center gap-1'>
+        <Link to='/user-data-deletion-policy' className='text-[#48aadf] flex items-center gap-1'>
             User Data Deletion
             <ArrowUpRightFromSquare className='cursor-pointer text-[#48aadf] p-1'/>
         </Link>

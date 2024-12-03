@@ -4,11 +4,14 @@ import { Link } from 'react-router-dom'
 const Footer = () => {
   return (
     <div className='flex flex-col gap-2 bg-gray-200 text-black m-2 rounded-md py-8 lg:px-20 px-10'>
-        <div className='relative px-4 py-2 w-fit'>
+        <Link 
+            to='/'
+            className='relative px-4 py-2 w-fit'
+        >
             <div className='absolute top-0 left-0 border-l border-t border-gray-800 w-4 h-4'></div>
             <h1 className='font-serif text-2xl'>velora group</h1>
             <div className='absolute bottom-0 right-0 border-r border-b border-gray-800 w-4 h-4'></div>
-        </div>
+        </Link>
         <div className='flex lg:justify-between lg:flex-row flex-col lg:gap-0 gap-14 py-5 border-b border-gray-300 pb-8'>
             <div className='flex flex-col gap-3'>
                 <h3 className='font-medium text-sm'>Company</h3>

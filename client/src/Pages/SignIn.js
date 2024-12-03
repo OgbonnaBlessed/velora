@@ -9,7 +9,8 @@ import { SyncLoader } from 'react-spinners';
 
 const SignIn = ({ length = 4}) => {
   const [formData, setFormData] = useState({});
-  const { loading, error: errorMessage } = useSelector(state => state.user);
+  const { error: errorMessage } = useSelector(state => state.user);
+  const [loading, setLoading] = useState(false);
   const [modalMessage, setModalMessage] = useState(null);
   const [showModal, setShowModal] = useState(false);  // Modal visibility state
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -21,7 +22,6 @@ const SignIn = ({ length = 4}) => {
   const [step, setStep] = useState(1); // Step tracker
   const [otp, setOtp] = useState(new Array(length).fill(""));
   const [password, setPassword] = useState("");
-  const [isClicked, setIsClicked] = useState(false);
   const [strength, setStrength] = useState("weak");
   const [strengthConditions, setStrengthConditions] = useState({
     length: false,
@@ -135,17 +135,20 @@ const SignIn = ({ length = 4}) => {
 
     try {
       dispatch(signInStart());
+      setLoading(true);
 
       const res = await fetch('/api/auth/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
+        credentials: 'include'
       });
       const data = await res.json();
 
       if (data.success === false) {
         dispatch(signInFailure(data.message));
         setShowModal(true);  // Show the modal when there's an error
+        setLoading(false);
         return;
       };
 
@@ -156,6 +159,7 @@ const SignIn = ({ length = 4}) => {
           navigate('/');
         }, 2000);
       }
+      setLoading(false);
 
     } catch (error) {
       dispatch(signInFailure(error.message));
@@ -226,11 +230,6 @@ const SignIn = ({ length = 4}) => {
     navigate(-1); // Navigate to the previous page
   }
 
-  const handleButtonClick = () => {
-    setIsClicked(true);
-    setTimeout(() => setIsClicked(false), 300); // Reset after 150ms
-  };
-
   useEffect(() => {
     const close_password_strength_checker = (event) => {
       if (passwordRef.current && !passwordRef.current.contains(event.target)) {
@@ -261,17 +260,18 @@ const SignIn = ({ length = 4}) => {
 
   // Automatically hide modal after 3 seconds
   useEffect(() => {
-    if (showModal || modalMessage) {
+    if (showModal || modalMessage || loading) {
       const timer = setTimeout(() => {
         setShowModal(false);
         setModalMessage(null);
+        setLoading(false);
       }, 3000); // 3 seconds
   
       // Cleanup the timer if the component unmounts or the state changes before 5 seconds
       return () => clearTimeout(timer);
     }
 
-  }, [modalMessage, showModal]);
+  }, [loading, modalMessage, showModal]);
 
   const handleCheckboxChange = () => {
     setKeepMeSignedIn(!keepMeSignedIn); // Toggle checkbox state
@@ -321,17 +321,17 @@ const SignIn = ({ length = 4}) => {
 
             <div className='flex items-center justify-between'>
 
-              {/* Remember Me Checkbox */}
+              {/* Keep Me Signed in Checkbox */}
               <div className="flex items-center">
                 <input 
                   type="checkbox" 
-                  id="rememberMe" 
+                  id="keepMeSignedIn" 
                   checked={keepMeSignedIn} 
                   onClick={handleCheckboxChange} 
                   onChange={handleChange}
                   className="hidden" // Hide the default checkbox
                 />
-                <label htmlFor="rememberMe" className="flex items-center cursor-pointer">
+                <label htmlFor="keepMeSignedIn" className="flex items-center cursor-pointer">
                   <div className={`relative w-4 h-4 flex items-center justify-center rounded border-2 ${keepMeSignedIn ? 'border-[#4078bc] bg-[#4078bc]' : 'border-black'} transition-all duration-300`}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -360,7 +360,7 @@ const SignIn = ({ length = 4}) => {
             <button 
               type="submit"
               disabled={loading}
-              className={`w-full py-3 text-white rounded-full border-none outline-none mt-5 flex items-center justify-center gap-2 
+              className={`w-full py-3 text-white rounded-full border-none outline-none mt-5 flex items-center justify-center gap-2 transition-all duration-300 ease-in-out
                 ${loading ? 'bg-[#48aadf96] cursor-not-allowed' : 'bg-[#48aadf] cursor-pointer'}`
               }
             >
@@ -419,12 +419,9 @@ const SignIn = ({ length = 4}) => {
               <button 
                 type="button" 
                 className={`bg-[#48aadf] py-2 px-5 text-white cursor-pointer rounded-full transition-all duration-300 ease-in-out 
-                  ${isClicked ? 'scale-90' : 'scale-100'}`
+                  shrink-button`
                 }
-                onClick={() => {
-                  setShowModal(false)
-                  handleButtonClick();
-                }}
+                onClick={() => setShowModal(false)}
               >
                 OK
               </button>
@@ -497,13 +494,8 @@ const SignIn = ({ length = 4}) => {
                     </motion.p>
                   }
                   <button 
-                    onClick={() => {
-                      handleButtonClick();
-                      handleSendResetEmail()
-                    }} 
-                    className={`bg-[#48aadf] text-white py-2 px-5 rounded-full cursor-pointer outline-none mt-3 text-sm transition-all duration-300 ease-in-out 
-                      ${isClicked ? 'scale-90' : 'scale-100'}`
-                    }
+                    onClick={handleSendResetEmail} 
+                    className={`bg-[#48aadf] text-white py-2 px-5 rounded-full cursor-pointer outline-none mt-3 text-sm transition-all duration-300 ease-in-out shrink-button`}
                   >
                     send code
                   </button>
@@ -556,12 +548,8 @@ const SignIn = ({ length = 4}) => {
                     </motion.p>
                   }
                   <button 
-                    onClick={() => {
-                      handleButtonClick();
-                      handleVerifyCode();
-                    }} 
-                    className={`bg-[#48aadf] text-white py-2 px-5 rounded-full cursor-pointer outline-none mt-3 text-sm transition-all duration-300 ease-in-out 
-                      ${isClicked ? 'scale-90' : 'scale-100'}`
+                    onClick={handleVerifyCode} 
+                    className={`bg-[#48aadf] text-white py-2 px-5 rounded-full cursor-pointer outline-none mt-3 text-sm transition-all duration-300 ease-in-out shrink-button`
                     }
                   >
                     verify
@@ -591,25 +579,10 @@ const SignIn = ({ length = 4}) => {
                     </div>
 
                     {/* Password Strength Indicator */}
-                    {password && (
-                      <motion.div 
-                        initial={{
-                          y: -10,
-                          opacity: 0
-                        }}
-                        animate={{
-                          y: 0,
-                          opacity: 1
-                        }}
-                        exit={{
-                          y: -10,
-                          opacity: 0
-                        }}
-                        transition={{
-                          duration: .8,
-                          ease: "easeInOut"
-                        }}
-                        className={`mt-2 ${password ? 'h-fit' : 'h-0'}`}
+                      <div 
+                        className={`mt-2 transition-all duration-700 ease-in-out overflow-hidden 
+                          ${password ? 'h-36' : 'h-0'}`
+                        }
                       >
                         <p 
                           className={`text-sm 
@@ -681,8 +654,7 @@ const SignIn = ({ length = 4}) => {
                             At least one special character
                           </li>
                         </ul>
-                      </motion.div>
-                    )}
+                      </div>
                   </div>
                   {modalMessage && 
                     <motion.p 
@@ -708,14 +680,11 @@ const SignIn = ({ length = 4}) => {
                     </motion.p>
                   }
                   <button 
-                    onClick={() => {
-                      handleButtonClick();
-                      handleResetPassword();
-                    }} 
+                    onClick={handleResetPassword} 
                     disabled={ strength !== "strong" }
                     className={`text-white py-2 px-5 rounded-full outline-none mt-3 text-sm transition-all duration-300 ease-in-out 
                       ${strength !== 'strong' ? 'bg-[#48aadf96] cursor-not-allowed' : 'bg-[#48aadf] cursor-pointer'} 
-                      ${isClicked ? 'scale-90' : 'scale-100'}`
+                      shrink-button`
                     }
                   >
                     reset password
@@ -728,13 +697,8 @@ const SignIn = ({ length = 4}) => {
                   <h2 className='text-black text-center font-serif'>Your password has been successfully changed</h2>
                   
                   <button 
-                    onClick={() => {
-                      setForgotPasswordModal(false)
-                      handleButtonClick();
-                    }} 
-                    className={`bg-[#48aadf] text-white py-2 px-5 rounded-full cursor-pointer outline-none mt-3 text-sm transition-all duration-300 ease-in-out 
-                      ${isClicked ? 'scale-90' : 'scale-100'}`
-                    }
+                    onClick={() => setForgotPasswordModal(false)} 
+                    className='bg-[#48aadf] text-white py-2 px-5 rounded-full cursor-pointer outline-none mt-3 text-sm transition-all duration-300 ease-in-out shrink-button'
                   >
                     OK
                   </button>

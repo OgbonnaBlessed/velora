@@ -10,11 +10,101 @@
 @tailwind components;
 @tailwind utilities;
 
-.scale-button {
-  transform: scale(1);
+/* Define the shrinking animation */
+@keyframes shrinkEffect {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
-.scale-button:active {
-  transform: scale(0.8);
-  transition: all .8s ease-in-out;
+/* Apply animation when clicked */
+.shrink-button {
+  transition: transform 0.15s ease-in-out; /* Smooth transition */
+}
+
+.shrink-button:active {
+  animation: shrinkEffect 0.3s forwards;
+}
+
+/* Add this in your global CSS or Tailwind configuration */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  /* For Firefox */
+}
+
+/* General radio container styling */
+.radio-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.radio-container input[type="radio"] {
+  display: none; /* Hide the default radio */
+}
+
+/* Custom radio styling */
+.radio-container .radio-label {
+  position: relative;
+  padding-left: 35px;
+  cursor: pointer;
+  font-weight: 400;
+  line-height: 20px;
+  transition: color 0.3s ease;
+}
+
+.radio-container .radio-label::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border: 2px solid #0000008e;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.radio-container .radio-label::after {
+  content: '';
+  position: absolute;
+  left: 4.5px;
+  top: 50%;
+  transform: translateY(-50%) scale(0);
+  width: 12px;
+  height: 12px;
+  border: 2px solid #fff;
+  background-color: #48aadf;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+/* Checked state */
+.radio-container input[type="radio"]:checked + .radio-label::before {
+  border-color: #48aadf;
+  background-color: #48aadf;
+}
+
+.radio-container input[type="radio"]:checked + .radio-label::after {
+  transform: translateY(-50%) scale(1);
+}
+
+/* Hover effect */
+.radio-container .radio-label:hover::before {
+  border-color: #007bbd;
 }

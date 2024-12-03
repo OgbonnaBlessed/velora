@@ -18,7 +18,6 @@ const SignUp = ({ length = 4}) => {
   const inputRefs = useRef([]);
   const navigate = useNavigate();
   const [agree, setAgree] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
   const [formData, setFormData] = useState({});
   const [password, setPassword] = useState("");
   const [strength, setStrength] = useState("weak");
@@ -204,11 +203,6 @@ const SignUp = ({ length = 4}) => {
   const return_to_previous_page = () => {
     navigate(-1); // Navigate to the previous page
   }
-
-  const handleButtonClick = () => {
-    setIsClicked(true);
-    setTimeout(() => setIsClicked(false), 300); // Reset after 150ms
-  };
 
   useEffect(() => {
     if (verificationModal && inputRefs.current[0]) {
@@ -454,7 +448,7 @@ const SignUp = ({ length = 4}) => {
             <button 
               type="submit"
               disabled={strength !== "strong" }
-              className={`w-full py-3 text-white rounded-full border-none outline-none mt-5 flex items-center justify-center gap-2 
+              className={`w-full py-3 text-white rounded-full border-none outline-none mt-5 flex items-center justify-center gap-2 transition-all duration-300 ease-in-out 
                 ${strength !== 'strong' || loading ? 'bg-[#48aadf96] cursor-not-allowed' : 'bg-[#48aadf] cursor-pointer'}`
               }
             >
@@ -512,13 +506,8 @@ const SignUp = ({ length = 4}) => {
             <motion.div className="actions">
               <button 
                 type="button" 
-                className={`bg-[#48aadf] py-2 px-5 text-white cursor-pointer rounded-full transition-all duration-300 ease-in-out 
-                  ${isClicked ? 'scale-90' : 'scale-100'}`
-                }
-                onClick={() => {
-                  setShowModal(false)
-                  handleButtonClick();
-                }}
+                className='bg-[#48aadf] py-2 px-5 text-white cursor-pointer rounded-full transition-all duration-300 ease-in-out shrink-button'
+                onClick={() => setShowModal(false)}
               >
                 OK
               </button>
@@ -599,14 +588,9 @@ const SignUp = ({ length = 4}) => {
                 </div>
                 <button 
                   type="button" 
-                  className={`bg-[#48aadf] text-white py-2 px-5 rounded-full cursor-pointer outline-none mt-3 text-sm 
-                    transition-all duration-300 ease-in-out 
-                    ${isClicked ? 'scale-90' : 'scale-100'}`
-                  }
-                  onClick={() => {
-                    handleVerifyOTP();
-                    handleButtonClick();
-                  }}
+                  className='bg-[#48aadf] text-white py-2 px-5 rounded-full cursor-pointer outline-none mt-3 text-sm 
+                    transition-all duration-300 ease-in-out shrink-button'
+                  onClick={handleVerifyOTP}
                 >
                   verify 
                 </button>
@@ -621,16 +605,13 @@ const SignUp = ({ length = 4}) => {
                       type="button"
                       onClick={() => {
                         setVerificationModal(false);
-                        handleButtonClick();
 
                         setTimeout(() => {
                           navigate('/signin')
                         }, 1000);
                       }}
 
-                      className={`bg-[#48aadf] text-white py-2 px-5 rounded-full cursor-pointer outline-none mt-3 text-sm transition-all duration-300 ease-in-out 
-                        ${isClicked ? 'scale-90' : 'scale-100'}`
-                      }
+                      className='bg-[#48aadf] text-white py-2 px-5 rounded-full cursor-pointer outline-none mt-3 text-sm transition-all duration-300 ease-in-out shrink-button'
                     >
                       sign in
                     </button>

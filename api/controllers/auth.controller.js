@@ -5,6 +5,9 @@ import jwt from 'jsonwebtoken'
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
 import TempUser from '../models/tempUser.model.js'; // Ensure TempUser model is defined for temporary storage
+import DeviceDetector from 'device-detector-js';
+import { UAParser } from 'ua-parser-js'
+import { v4 as uuidv4 } from 'uuid';
 
 // Store verification codes temporarily (could also use Redis or a database table)
 const verificationCodes = {};
@@ -176,19 +179,88 @@ export const signin = async (req, res, next) => {
         const token = jwt.sign(
             { id: validUser._id, isAdmin: validUser.isAdmin },
             process.env.JWT_SECRET,
-            { expiresIn: keepMeSignedIn ? '7d' : '2m' }  // Set expiration based on "Keep Me Signed In"
+            { expiresIn: keepMeSignedIn ? '7d' : '1d' }  // Set expiration based on "Keep Me Signed In"
         );
+        const decoded = jwt.decode(token);
+        console.log('Token Expiration:', new Date(decoded.exp * 1000))
 
         const { password: pass, ...rest } = validUser._doc;
+
+        // Extract device details
+        const userAgent = req.headers['user-agent'];
+        const deviceDetector = new DeviceDetector();
+        const device = deviceDetector.parse(userAgent);
+
+        const uaParser = new UAParser(userAgent);
+        const os = uaParser.getOS().name;
+        const browser = uaParser.getBrowser().name;
+
+        const sessionToken = uuidv4(); // Generate a unique session token
+        const sessionDetails = {
+            deviceName: device.device?.model || 'Unknown Device',
+            browser: browser || 'Unknown Browser',
+            os: os || 'Unknown OS',
+            ip: req.ip,
+            loggedInAt: new Date(),
+            token: sessionToken, // Add the session token
+        };
+
+        // Add the session to the user's sessions
+        validUser.sessions.push(sessionDetails);
+        await validUser.save();
 
         res.cookie('access_token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',  // Ensure secure flag in production
-            maxAge: keepMeSignedIn ? 7 * 24 * 60 * 60 * 1000 : 2 * 60 * 1000  // 7 days or 2 minutes
+            maxAge: keepMeSignedIn ? 7 * 24 * 60 * 60 * 1000 : 1 * 24 * 60 * 1000  // 7 days or 1 day
         }).status(200).json(rest);
 
     } catch (error) {
         next(error);
+    }
+};
+
+export const getConnectedDevices = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Sort sessions by loggedInAt in descending order (latest first)
+        const sortedSessions = user.sessions.sort((a, b) => new Date(b.loggedInAt) - new Date(a.loggedInAt));
+
+        // Identify the current session as the one with the most recent loggedInAt
+        const currentSession = sortedSessions[0];
+
+        const devices = sortedSessions.map(session => ({
+            ...session._doc,
+            isCurrentSession: session.token === currentSession.token, // Mark the latest session as current
+        }));
+
+        res.status(200).json({ devices });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+export const logoutDevice = async (req, res) => {
+    const { token } = req.body; // Token of the device to log out
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        const sessionIndex = user.sessions.findIndex((session) => session.token === token);
+        if (sessionIndex === -1) {
+            return res.status(404).json({ message: 'Session not found' });
+        }
+
+        user.sessions.splice(sessionIndex, 1); // Remove the specific session
+        await user.save();
+
+        res.status(200).json({ message: 'Device logged out successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
     }
 };
 
@@ -287,6 +359,115 @@ export const handlePasswordResetRequest = async (req, res, next) => {
     }
 };
 
+export const confirmEmail = async (req, res, next) => {
+    const { email } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User does not exist" });
+        }
+
+        // Generate a 4-digit verification code
+        const verificationCode = crypto.randomInt(1000, 9999).toString();
+        
+        // Save the verification code temporarily (this can be improved with a TTL using Redis or similar)
+        verificationCodes[email] = {
+        code: verificationCode,
+        expires: Date.now() + 20 * 60 * 1000 // 10 minutes expiration
+        };
+
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.mail.yahoo.com',
+            port: 465, // or 587
+            secure: true, // true for 465, false for 587
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
+            },
+            tls: {
+                rejectUnauthorized: false,
+            },
+        });
+
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: 'Confirm your email',
+            text: `Here's your email confirmation code: ${verificationCode}`,
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).json({ success: false, message: "Failed to send email" });
+            }
+            res.status(200).json({ success: true, message: "Verification code sent to your email." });
+        });
+        
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const resendCode = async (req, res, next) => {
+    const { email } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User does not exist" });
+        }
+
+        // Check if the OTP is expired (if it is, resend)
+        if (user.otpExpires > Date.now()) {
+            return res.status(400).json({ success: false, message: 'OTP is still valid. Please wait for it to expire.' });
+        }
+
+        // Generate a 4-digit verification code
+        const verificationCode = crypto.randomInt(1000, 9999).toString();
+        
+        // Save the verification code temporarily (this can be improved with a TTL using Redis or similar)
+        verificationCodes[email] = {
+            code: verificationCode,
+            expires: Date.now() + 20 * 60 * 1000 // 10 minutes expiration
+        };
+
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.mail.yahoo.com',
+            port: 465, // or 587
+            secure: true, // true for 465, false for 587
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
+            },
+            tls: {
+                rejectUnauthorized: false,
+            },
+        });
+
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: 'Confirm your email',
+            text: `Here's your email confirmation code: ${verificationCode}`,
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).json({ success: false, message: "Failed to send code" });
+            }
+            res.status(200).json({ success: true, message: "Code sent to your email." });
+        });
+        
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const verifyCode = (req, res) => {
     const { email, code } = req.body;
   
@@ -303,7 +484,7 @@ export const verifyCode = (req, res) => {
     // Code is valid
     return res.status(200).json({ message: 'Code verified. You can now reset your password.' });
 };
-  
+
 // 3. Reset Password
 export const resetPassword = async (req, res, next) => {
     try {
@@ -327,6 +508,20 @@ export const resetPassword = async (req, res, next) => {
         delete verificationCodes[email];
 
         return res.status(200).json({ message: 'Password reset successful. You can now sign in with your new password.' });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const getConnectedAccounts = async (req, res, next) => {
+    const userId = req.user.id; // Assuming user ID is available via JWT
+
+    try {
+        const user = await User.findById(userId).select('connectedAccounts');
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+        res.status(200).json({ success: true, connectedAccounts: user.connectedAccounts });
     } catch (error) {
         next(error);
     }

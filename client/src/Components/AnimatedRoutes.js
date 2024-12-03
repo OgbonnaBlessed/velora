@@ -5,6 +5,19 @@ import Home from '../Pages/Home';
 import SignUp from '../Pages/SignUp';
 import SignIn from '../Pages/SignIn';
 import Policy from '../Pages/Policy';
+import UserData from '../Pages/UserData';
+import Profile from '../Pages/Profile';
+import VerifyEmail from './VerifyEmail';
+import ResetPassword from './ResetPassword';
+import PasswordResetSuccessful from './PasswordResetSuccessful';
+import VerifyUserEmail from './VerifyUserEmail';
+import UpdateEmail from './UpdateEmail';
+import UpdateEmailSuccess from './UpdateEmailSuccess';
+import ProtectedRoute from './ProtectedRoute';
+import ConnectedDevices from './ConnectedDevices';
+import AirportSecurity from './AirportSecurity';
+import TravelDocument from './TravelDocument';
+import Preferences from './Preferences';
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -16,6 +29,20 @@ const AnimatedRoutes = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/policy" element={<Policy />} />
+        <Route path='/user-data-deletion-policy' element={<UserData/>} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/profile" element={<Profile />} />
+          <Route path='/verify-email' element={<VerifyEmail/>} />
+          <Route path='/password-reset' element={<ResetPassword/>} />
+          <Route path='/password-reset-success' element={<PasswordResetSuccessful/>} />
+          <Route path='/verify-user-email' element={<VerifyUserEmail/>} />
+          <Route path='/update-email' element={<UpdateEmail/>} />
+          <Route path='/email-update-success' element={<UpdateEmailSuccess/>} />
+          <Route path='/connected-devices' element={<ConnectedDevices/>} />
+          <Route path='/airport_security' element={<AirportSecurity/>} />
+          <Route path='/travel_document' element={<TravelDocument/>} />
+          <Route path='/preference' element={<Preferences/>} />
+        </Route>
       </Routes>
     </AnimatePresence>
   );

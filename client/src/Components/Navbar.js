@@ -3,16 +3,27 @@ import { Link } from 'react-router-dom'
 import { FaAngleDown, FaBars, FaBell, FaBriefcase, FaCar, FaClone, FaGlobe, FaHotel, FaSearch, FaTelegramPlane } from 'react-icons/fa'
 import { X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useSelector, useDispatch } from "react-redux";
+import { signOutSuccess } from "../redux/user/userSlice";
+import axios from 'axios'
 
 const Navbar = () => {
+    const { currentUser } = useSelector((state) => state.user);
     const [isOpen, setIsOpen] = useState(false);
     const [services, setServices] = useState(false);
     const [sidebarServices, setSidebarServices] = useState(false);
     const [languageModal, setLanguageModal] = useState(false);
+    const [profile, setProfile] = useState(false);
+    const dispatch = useDispatch();
     const sidebarRef = useRef(null);
     const servicesRef = useRef(null);
     const sidebarServicesRef = useRef(null);
     const languageRef = useRef(null);
+    const profileRef = useRef();
+
+    const toggleProfile = () => {
+        setProfile(!profile);
+    };
 
     // Function to toggle the services drop down
     const toggleServices = () => {
@@ -34,29 +45,59 @@ const Navbar = () => {
             setTimeout(() => {
                 setIsOpen(false);
             }, 800); // 800ms delay for the transition
+
         } else {
             // Toggle the sidebar normally
             setIsOpen((prev) => !prev);
         }
     };
 
+    const handleSignOut = async () => {
+        try {
+            const res = await axios.post(
+                "/api/user/signout", 
+                {}, // Pass an empty body if no data is needed
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                }
+            );
+    
+            // Check response status and handle accordingly
+            if (res.status === 200) {
+                console.log(res.data.message); // Assuming the message is in res.data
+                dispatch(signOutSuccess());
+                window.scrollTo(0, 0); // Scroll to top when sign out is successful
+
+            } else {
+                console.error("Unexpected response:", res.data.message);
+            }
+
+        } catch (error) {
+            console.error("Error during sign out:", error.message);
+        }
+    };
+
     useEffect(() => {
         const closeSidebar = (event) => {
-          if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
-            setIsOpen(false);
-          }
+            if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
 
-          if (servicesRef.current && !servicesRef.current.contains(event.target)) {
-            setServices(false);
-          }
+            if (servicesRef.current && !servicesRef.current.contains(event.target)) {
+                setServices(false);
+            }
 
-          if (sidebarServicesRef.current && !sidebarServicesRef.current.contains(event.target)) {
-            setSidebarServices(false);
-          }
+            if (sidebarServicesRef.current && !sidebarServicesRef.current.contains(event.target)) {
+                setSidebarServices(false);
+            }
 
-          if (languageRef.current && !languageRef.current.contains(event.target)) {
-            setLanguageModal(false);
-          }
+            if (languageRef.current && !languageRef.current.contains(event.target)) {
+                setLanguageModal(false);
+            }
+
+            if (profileRef.current && !profileRef.current.contains(event.target)) {
+                setProfile(false);
+            }
         }
   
         document.addEventListener('mousedown', closeSidebar);
@@ -92,8 +133,8 @@ const Navbar = () => {
                         <p>view services</p>
                         <FaAngleDown />
                     </div>
-                    <div className={`hidden absolute top-8  bg-white rounded-xl lg:flex flex-col transition-all duration-700 ease-in-out transform
-                        ${services ? 'w-64 h-96 translate-y-0' : 'w-0 h-0 -translate-y-3'} overflow-hidden shadow shadow-black font-normal text-sm`}>
+                    <div className={`hidden absolute top-8  bg-white rounded-xl lg:flex flex-col transition-all duration-500 ease-in-out transform
+                        ${services ? 'w-64 h-96 translate-y-0 opacity-100' : 'w-0 h-0 -translate-y-3 opacity-0'} overflow-hidden shadow shadow-gray-300 font-normal text-sm`}>
                         <div className='flex flex-col py-3 w-full border-b-2 border-gray-400'>
                             <Link 
                                 to='/stays'
@@ -184,9 +225,57 @@ const Navbar = () => {
                 >
                     <FaBell/>
                 </Link>
-                <Link to='/signin'>
-                    Sign in
-                </Link>
+                {currentUser ? (
+                    <div className="relative" ref={profileRef}>
+                        <div className="w-10 h-10 rounded-full cursor-pointer">
+                            <img
+                                src={currentUser.profilePicture}
+                                alt="profile icon"
+                                className="w-10 h-10 cursor-pointer rounded-full"
+                                onClick={toggleProfile}
+                            />
+                        </div>
+                        <div
+                            className={`absolute bg-white text-black rounded p-3 shadow shadow-gray-300 transform right-0 top-12 flex 
+                                flex-col gap-2 transition-all duration-700 ease-in-out ${
+                                    profile
+                                    ? "opacity-1 translate-x-0 pointer-events-auto"
+                                    : "opacity-0 translate-x-5 pointer-events-none"
+                                }`
+                            }
+                        >
+                        <div className="flex items-center gap-1">
+                            <p>{currentUser.firstName}</p>
+                            <p>{currentUser.lastName}</p>
+                        </div>
+                        <p className="">{currentUser.email}</p>
+                        <Link 
+                            to="/profile"
+                            onClick={() => setProfile(false)}
+                        >
+                            Account
+                        </Link>
+                        {currentUser.isAdmin && (
+                            <Link
+                                onClick={() => setProfile(false)}
+                                to="/Dashboard?tab=collection"
+                            >
+                                Dashboard
+                            </Link>
+                        )}
+                        <button
+                            className="border-t border-[#48aadf] py-2 w-full text-start mt-3 cursor-pointer"
+                            onClick={() => handleSignOut()}
+                        >
+                            Sign out
+                        </button>
+                        </div>
+                    </div>
+                    ) : (
+                    <Link to="/signin">
+                        sign in
+                    </Link>
+                )}
             </div>
             <div 
                 className='lg:hidden'
@@ -407,7 +496,7 @@ const Navbar = () => {
                         </div>
                         <button 
                             type="submit"
-                            className='bg-[#1158a6] text-white rounded-full py-2 cursor-pointer'
+                            className='bg-[#48aadf] text-white rounded-full py-3 font-semibold cursor-pointer'
                         >
                             Save
                         </button>
