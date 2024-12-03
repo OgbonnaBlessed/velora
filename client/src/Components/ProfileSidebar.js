@@ -4,12 +4,12 @@ import { Camera, ChevronRight, CreditCardIcon, SettingsIcon, StarIcon } from "lu
 import React, { useRef } from "react";
 import { FaUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { FiMoreHorizontal } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { signOutSuccess, updateFailure, updateStart, updateSuccess } from "../redux/user/userSlice";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { AnimatePresence, motion } from "framer-motion";
+import { FiMoreHorizontal } from 'react-icons/fi';
 
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dddvbg9tm/image/upload";
 const CLOUDINARY_UPLOAD_PRESET = "velora";
@@ -152,10 +152,14 @@ const ProfileSidebar = () => {
         }
     }, []);
 
+    const toggleSidebar = () => {
+        setSidebar(!sidebar);
+    }
+
   return (
     <div className="relative w-72 max-xl:w-full max-xl:fixed max-xl:h-full pointer-events-none">
         <FiMoreHorizontal 
-            className="hidden max-xl:block absolute left-5 mt-5 pointer-events-auto bg-white border border-gray-50 rounded-md p-2 text-3xl cursor-pointer"
+            className="hidden max-xl:block absolute left-5 top-5 pointer-events-auto bg-white border border-gray-50 rounded-md p-2 text-3xl cursor-pointer"
             onClick={() => setSidebar(!sidebar)}
         />
         <div className='hidden xl:flex flex-col gap-10 w-full pointer-events-auto'>
@@ -309,7 +313,7 @@ const ProfileSidebar = () => {
                             ease: "easeInOut"
                         }}
                         ref={sidebarRef}
-                        className='flex flex-col gap-10 w-[20rem] pointer-events-auto max-w-[90%] bg-white rounded-2xl px-6 py-4 z-10 relative'
+                        className='flex flex-col gap-8 w-[20rem] pointer-events-auto max-w-[90%] bg-white rounded-2xl px-6 py-4 z-10 relative'
                     >
                         <div className='flex items-start gap-3'>
                             <div className='relative'>
@@ -362,12 +366,33 @@ const ProfileSidebar = () => {
                             </div>
                         </div>
 
-                        <div className='flex flex-col gap-2'>
+                        <p className={`text-[0.7rem] -mt-8 text-green-500 transform transition-all duration-700 ease-in-out ${
+                                updateUserSuccess 
+                                    ? 'opacity-1 translate-y-0 pointer-events-auto' 
+                                    : 'opacity-0 -translate-y-5 pointer-events-none'
+                                }`
+                            }
+                        >
+                            {updateUserSuccess}
+                        </p>
+
+                        <p className={`text-[0.7rem] -mt-8 text-red-500 self-start transform transition-all duration-700 ease-in-out ${
+                                updateUserError 
+                                    ? 'opacity-1 translate-y-0 pointer-events-auto' 
+                                    : 'opacity-0 -translate-y-5 pointer-events-none'
+                                }`
+                            }
+                        >
+                            {updateUserError}
+                        </p>
+
+                        <div className='flex flex-col gap-5'>
                             <Link 
                                 to='/profile?tab=details'
                                 className={`relative flex items-center gap-5 shadow shadow-gray-300 rounded-2xl py-3 px-4 h-20 
                                     ${tab === 'details' ? 'border-0' : ''}`
                                 }
+                                onClick={toggleSidebar}
                             >
                                 <FaUser className='text-xl'/>
                                 <div className='w-[70%]'>
@@ -379,6 +404,7 @@ const ProfileSidebar = () => {
                             <Link 
                                 to='/profile?tab=payment'
                                 className='relative flex items-center gap-5 shadow shadow-gray-300 rounded-2xl py-3 px-4 h-20'
+                                onClick={toggleSidebar}
                             >
                                 <CreditCardIcon className='text-xl'/>
                                 <div className='w-[70%]'>
@@ -390,6 +416,7 @@ const ProfileSidebar = () => {
                             <Link 
                                 to='/profile?tab=reviews'
                                 className='relative flex items-center gap-5 shadow shadow-gray-300 rounded-2xl py-3 px-4 h-20'
+                                onClick={toggleSidebar}
                             >
                                 <StarIcon className='text-xl'/>
                                 <div className='w-[70%]'>
@@ -401,6 +428,7 @@ const ProfileSidebar = () => {
                             <Link 
                                 to='/profile?tab=settings'
                                 className='relative flex items-center gap-5 shadow shadow-gray-300 rounded-2xl py-3 px-4 h-20'
+                                onClick={toggleSidebar}
                             >
                                 <SettingsIcon className='text-xl'/>
                                 <div className='w-[70%]'>
@@ -412,7 +440,10 @@ const ProfileSidebar = () => {
                             <div className='text-lg font-medium h-20 w-72 flex items-center justify-center'>
                             <p 
                                 className='cursor-pointer text-[#4078bc] text-lg font-medium'
-                                onClick={handleSignOut}
+                                onClick={() => {
+                                    handleSignOut()
+                                    toggleSidebar()
+                                }}
                                 >
                                     Sign out
                                 </p> 

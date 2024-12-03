@@ -140,17 +140,17 @@ const ContactDetails = () => {
         </div>
 
         <div className='flex flex-col gap-1'>
-            <h1 className='font-medium text-3xl self-center'>Contact</h1>
+            <h1 className='font-medium sm:text-3xl text-2xl self-center'>Contact</h1>
             <p className='text-sm'>Receive account activity alerts and trip updates by sharing this information.</p>
         </div>
         <form 
-            className='flex flex-col gap-5'
+            className='flex flex-col gap-10'
             onSubmit={handleSubmit}
         >
             <div className='flex flex-col gap-1'>
                 <h3 className='font-medium'>Mobile number</h3>
                 <div className='flex flex-col gap-4'>
-                    <div className='flex gap-3'>
+                    <div className='flex max-sm:flex-col gap-3'>
                         <div className='relative w-fit'>
                             <ChevronDown className='absolute right-3 p-1 top-1/2 transform -translate-y-1/2 pointer-events-none'/>
                             <label 
@@ -257,7 +257,7 @@ const ContactDetails = () => {
                         onBlur={(e) => !e.target.value && setIsFocused2(false)} // Reset if input is empty
                     />
                 </div>
-                <div className='flex items-center gap-3'>
+                <div className='flex max-sm:flex-col items-center gap-3'>
                     <div className='relative w-fit'>
                         <ChevronDown className='absolute right-3 p-1 top-1/2 transform -translate-y-1/2 pointer-events-none'/>
                         <label 

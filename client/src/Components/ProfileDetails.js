@@ -5,18 +5,17 @@ import { useNavigate } from 'react-router-dom';
 
 const ProfileDetails = () => {
     const { currentUser } = useSelector((state) => state.user);
-    console.log(currentUser);
     const navigate = useNavigate();
 
   return (
-    <div className='bg-gray-100 rounded-3xl p-14 flex-1 flex flex-col gap-10'>
+    <div className='bg-gray-100 rounded-3xl sm:p-14 p-5 flex-1 flex flex-col gap-10 max-w-full'>
         <div className='flex items-start justify-between'>
             <div className='flex flex-col gap-5'>
                 <div className='flex flex-col gap-1'>
-                    <h2 className='font-medium text-3xl'>Basic information</h2>
+                    <h2 className='font-medium sm:text-3xl text-2xl'>Basic information</h2>
                     <p className='text-sm'>Make sure this information matches your travel ID, like your passport or license.</p>
                 </div>
-                <div className='w-full flex justify-between text-sm'>
+                <div className='w-full flex max-sm:flex-col max-sm:gap-5 justify-between text-sm'>
                     <div className='flex flex-col gap-2'>
                         <div>
                             <h3 className='font-medium'>Name</h3>
@@ -57,10 +56,10 @@ const ProfileDetails = () => {
         <div className='flex items-start justify-between'>
             <div className='flex flex-col gap-5'>
                 <div className='flex flex-col gap-1'>
-                    <h2 className='font-medium text-3xl'>Contact</h2>
+                    <h2 className='font-medium sm:text-3xl text-2xl'>Contact</h2>
                     <p className='text-sm'>Receive account activity alerts and trip updates by sharing this information.</p>
                 </div>
-                <div className='w-full flex gap-72 justify-between text-sm'>
+                <div className='w-full flex sm:gap-72 max-sm:flex-col max-sm:gap-5 justify-between text-sm'>
                     <div className='flex flex-col gap-2'>
                         <div>
                             <h3 className='font-medium'>Mobile number</h3>
@@ -133,12 +132,12 @@ const ProfileDetails = () => {
         <div className='flex items-start justify-between'>
             <div className='flex flex-col gap-5'>
                 <div className='flex flex-col gap-1'>
-                    <h1 className='font-medium text-3xl'>More details</h1>
+                    <h1 className='font-medium sm:text-3xl text-2xl'>More details</h1>
                     <p className='text-sm'>Speed up your booking by securely saving essential travel details.</p>
                 </div>
                 <div className='flex flex-col gap-5'>
                     <div 
-                        className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg w-72'
+                        className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg w-72 max-w-[95%]'
                         onClick={() => navigate('/airport_security')}
                     >
                         <div>
@@ -148,7 +147,7 @@ const ProfileDetails = () => {
                         <ChevronRight/>
                     </div>
                     <div 
-                        className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg w-72'
+                        className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg w-72 max-w-[95%]'
                         onClick={() => navigate('/travel_document')}
                     >
                         <div>
@@ -158,7 +157,7 @@ const ProfileDetails = () => {
                         <ChevronRight/>
                     </div>
                     <div 
-                        className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg w-72'
+                        className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg w-72 max-w-[95%]'
                         onClick={() => navigate('/preference')}
                     >
                         <div>

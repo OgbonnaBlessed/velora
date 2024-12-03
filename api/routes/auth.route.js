@@ -1,5 +1,5 @@
 import express from 'express'
-import { signup, signin, google, handlePasswordResetRequest, verifyCode, resetPassword, verifyOTP, resendOTP, resendCode, getConnectedDevices, logoutDevice, confirmEmail } from '../controllers/auth.controller.js';
+import { signup, signin, google, handlePasswordResetRequest, verifyCode, resetPassword, verifyOTP, resendOTP, resendCode, getConnectedDevices, logoutDevice, confirmEmail, getConnectedAccounts } from '../controllers/auth.controller.js';
 import { verifyToken } from '../utils/verifyUser.js';
 
 const router = express.Router();
@@ -16,5 +16,6 @@ router.post('/resend-code', resendCode);
 router.post('/reset-password', resetPassword);
 router.get('/connected-devices', verifyToken, getConnectedDevices);
 router.post('/logout-device', verifyToken, logoutDevice);
+router.get('/connected-accounts', verifyToken, getConnectedAccounts);
 
 export default router;

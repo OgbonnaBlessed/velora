@@ -145,7 +145,7 @@ const BasicDetails = () => {
         </div>
 
         <div className='flex flex-col gap-1'>
-            <h1 className='font-medium text-3xl self-center'>Basic information</h1>
+            <h1 className='font-medium sm:text-3xl text-2xl self-center'>Basic information</h1>
             <p className='text-sm'>Make sure this information matches your travel ID, like your passport or license.</p>
         </div>
         <form 

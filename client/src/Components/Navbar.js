@@ -288,25 +288,49 @@ const Navbar = () => {
         {/* Sidebar */}
         <aside 
             ref={sidebarServicesRef} 
-            className={`z-20 fixed overflow-auto top-[4.8rem] left-0 w-96 max-w-full h-[100vh] bg-gradient-to-b bg-[#4078bc] text-white lg:hidden transition-all duration-700 ease-in-out transform 
+            className={`z-20 fixed overflow-auto top-[4.8rem] left-0 w-96 max-w-full h-[100vh] bg-gradient-to-b bg-[#ffffff] text-gray-600 lg:hidden transition-all duration-700 ease-in-out transform 
                 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`
             }
         >
             <nav className='flex flex-col space-y-8 mt-4 justify-center items-center overflow-auto'>
-                <Link 
-                    to="/signup" 
-                    className="text-white relative"
-                    onClick={toggleSidebar}
-                >
-                    <button
-                        className='rounded-full bg-[#48aadf] px-10 py-2 cursor-pointer'
+                {currentUser
+                ?   <div className='flex flex-col gap-3 text-gray-600 items-center font-semibold'>
+                        <div className='flex items-center gap-1'>
+                            <p>{currentUser.firstName}</p>
+                            <p>{currentUser.lastName}</p>
+                        </div>
+                        <p>{currentUser.email}</p>
+                        <Link 
+                            to='/profile'
+                            onClick={toggleSidebar}
+                        >
+                            Account
+                        </Link>
+                        <p 
+                            className='border border-[#48aadf] px-10 py-2 cursor-pointer rounded-full'
+                            onClick={() => {
+                                handleSignOut()
+                                toggleSidebar()
+                            }}
+                        >
+                            Sign out
+                        </p>
+                    </div>
+                :   <Link 
+                        to="/signin" 
+                        className="text-white relative"
+                        onClick={toggleSidebar}
                     >
-                        Sign up
-                    </button> 
-                </Link>
+                        <button
+                            className='rounded-full border border-[#48aadf] text-gray-500 font-semibold px-10 py-2 cursor-pointer'
+                        >
+                            Sign in
+                        </button> 
+                    </Link>
+                }
                 <Link 
                     to="/notifications" 
-                    className="text-white relative self-start px-6"
+                    className="text-gray-500 relative self-start px-6"
                     onClick={toggleSidebar}
                 >
                     Notifications 
@@ -319,7 +343,7 @@ const Navbar = () => {
                         >
                             <FaSearch /> View services
                         </div>
-                        <div className={`lg:hidden  bg-[#48aadf] rounded-xl flex flex-col transition-all duration-700 ease-in-out transform
+                        <div className={`lg:hidden  bg-[#48aadf] text-white rounded-xl flex flex-col transition-all duration-700 ease-in-out transform
                             ${sidebarServices ? 'h-96' : 'h-0'} overflow-hidden font-normal text-sm`}>
                             <div className='flex flex-col py-3 w-full border-b-2 border-gray-400'>
                                 <Link 
@@ -392,7 +416,7 @@ const Navbar = () => {
                         </div>
                     </div>
                     <Link 
-                        className='text-white flex items-center gap-2'
+                        className='flex items-center gap-2'
                         onClick={() => {
                             toggleSidebar()
                             setLanguageModal(!languageModal)

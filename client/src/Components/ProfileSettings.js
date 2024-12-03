@@ -80,17 +80,17 @@ const ProfileSettings = () => {
     } 
     
   return (
-    <div className='bg-gray-100 rounded-3xl p-14 flex-1 flex flex-col gap-10'>
+    <div className='bg-gray-100 rounded-3xl sm:p-14 p-5 sm:flex-1 flex flex-col gap-10 max-w-full'>
         <div className='flex flex-col gap-5'>
-            <div>
-                <h1 className='font-semibold text-3xl'>Sign-in and security</h1>
+            <div className='flex flex-col gap-1'>
+                <h1 className='font-semibold sm:text-3xl text-2xl'>Sign-in and security</h1>
                 <p className='text-sm'>
                     Keep your account safe with a secure password and by signing out of devices you're not actively using.
                 </p>
             </div>
             <div className='flex flex-col gap-5'>
                 <div 
-                    className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg w-72'
+                    className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg w-72 max-w-full'
                     onClick={() => {
                         handleConfirmEmail();
                         navigate('/verify-user-email');
@@ -103,7 +103,7 @@ const ProfileSettings = () => {
                     <ChevronRight/>
                 </div>
                 <div 
-                    className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg h-16 w-72'
+                    className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg h-16 w-72 max-w-full'
                     onClick={() => {
                         handleSendConfirmEmail();
                         navigate('/verify-email');
@@ -116,15 +116,15 @@ const ProfileSettings = () => {
                 </div>
                 <div className='flex flex-col gap-5 '>
                     <div 
-                        className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg h-16 w-72'
+                        className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg h-16 w-72 max-w-full'
                         onClick={() => setDisplayConnectedDevices(!displayConnectedDevices)}
                     >
                         <div>
                             <h2 className='font-semibold'>Connected devices</h2>
                         </div>
-                        <ChevronRight className={`transform transition-all duration-300 ease-in-out 
-                            ${displayConnectedDevices ? 'transform rotate-90' : ''}`
-                        }
+                        <ChevronRight className={`transition-all duration-300 ease-in-out 
+                                ${displayConnectedDevices ? 'rotate-90' : ''}`
+                            }
                         />
                     </div>
                     <div className={`overflow-hidden ml-5 transition duration-300 ease-in-out 
@@ -139,11 +139,11 @@ const ProfileSettings = () => {
 
         <div className='flex flex-col gap-5'>
             <div>
-                <h1 className='font-semibold text-3xl'>Account management</h1>
+                <h1 className='font-semibold sm:text-3xl text-2xl'>Account management</h1>
                 <p className='text-sm'>Control other options to manage your data, like deleting your account.</p>
             </div>
             <div className='flex flex-col gap-5'>
-                <div className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg h-16 w-72'>
+                <div className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg h-16 w-72 max-w-full'>
                     <div>
                         <h2 className='font-semibold'>Traveler arranger</h2>
                     </div>

@@ -127,7 +127,7 @@ const Preferences = () => {
                 
                 <h1 className='font-medium text-xl'>Preferences</h1>
                 <p className='text-sm'>
-                    Kindly set your preferences, to allow us get the best flights or hotels for you.
+                    Kindly set your preferences, to allow us get the best flights and hotels for you.
                 </p>
                 <div className='relative w-full'>
                     <ChevronDown className='absolute right-3 p-1 top-1/2 transform -translate-y-1/2 pointer-events-none'/>

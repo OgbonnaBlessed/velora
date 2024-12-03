@@ -67,7 +67,7 @@ const ConnectedDevices = () => {
     <div className="flex flex-col gap-2 transition duration-300 ease-in-out">
       <ul className="flex flex-col gap-5">
         {devices.map((device, index) => (
-          <li key={index} className="flex items-start gap-10 text-sm">
+          <li key={index} className="flex items-start sm:gap-10 gap-4 text-center text-sm">
             <div className="flex flex-col gap-1 font-semibold">
               <p>
                 {getDeviceIcon(device.os)}

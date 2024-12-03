@@ -514,15 +514,19 @@ export const resetPassword = async (req, res, next) => {
 };
 
 export const getConnectedAccounts = async (req, res, next) => {
-    const userId = req.user.id; // Assuming user ID is available via JWT
-
     try {
-        const user = await User.findById(userId).select('connectedAccounts');
+        const user = await User.findById(req.user.id).select('connectedAccounts');
         if (!user) {
             return res.status(404).json({ success: false, message: 'User not found' });
         }
-        res.status(200).json({ success: true, connectedAccounts: user.connectedAccounts });
+
+        // Return connected accounts
+        res.status(200).json({
+            success: true,
+            connectedAccounts: user.connectedAccounts || [],
+        });
     } catch (error) {
-        next(error);
+        console.error("Error fetching connected accounts:", error);
+        res.status(500).json({ success: false, message: "Internal server error" });
     }
 };

@@ -20,7 +20,7 @@ const UpdateEmailSuccess = () => {
 
     return (
         <div className='bg-white fixed w-full h-full inset-0 z-20 flex justify-center'>
-            <div className='pt-16 w-[30rem] max-w-full flex flex-col gap-5'>
+            <div className='pt-16 w-[30rem] max-w-[90%] flex flex-col gap-5'>
                 <div
                     className='bg-[#48aadf13] absolute left-3 top-3 p-2.5 rounded-full cursor-pointer text-[#48aadf]'
                     onClick={() => {
