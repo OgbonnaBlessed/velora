@@ -20,6 +20,7 @@ const ProfilePayment = () => {
     
                 console.log("Connected Accounts Response:", response.data);
                 setConnectedAccounts(response.data.connectedAccounts || []);
+                console.log(response.data.connectedAccounts);
             } catch (error) {
                 console.error("Error fetching connected accounts:", error.response?.data || error.message);
             }

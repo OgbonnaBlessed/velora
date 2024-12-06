@@ -364,14 +364,16 @@ const SignIn = ({ length = 4}) => {
                 ${loading ? 'bg-[#48aadf96] cursor-not-allowed' : 'bg-[#48aadf] cursor-pointer'}`
               }
             >
-              <p>{ loading 
-                ? <SyncLoader 
-                    color="#fff" // Customize the color
-                    loading={loading} 
-                    size={7} // Customize the size
-                    margin={2} // Customize the margin between circles
-                  />
-                : 'Continue'
+              <p>
+                {
+                  loading 
+                  ? <SyncLoader 
+                      color="#fff" // Customize the color
+                      loading={loading} 
+                      size={7} // Customize the size
+                      margin={2} // Customize the margin between circles
+                    />
+                  : 'Continue'
                }
               </p>
             </button>

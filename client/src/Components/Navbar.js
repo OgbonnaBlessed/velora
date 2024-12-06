@@ -134,7 +134,11 @@ const Navbar = () => {
                         <FaAngleDown />
                     </div>
                     <div className={`hidden absolute top-8  bg-white rounded-xl lg:flex flex-col transition-all duration-500 ease-in-out transform
-                        ${services ? 'w-64 h-96 translate-y-0 opacity-100' : 'w-0 h-0 -translate-y-3 opacity-0'} overflow-hidden shadow shadow-gray-300 font-normal text-sm`}>
+                        ${services 
+                            ? 'w-64 h-96 translate-y-0 opacity-100' 
+                            : 'w-0 h-0 -translate-y-3 opacity-0'} overflow-hidden shadow shadow-gray-300 font-normal text-sm`
+                        }
+                    >
                         <div className='flex flex-col py-3 w-full border-b-2 border-gray-400'>
                             <Link 
                                 to='/stays'
@@ -288,7 +292,7 @@ const Navbar = () => {
         {/* Sidebar */}
         <aside 
             ref={sidebarServicesRef} 
-            className={`z-20 fixed overflow-auto top-[4.8rem] left-0 w-96 max-w-full h-[100vh] bg-gradient-to-b bg-[#ffffff] text-gray-600 lg:hidden transition-all duration-700 ease-in-out transform 
+            className={`z-20 fixed overflow-auto top-[5rem] left-0 w-96 max-w-full h-[100vh] bg-gradient-to-b bg-[#ffffff] text-gray-600 lg:hidden transition-all duration-700 ease-in-out transform 
                 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`
             }
         >

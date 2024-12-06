@@ -108,3 +108,17 @@ input[type="number"] {
 .radio-container .radio-label:hover::before {
   border-color: #007bbd;
 }
+
+/* Custom Flatpickr styles */
+.flatpickr-calendar {
+  margin-top: 1rem; /* Moves the calendar down */
+}
+
+.remove-scroll-bar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.remove-scroll-bar::-webkit-scrollbar {
+  display: none;
+}
