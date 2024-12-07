@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import { DatePicker } from 'antd'
 const { RangePicker } = DatePicker;
 
-const Stays = () => {
+const OneWay = () => {
   const [focused1, setFocused1] = useState(false);
   const [focused2, setFocused2] = useState(false);
   const [departureDate, setDepartureDate] = useState('');
@@ -21,8 +21,7 @@ const Stays = () => {
     "California", "Texas", "Florida", "New York", "Pennsylvania", "Illinois", "Ohio", "Georgia", "North Carolina", "Michigan",
     "New Jersey", "Virginia", "Washington", "Arizona", "Massachusetts", "Tennessee", "Indiana", "Missouri", "Maryland", "Wisconsin"
   ]);
-  const [addFlight, setAddFight] = useState(false);
-  const [addCar, setAddCar] = useState(false);
+  const [addPlaceToStay, setAddPlaceToStay] = useState(false);
   const [formData, setFormData] = useState({});
   const travelerRef = useRef();
   const dateRef = useRef();
@@ -75,6 +74,15 @@ const Stays = () => {
     setOrigin(origin); // Set the destination input value to the selected location
   };
 
+  // Set default date range
+  useEffect(() => {
+    const today = new Date();
+    const twoDaysLater = new Date();
+    twoDaysLater.setDate(today.getDate() + 2);
+
+    setDepartureDate(`${today} - ${twoDaysLater}`);
+  }, []);
+
   // Add this useEffect below your existing states and functions
   useEffect(() => {
     if (destination.trim()) {
@@ -102,11 +110,11 @@ const Stays = () => {
   };
 
   const handleDateChange = (selectedDates) => {
-    if (selectedDates.length === 2) {
+    // if (selectedDates.length === 2) {
 
-      const [startDate, endDate] = selectedDates;
-      setDepartureDate(`${startDate} - ${endDate}`);
-    }
+    //   // const [startDate, endDate] = selectedDates;
+    //   // setDepartureDate(`${startDate} - ${endDate}`);
+    // }
   };
 
   const handleRoomChange = (index, type, value) => {
@@ -140,8 +148,64 @@ const Stays = () => {
   }
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 flex flex-col gap-8">
-      <div className="xl:flex xl:gap-8 xl:justify-between grid gap-4 md:gap-6 md:grid-cols-3 items-center">
+    <div className="flex flex-col gap-8 w-full">
+      <div className="xl:flex xl:gap-3 xl:justify-between grid gap-4 md:gap-6 md:grid-cols-3 items-center">
+        <div 
+          className='relative' 
+          ref={originRef}
+        >
+          <div className="border rounded-xl p-3 flex items-center flex-1">
+            <FaMapMarkerAlt className="text-xl" />
+            <div className="w-full h-full relative">
+              <label
+                htmlFor="origin"
+                className={`absolute left-3 text-sm cursor-text transition-all duration-500 ease-in-out ${
+                  focused2 
+                    ? 'top-[0.1rem] scale-75 -translate-x-2 transform -translate-y-1/2' 
+                    : 'top-1/2 transform -translate-y-1/2'
+                }`}
+              >
+                From where?
+              </label>
+              <input
+                type="text"
+                id="origin"
+                value={origin}
+                onFocus={toggleOriginList}
+                onBlur={(e) => !e.target.value && setFocused2(false)} // Reset if input is empty
+                onChange={handleOriginChange}
+                className="px-3 pt-2 w-full"
+                autoComplete="off"
+              />
+            </div>
+          </div>
+
+          <div className={`absolute top-16 bg-white max-h-64 overflow-y-auto shadow shadow-gray-300 rounded-lg w-64 transition-all duration-300 ease-in-out z-10
+            ${isOriginListVisible 
+              ? 'translate-y-0 pointer-events-auto opacity-1' 
+              : '-translate-y-5 pointer-events-none opacity-0'}`
+            }
+          >
+            <ul>
+              {states.filter(state => state.toLowerCase().includes(origin.toLowerCase())).length 
+              ? states.filter(state => state.toLowerCase().includes(origin.toLowerCase())).map((state, i) => (
+                  <li 
+                    onClick={() => selectOrigin(state)} 
+                    key={i}
+                    className='px-5 py-2 hover:bg-gray-100 flex items-center gap-4 cursor-pointer transition-all duration-300 ease-in-out'
+                  >
+                    <FaMapMarkerAlt />
+                    <p>{state}</p>
+                  </li>
+                )) 
+              : <li className="px-5 py-2 text-[#48aadf] text-center">
+                  No Location Found
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+
         <div 
           className='relative' 
           ref={destinationRef}
@@ -340,24 +404,24 @@ const Stays = () => {
         <div className="flex items-center">
           <input 
             type="checkbox" 
-            id="addFlight" 
-            checked={addFlight} 
-            onClick={() => setAddFight(!addFlight)} 
+            id="addPlaceToStay" 
+            checked={addPlaceToStay} 
+            onClick={() => setAddPlaceToStay(!addPlaceToStay)} 
             onChange={handleChange}
             className="hidden" // Hide the default checkbox
           />
           <label 
-            htmlFor="addFlight" 
+            htmlFor="addPlaceToStay" 
             className="flex items-center cursor-pointer"
           >
             <div className={`relative w-4 h-4 flex items-center justify-center rounded border-2 
-                ${addFlight ? 'border-[#4078bc] bg-[#4078bc]' : 'border-gray-300'} transition-all duration-300 ease-in-out`
+                ${addPlaceToStay ? 'border-[#4078bc] bg-[#4078bc]' : 'border-gray-300'} transition-all duration-300 ease-in-out`
               }
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className={`absolute w-3.5 h-3.5 text-white transition-opacity duration-300 
-                  ${addFlight ? 'opacity-100' : 'opacity-0'}`
+                  ${addPlaceToStay ? 'opacity-100' : 'opacity-0'}`
                 }
                 viewBox="0 0 24 24"
                 fill="none"
@@ -367,105 +431,12 @@ const Stays = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <span className="ml-2 text-black text-sm">Add Flight</span>
-          </label>
-        </div>
-
-        {/* Add Car Checkbox */}
-        <div className="flex items-center">
-          <input 
-            type="checkbox" 
-            id="addCar" 
-            checked={addCar} 
-            onClick={() => setAddCar(!addCar)} 
-            onChange={handleChange}
-            className="hidden" // Hide the default checkbox
-          />
-          <label 
-            htmlFor="addCar" 
-            className="flex items-center cursor-pointer"
-          >
-            <div className={`relative w-4 h-4 flex items-center justify-center rounded border-2 
-                ${addCar ? 'border-[#4078bc] bg-[#4078bc]' : 'border-gray-300'} transition-all duration-300 ease-in-out`
-              }
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className={`absolute w-3.5 h-3.5 text-white transition-opacity duration-300 
-                  ${addCar ? 'opacity-100' : 'opacity-0'}`
-                }
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <span className="ml-2 text-black text-sm">Add Car</span>
+            <span className="ml-2 text-black text-sm">Add a place to stay</span>
           </label>
         </div>
       </div>
-
-      {addFlight &&
-        <div 
-          className='relative w-fit' 
-          ref={originRef}
-        >
-          <div className="border rounded-xl p-3 flex items-center w-fit">
-            <FaMapMarkerAlt className="text-xl" />
-            <div className="w-full h-full relative">
-              <label
-                htmlFor="origin"
-                className={`absolute left-3 text-sm cursor-text transition-all duration-500 ease-in-out ${
-                  focused2 
-                    ? 'top-[0.1rem] scale-75 -translate-x-2 transform -translate-y-1/2' 
-                    : 'top-1/2 transform -translate-y-1/2'
-                }`}
-              >
-                From where?
-              </label>
-              <input
-                type="text"
-                id="origin"
-                value={origin}
-                onFocus={toggleOriginList}
-                onBlur={(e) => !e.target.value && setFocused2(false)} // Reset if input is empty
-                onChange={handleOriginChange}
-                className="px-3 pt-2 w-full"
-                autoComplete="off"
-              />
-            </div>
-          </div>
-
-          <div className={`absolute top-16 bg-white max-h-64 overflow-y-auto shadow shadow-gray-300 rounded-lg w-64 transition-all duration-300 ease-in-out z-10
-            ${isOriginListVisible 
-              ? 'translate-y-0 pointer-events-auto opacity-1' 
-              : '-translate-y-5 pointer-events-none opacity-0'}`
-            }
-          >
-            <ul>
-              {states.filter(state => state.toLowerCase().includes(origin.toLowerCase())).length 
-              ? states.filter(state => state.toLowerCase().includes(origin.toLowerCase())).map((state, i) => (
-                  <li 
-                    onClick={() => selectOrigin(state)} 
-                    key={i}
-                    className='px-5 py-2 hover:bg-gray-100 flex items-center gap-4 cursor-pointer transition-all duration-300 ease-in-out'
-                  >
-                    <FaMapMarkerAlt />
-                    <p>{state}</p>
-                  </li>
-                )) 
-              : <li className="px-5 py-2 text-[#48aadf] text-center">
-                  No Location Found
-                </li>
-              }
-            </ul>
-          </div>
-        </div>
-      }
     </div>
   );
 };
 
-export default Stays;
+export default OneWay;

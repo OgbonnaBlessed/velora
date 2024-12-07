@@ -122,3 +122,86 @@ input[type="number"] {
 .remove-scroll-bar::-webkit-scrollbar {
   display: none;
 }
+
+/* Ensure the dropdown calendar does not overflow on small devices */
+.responsive-calendar {
+  max-width: 90%; /* Adjust to fit smaller devices */
+  width: auto !important;
+}
+
+/* Add a max height for very small screens */
+.responsive-calendar .ant-picker-calendar {
+  max-height: 400px !important; /* Limits calendar height for smaller viewports */
+}
+
+/* Remove outline and borders for the main input field */
+.ant-picker {
+  outline: none;
+  border: none;
+  box-shadow: none; /* Removes default Ant Design shadow */
+  width: 100%;
+  margin-top: .3rem;
+  background-color: transparent;
+}
+
+/* Remove bottom border for the RangePicker on hover */
+.ant-picker:hover {
+  border: none;
+  box-shadow: none;
+  background-color: transparent;
+}
+
+.ant-picker-outlined {
+  background: transparent;
+}
+
+/* Remove focus outline for the RangePicker */
+.ant-picker-focused {
+  border: none;
+  box-shadow: none;
+}
+
+.ant-picker:focus {
+  background-color: transparent;
+}
+
+/* Allow the calendar to adjust on various screen sizes */
+@media (max-width: 768px) {
+  .responsive-calendar .ant-picker-panel {
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ant-picker-dropdown {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ant-picker-dropdown .ant-picker-range-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ant-picker-dropdown-range {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ant-picker-range-wrapper .ant-picker-date-range-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ant-picker-dropdown .ant-picker-panel-container .ant-picker-panel-layout {
+    display: flex;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+  }
+
+  .ant-picker-dropdown .ant-picker-panel-container .ant-picker-panels {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+}

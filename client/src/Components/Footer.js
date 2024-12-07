@@ -88,7 +88,7 @@ const Footer = () => {
                         Refund timelines, policies & processes
                     </Link>
                     <Link className='hover:underline transition-all duration-300 ease-in-out'>
-                        Use an Expedia coupon
+                        Use an Velora coupon
                     </Link>
                     <Link className='hover:underline transition-all duration-300 ease-in-out'>
                         International travel documents
