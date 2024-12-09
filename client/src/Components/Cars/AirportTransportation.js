@@ -11,7 +11,7 @@ const AirportTransportation = () => {
     }
 
     return (
-        <div className=''>
+        <div>
             <div className='flex flex-col gap-5'>
                 <div className='flex sm:items-center gap-5 max-sm:flex-col'>
                     <div className='grid sm:grid-cols-3 grid-cols-2 items-center gap-3 text-[0.75rem] text-nowrap w-fit text-[#000000e3] relative font-Grotesk font-semibold'>

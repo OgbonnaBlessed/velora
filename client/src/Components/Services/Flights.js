@@ -83,18 +83,18 @@ const Flights = () => {
             />
           </div>
           <div 
-            className='relative w-fit font-Roboto'
+            className='relative w-fit font-serif'
             ref={flightClassModalRef}
           >
             <div 
-              className='bg-blue-50 rounded-full px-8 py-3 text-sm cursor-pointer font-semibold text-[#000000e3] flex items-center gap-2 text-nowrap'
+              className='bg-blue-50 border-b-2 border-b-gray-300 px-5 py-2 text-sm cursor-pointer font-[500] text-[#000000e3] flex items-center gap-2 text-nowrap'
               onClick={toggleFlightClassModal}
             >
               <p>{flightClass}</p>
               <MdArrowDropDown/>
             </div>
               <div 
-                className={`bg-white shadow shadow-gray-300 rounded-xl flex flex-col absolute top-12 text-nowrap py-3 transform left-1/2 -translate-x-1/2 text-sm transition-all duration-300 ease-in-out z-20
+                className={`bg-white shadow shadow-gray-300 rounded-xl flex flex-col absolute top-[3.3rem] font-serif text-nowrap py-3 transform left-1/2 -translate-x-1/2 text-sm transition-all duration-300 ease-in-out z-20
                   ${flightClassModal 
                     ? 'translate-y-0 opacity-1 pointer-events-auto' 
                     : '-translate-y-5 opacity-0 pointer-events-none'}`

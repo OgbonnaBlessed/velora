@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { FaAngleDown, FaBars, FaBell, FaBriefcase, FaCar, FaClone, FaGlobe, FaHotel, FaSearch, FaTelegramPlane } from 'react-icons/fa'
-import { X } from 'lucide-react'
+import { FaBars, FaBell, FaBriefcase, FaCar, FaClone, FaHotel, FaTelegramPlane } from 'react-icons/fa'
+import { ChevronDown, Globe, Search, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSelector, useDispatch } from "react-redux";
 import { signOutSuccess } from "../redux/user/userSlice";
@@ -109,7 +109,7 @@ const Navbar = () => {
 
   return (
     <nav ref={sidebarRef}>
-        <div className='lg:px-20 px-6 py-6 bg-[#fff] shadow shadow-gray-300 text-black flex justify-between items-center font-medium fixed top-0 w-full z-20 font-Roboto'>
+        <div className='lg:px-20 px-6 py-6 bg-[#fff] shadow shadow-gray-300 text-black flex justify-between items-center font-medium fixed top-0 w-full z-[10000] font-Roboto'>
             <div className='flex items-center gap-14'>
 
                 {/* Logo */}
@@ -127,11 +127,11 @@ const Navbar = () => {
 
                 <div className='relative' ref={servicesRef}>
                     <div 
-                        className='hidden lg:flex items-center gap-1 cursor-pointer text-[.9rem]'
+                        className='hidden lg:flex items-center cursor-pointer text-[.9rem]'
                         onClick={() => setServices(!services)}
                     >
                         <p>view services</p>
-                        <FaAngleDown />
+                        <ChevronDown className='p-1' />
                     </div>
                     <div className={`hidden absolute top-8  bg-white rounded-xl lg:flex flex-col transition-all duration-500 ease-in-out transform
                         ${services 
@@ -214,10 +214,10 @@ const Navbar = () => {
             <div className='hidden lg:flex items-center gap-14 text-[.9rem] font-Grotesk'>
                 <div>
                     <div 
-                        className='flex gap-2 items-center cursor-pointer'
+                        className='flex gap-1 items-center cursor-pointer'
                         onClick={() => setLanguageModal(!languageModal)}
                     >
-                        <FaGlobe/>
+                        <Globe className='p-0.5'/>
                         <p>English</p>
                     </div>
                 </div>
@@ -292,7 +292,7 @@ const Navbar = () => {
         {/* Sidebar */}
         <aside 
             ref={sidebarServicesRef} 
-            className={`z-20 fixed overflow-auto top-[5rem] left-0 w-96 max-w-full h-[100vh] bg-gradient-to-b bg-[#ffffff] text-gray-600 lg:hidden transition-all duration-700 ease-in-out transform 
+            className={`z-20 fixed overflow-auto top-[5rem] font-Grotesk left-0 w-96 max-w-full h-[100vh] bg-gradient-to-b bg-[#ffffff] text-black lg:hidden transition-all duration-700 ease-in-out transform 
                 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`
             }
         >
@@ -334,7 +334,7 @@ const Navbar = () => {
                 }
                 <Link 
                     to="/notifications" 
-                    className="text-gray-500 relative self-start px-6"
+                    className="relative self-start px-6"
                     onClick={toggleSidebar}
                 >
                     Notifications 
@@ -345,10 +345,16 @@ const Navbar = () => {
                             className='flex items-center gap-2'
                             onClick={toggleSidebarServices}
                         >
-                            <FaSearch /> View services
+                            <Search /> View services
                         </div>
-                        <div className={`lg:hidden  bg-[#48aadf] text-white rounded-xl flex flex-col transition-all duration-700 ease-in-out transform
-                            ${sidebarServices ? 'h-96' : 'h-0'} overflow-hidden font-normal text-sm`}>
+                        <div 
+                            className={`lg:hidden  bg-blue-50 text-black rounded-xl flex flex-col transition-all duration-700 ease-in-out transform overflow-hidden font-normal text-sm
+                                ${sidebarServices 
+                                    ? 'h-96' 
+                                    : 'h-0'
+                                }`
+                            }
+                        >
                             <div className='flex flex-col py-3 w-full border-b-2 border-gray-400'>
                                 <Link 
                                     to='/stays'
@@ -426,7 +432,7 @@ const Navbar = () => {
                             setLanguageModal(!languageModal)
                         }}
                     >
-                        <FaGlobe /> English
+                        <Globe /> English
                     </Link>
                 </div>
                 <div className='flex flex-col space-y-8 px-6 pb-4 border-0 w-full'>
