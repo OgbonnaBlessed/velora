@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import { DatePicker } from 'antd'
 const { RangePicker } = DatePicker;
 
-const OneWay = () => {
+const RoundTrip = () => {
   const [focused1, setFocused1] = useState(false);
   const [focused2, setFocused2] = useState(false);
   const [departureDate, setDepartureDate] = useState('');
@@ -22,6 +22,7 @@ const OneWay = () => {
     "New Jersey", "Virginia", "Washington", "Arizona", "Massachusetts", "Tennessee", "Indiana", "Missouri", "Maryland", "Wisconsin"
   ]);
   const [addPlaceToStay, setAddPlaceToStay] = useState(false);
+  const [addCar, setAddCar] = useState(false);
   const [formData, setFormData] = useState({});
   const travelerRef = useRef();
   const dateRef = useRef();
@@ -74,15 +75,6 @@ const OneWay = () => {
     setOrigin(origin); // Set the destination input value to the selected location
   };
 
-  // Set default date range
-  useEffect(() => {
-    const today = new Date();
-    const twoDaysLater = new Date();
-    twoDaysLater.setDate(today.getDate() + 2);
-
-    setDepartureDate(`${today} - ${twoDaysLater}`);
-  }, []);
-
   // Add this useEffect below your existing states and functions
   useEffect(() => {
     if (destination.trim()) {
@@ -110,11 +102,11 @@ const OneWay = () => {
   };
 
   const handleDateChange = (selectedDates) => {
-    // if (selectedDates.length === 2) {
+    if (selectedDates.length === 2) {
 
-    //   // const [startDate, endDate] = selectedDates;
-    //   // setDepartureDate(`${startDate} - ${endDate}`);
-    // }
+      const [startDate, endDate] = selectedDates;
+      setDepartureDate(`${startDate} - ${endDate}`);
+    }
   };
 
   const handleRoomChange = (index, type, value) => {
@@ -159,7 +151,7 @@ const OneWay = () => {
             <div className="w-full h-full relative">
               <label
                 htmlFor="origin"
-                className={`absolute left-3 text-sm cursor-text transition-all duration-500 ease-in-out ${
+                className={`absolute left-3 text-sm font-Poppins cursor-text transition-all duration-500 ease-in-out ${
                   focused2 
                     ? 'top-[0.1rem] scale-75 -translate-x-2 transform -translate-y-1/2' 
                     : 'top-1/2 transform -translate-y-1/2'
@@ -215,7 +207,7 @@ const OneWay = () => {
             <div className="w-full h-full relative">
               <label
                 htmlFor="destination"
-                className={`absolute left-3 text-sm cursor-text transition-all duration-500 ease-in-out ${
+                className={`absolute left-3 text-sm font-Poppins cursor-text transition-all duration-500 ease-in-out ${
                   focused1 ? 'top-[0.1rem] scale-75 -translate-x-1 transform -translate-y-1/2' : 'top-1/2 transform -translate-y-1/2'
                 }`}
               >
@@ -269,7 +261,7 @@ const OneWay = () => {
           <div className="w-full h-full relative">
             <label
               htmlFor="date"
-              className={`absolute left-3 text-sm cursor-text top-[0.1rem] scale-75 -translate-x-1 transform -translate-y-1/2`}
+              className={`absolute left-3 text-sm font-Poppins cursor-text top-[0.1rem] scale-75 -translate-x-1 transform -translate-y-1/2`}
             >
               Date
             </label>
@@ -279,7 +271,7 @@ const OneWay = () => {
               defaultValue={[today, twoDaysLater]}
               minDate={today}
               allowClear={false} // Optional: allows clearing the input
-              readOnly
+              inputReadOnly={true}
               onChange={handleDateChange}
               popupClassName="responsive-calendar" // Apply custom class for responsiveness
             />
@@ -295,7 +287,7 @@ const OneWay = () => {
           <div className="w-full h-full relative">
             <label
               htmlFor="travelers"
-              className={`absolute left-3 text-sm cursor-text top-[0.1rem] scale-75 -translate-x-1 transform -translate-y-1/2`}
+              className={`absolute left-3 text-sm font-Poppins cursor-text top-[0.1rem] scale-75 -translate-x-1 transform -translate-y-1/2`}
             >
               Travelers
             </label>
@@ -398,7 +390,7 @@ const OneWay = () => {
           Search
         </button>
       </div>
-      <div className='flex items-center gap-10'>
+      <div className='flex items-center gap-10 font-Grotesk'>
 
         {/* Add Flight Checkbox */}
         <div className="flex items-center">
@@ -434,9 +426,44 @@ const OneWay = () => {
             <span className="ml-2 text-black text-sm">Add a place to stay</span>
           </label>
         </div>
+
+        {/* Add Car Checkbox */}
+        <div className="flex items-center">
+          <input 
+            type="checkbox" 
+            id="addCar" 
+            checked={addCar} 
+            onClick={() => setAddCar(!addCar)} 
+            onChange={handleChange}
+            className="hidden" // Hide the default checkbox
+          />
+          <label 
+            htmlFor="addCar" 
+            className="flex items-center cursor-pointer"
+          >
+            <div className={`relative w-4 h-4 flex items-center justify-center rounded border-2 
+                ${addCar ? 'border-[#4078bc] bg-[#4078bc]' : 'border-gray-300'} transition-all duration-300 ease-in-out`
+              }
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`absolute w-3.5 h-3.5 text-white transition-opacity duration-300 
+                  ${addCar ? 'opacity-100' : 'opacity-0'}`
+                }
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <span className="ml-2 text-black text-sm">Add a Car</span>
+          </label>
+        </div>
       </div>
     </div>
   );
 };
 
-export default OneWay;
+export default RoundTrip;

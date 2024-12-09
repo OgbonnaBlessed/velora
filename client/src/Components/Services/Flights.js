@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { MdArrowDropDown } from 'react-icons/md'
-import RoundTrip from './RoundTrip';
-import OneWay from './OneWay';
-import MultiCity from './MultiCity';
+import RoundTrip from '../FlightClass/RoundTrip';
+import OneWay from '../FlightClass/OneWay';
+import MultiCity from '../FlightClass/MultiCity';
 
 const Flights = () => {
   const [visible, setVisible] = useState('round-trip');
@@ -54,7 +54,7 @@ const Flights = () => {
       <div className='flex flex-col gap-5'>
         <div className='flex sm:items-center gap-5 max-sm:flex-col'>
           <div 
-            className='flex items-center text-[0.915rem] border-b text-nowrap w-fit text-sm font-semibold text-[#000000e3] relative'
+            className='flex items-center text-[0.915rem] border-b text-nowrap w-fit text-sm font-semibold text-[#000000e3] relative font-Grotesk'
             ref={tabContainerRef}
           >
             <p 
@@ -83,11 +83,11 @@ const Flights = () => {
             />
           </div>
           <div 
-            className='relative w-fit'
+            className='relative w-fit font-Roboto'
             ref={flightClassModalRef}
           >
             <div 
-              className='bg-gray-100 rounded-full px-8 py-3 text-sm cursor-pointer font-semibold text-[#000000e3] flex items-center gap-2 text-nowrap'
+              className='bg-blue-50 rounded-full px-8 py-3 text-sm cursor-pointer font-semibold text-[#000000e3] flex items-center gap-2 text-nowrap'
               onClick={toggleFlightClassModal}
             >
               <p>{flightClass}</p>

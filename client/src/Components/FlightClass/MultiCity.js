@@ -7,7 +7,6 @@ import { DatePicker } from 'antd'
 const { RangePicker } = DatePicker;
 
 const MultiCity = () => {
-  const [departureDate, setDepartureDate] = useState('');
   const [travelerModalOpen, setTravelerModalOpen] = useState(false);
   const [travelersInput, setTravelersInput] = useState('1 traveler, 1 room');
   const [rooms, setRooms] = useState([{ adults: 1, children: 0 }]);
@@ -176,7 +175,7 @@ const MultiCity = () => {
         <div className="w-full h-full relative">
           <label
             htmlFor="travelers"
-            className={`absolute left-3 text-sm cursor-text top-[0.1rem] scale-75 -translate-x-1 transform -translate-y-1/2`}
+            className={`absolute left-3 text-sm font-Poppins cursor-text top-[0.1rem] scale-75 -translate-x-1 transform -translate-y-1/2`}
           >
             Travelers
           </label>
@@ -286,7 +285,7 @@ const MultiCity = () => {
                 <div className="w-full h-full relative">
                   <label
                     htmlFor={`origin-${flight.id}`}
-                    className={`absolute left-3 text-sm cursor-text transition-all duration-500 ease-in-out ${
+                    className={`absolute left-3 text-sm font-Poppins cursor-text transition-all duration-500 ease-in-out ${
                       flight.isOriginListVisible || flight.origin !== ''
                         ? 'top-[0.1rem] scale-75 -translate-x-2 transform -translate-y-1/2' 
                         : 'top-1/2 transform -translate-y-1/2'
@@ -347,8 +346,8 @@ const MultiCity = () => {
                 <div className="w-full h-full relative">
                   <label
                     htmlFor={`destination-${flight.id}`}
-                    className={`absolute left-3 text-sm cursor-text transition-all duration-500 ease-in-out ${
-                      flight.isDestinationListVisible || flight.destination !== ''
+                    className={`absolute left-3 text-sm font-Poppins cursor-text transition-all duration-500 ease-in-out 
+                      ${flight.isDestinationListVisible || flight.destination !== ''
                         ? 'top-[0.1rem] scale-75 -translate-x-1 transform -translate-y-1/2' 
                         : 'top-1/2 transform -translate-y-1/2'
                     }`}
@@ -408,7 +407,7 @@ const MultiCity = () => {
               <div className="w-full h-full relative">
                 <label
                   htmlFor={`date`}
-                  className={`absolute left-3 text-sm cursor-text top-[0.1rem] scale-75 -translate-x-1 transform -translate-y-1/2`}
+                  className={`absolute left-3 text-sm font-Poppins cursor-text top-[0.1rem] scale-75 -translate-x-1 transform -translate-y-1/2`}
                 >
                   Date
                 </label>
@@ -418,7 +417,7 @@ const MultiCity = () => {
                   defaultValue={[today, twoDaysLater]}
                   minDate={today}
                   allowClear={false} // Optional: allows clearing the input
-                  readOnly
+                  inputReadOnly={true}
                   onChange={(dates) => handleDateChange(flight.id, dates)}
                   popupClassName="responsive-calendar" // Apply custom class for responsiveness
                 />
@@ -427,7 +426,7 @@ const MultiCity = () => {
           </div>
           {flight.id > 2 && (
             <p 
-              className='text-sm text-[#48aadf] font-semibold cursor-pointer self-end'
+              className='text-sm text-[#48aadf] font-semibold font-Grotesk cursor-pointer self-end'
               onClick={() => removeFlight(flight.id)}
             >
               Remove flight
@@ -438,11 +437,11 @@ const MultiCity = () => {
       <div className='flex items-center justify-between'>
         {flights.length < 5 && (
           <div 
-            className='flex items-center gap-1 text-[#48aadf] cursor-pointer'
+            className='flex items-center gap-1 text-[#48aadf] cursor-pointer font-Grotesk'
             onClick={addFlight}
           >
             <p>Add Flight</p>
-            <Plus className='p-0.5'/>
+            <Plus className='p-1'/>
           </div>
         )}
 

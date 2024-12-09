@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import { DatePicker } from 'antd'
 const { RangePicker } = DatePicker;
 
-const RoundTrip = () => {
+const Stays = () => {
   const [focused1, setFocused1] = useState(false);
   const [focused2, setFocused2] = useState(false);
   const [departureDate, setDepartureDate] = useState('');
@@ -21,7 +21,7 @@ const RoundTrip = () => {
     "California", "Texas", "Florida", "New York", "Pennsylvania", "Illinois", "Ohio", "Georgia", "North Carolina", "Michigan",
     "New Jersey", "Virginia", "Washington", "Arizona", "Massachusetts", "Tennessee", "Indiana", "Missouri", "Maryland", "Wisconsin"
   ]);
-  const [addPlaceToStay, setAddPlaceToStay] = useState(false);
+  const [addFlight, setAddFight] = useState(false);
   const [addCar, setAddCar] = useState(false);
   const [formData, setFormData] = useState({});
   const travelerRef = useRef();
@@ -140,64 +140,8 @@ const RoundTrip = () => {
   }
 
   return (
-    <div className="flex flex-col gap-8 w-full">
-      <div className="xl:flex xl:gap-3 xl:justify-between grid gap-4 md:gap-6 md:grid-cols-3 items-center">
-        <div 
-          className='relative' 
-          ref={originRef}
-        >
-          <div className="border rounded-xl p-3 flex items-center flex-1">
-            <FaMapMarkerAlt className="text-xl" />
-            <div className="w-full h-full relative">
-              <label
-                htmlFor="origin"
-                className={`absolute left-3 text-sm cursor-text transition-all duration-500 ease-in-out ${
-                  focused2 
-                    ? 'top-[0.1rem] scale-75 -translate-x-2 transform -translate-y-1/2' 
-                    : 'top-1/2 transform -translate-y-1/2'
-                }`}
-              >
-                From where?
-              </label>
-              <input
-                type="text"
-                id="origin"
-                value={origin}
-                onFocus={toggleOriginList}
-                onBlur={(e) => !e.target.value && setFocused2(false)} // Reset if input is empty
-                onChange={handleOriginChange}
-                className="px-3 pt-2 w-full"
-                autoComplete="off"
-              />
-            </div>
-          </div>
-
-          <div className={`absolute top-16 bg-white max-h-64 overflow-y-auto shadow shadow-gray-300 rounded-lg w-64 transition-all duration-300 ease-in-out z-10
-            ${isOriginListVisible 
-              ? 'translate-y-0 pointer-events-auto opacity-1' 
-              : '-translate-y-5 pointer-events-none opacity-0'}`
-            }
-          >
-            <ul>
-              {states.filter(state => state.toLowerCase().includes(origin.toLowerCase())).length 
-              ? states.filter(state => state.toLowerCase().includes(origin.toLowerCase())).map((state, i) => (
-                  <li 
-                    onClick={() => selectOrigin(state)} 
-                    key={i}
-                    className='px-5 py-2 hover:bg-gray-100 flex items-center gap-4 cursor-pointer transition-all duration-300 ease-in-out'
-                  >
-                    <FaMapMarkerAlt />
-                    <p>{state}</p>
-                  </li>
-                )) 
-              : <li className="px-5 py-2 text-[#48aadf] text-center">
-                  No Location Found
-                </li>
-              }
-            </ul>
-          </div>
-        </div>
-
+    <div className="p-4 sm:p-6 md:p-8 flex flex-col gap-8">
+      <div className="xl:flex xl:gap-8 xl:justify-between grid gap-4 md:gap-6 md:grid-cols-3 items-center">
         <div 
           className='relative' 
           ref={destinationRef}
@@ -207,7 +151,7 @@ const RoundTrip = () => {
             <div className="w-full h-full relative">
               <label
                 htmlFor="destination"
-                className={`absolute left-3 text-sm cursor-text transition-all duration-500 ease-in-out ${
+                className={`absolute left-3 text-sm font-Poppins cursor-text transition-all duration-500 ease-in-out ${
                   focused1 ? 'top-[0.1rem] scale-75 -translate-x-1 transform -translate-y-1/2' : 'top-1/2 transform -translate-y-1/2'
                 }`}
               >
@@ -261,7 +205,7 @@ const RoundTrip = () => {
           <div className="w-full h-full relative">
             <label
               htmlFor="date"
-              className={`absolute left-3 text-sm cursor-text top-[0.1rem] scale-75 -translate-x-1 transform -translate-y-1/2`}
+              className={`absolute left-3 text-sm font-Poppins cursor-text top-[0.1rem] scale-75 -translate-x-1 transform -translate-y-1/2`}
             >
               Date
             </label>
@@ -271,7 +215,7 @@ const RoundTrip = () => {
               defaultValue={[today, twoDaysLater]}
               minDate={today}
               allowClear={false} // Optional: allows clearing the input
-              readOnly
+              inputReadOnly={true}
               onChange={handleDateChange}
               popupClassName="responsive-calendar" // Apply custom class for responsiveness
             />
@@ -287,7 +231,7 @@ const RoundTrip = () => {
           <div className="w-full h-full relative">
             <label
               htmlFor="travelers"
-              className={`absolute left-3 text-sm cursor-text top-[0.1rem] scale-75 -translate-x-1 transform -translate-y-1/2`}
+              className={`absolute left-3 text-sm font-Poppins cursor-text top-[0.1rem] scale-75 -translate-x-1 transform -translate-y-1/2`}
             >
               Travelers
             </label>
@@ -390,30 +334,30 @@ const RoundTrip = () => {
           Search
         </button>
       </div>
-      <div className='flex items-center gap-10'>
+      <div className='flex items-center gap-10 font-Grotesk'>
 
         {/* Add Flight Checkbox */}
         <div className="flex items-center">
           <input 
             type="checkbox" 
-            id="addPlaceToStay" 
-            checked={addPlaceToStay} 
-            onClick={() => setAddPlaceToStay(!addPlaceToStay)} 
+            id="addFlight" 
+            checked={addFlight} 
+            onClick={() => setAddFight(!addFlight)} 
             onChange={handleChange}
             className="hidden" // Hide the default checkbox
           />
           <label 
-            htmlFor="addPlaceToStay" 
+            htmlFor="addFlight" 
             className="flex items-center cursor-pointer"
           >
             <div className={`relative w-4 h-4 flex items-center justify-center rounded border-2 
-                ${addPlaceToStay ? 'border-[#4078bc] bg-[#4078bc]' : 'border-gray-300'} transition-all duration-300 ease-in-out`
+                ${addFlight ? 'border-[#4078bc] bg-[#4078bc]' : 'border-gray-300'} transition-all duration-300 ease-in-out`
               }
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className={`absolute w-3.5 h-3.5 text-white transition-opacity duration-300 
-                  ${addPlaceToStay ? 'opacity-100' : 'opacity-0'}`
+                  ${addFlight ? 'opacity-100' : 'opacity-0'}`
                 }
                 viewBox="0 0 24 24"
                 fill="none"
@@ -423,7 +367,7 @@ const RoundTrip = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <span className="ml-2 text-black text-sm">Add a place to stay</span>
+            <span className="ml-2 text-black text-sm">Add Flight</span>
           </label>
         </div>
 
@@ -458,12 +402,70 @@ const RoundTrip = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <span className="ml-2 text-black text-sm">Add a Car</span>
+            <span className="ml-2 text-black text-sm">Add Car</span>
           </label>
         </div>
       </div>
+
+      {addFlight &&
+        <div 
+          className='relative w-fit' 
+          ref={originRef}
+        >
+          <div className="border rounded-xl p-3 flex items-center w-fit">
+            <FaMapMarkerAlt className="text-xl" />
+            <div className="w-full h-full relative">
+              <label
+                htmlFor="origin"
+                className={`absolute left-3 text-sm font-Poppins cursor-text transition-all duration-500 ease-in-out ${
+                  focused2 
+                    ? 'top-[0.1rem] scale-75 -translate-x-2 transform -translate-y-1/2' 
+                    : 'top-1/2 transform -translate-y-1/2'
+                }`}
+              >
+                From where?
+              </label>
+              <input
+                type="text"
+                id="origin"
+                value={origin}
+                onFocus={toggleOriginList}
+                onBlur={(e) => !e.target.value && setFocused2(false)} // Reset if input is empty
+                onChange={handleOriginChange}
+                className="px-3 pt-2 w-full"
+                autoComplete="off"
+              />
+            </div>
+          </div>
+
+          <div className={`absolute top-16 bg-white max-h-64 overflow-y-auto shadow shadow-gray-300 rounded-lg w-64 transition-all duration-300 ease-in-out z-10
+            ${isOriginListVisible 
+              ? 'translate-y-0 pointer-events-auto opacity-1' 
+              : '-translate-y-5 pointer-events-none opacity-0'}`
+            }
+          >
+            <ul>
+              {states.filter(state => state.toLowerCase().includes(origin.toLowerCase())).length 
+              ? states.filter(state => state.toLowerCase().includes(origin.toLowerCase())).map((state, i) => (
+                  <li 
+                    onClick={() => selectOrigin(state)} 
+                    key={i}
+                    className='px-5 py-2 hover:bg-gray-100 flex items-center gap-4 cursor-pointer transition-all duration-300 ease-in-out'
+                  >
+                    <FaMapMarkerAlt />
+                    <p>{state}</p>
+                  </li>
+                )) 
+              : <li className="px-5 py-2 text-[#48aadf] text-center">
+                  No Location Found
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+      }
     </div>
   );
 };
 
-export default RoundTrip;
+export default Stays;

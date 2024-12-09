@@ -80,7 +80,7 @@ const ProfileSettings = () => {
     } 
     
   return (
-    <div className='bg-gray-100 rounded-3xl sm:p-14 p-5 sm:flex-1 flex flex-col gap-10 max-w-full'>
+    <div className='bg-blue-50 bg-opacity-50 rounded-3xl sm:p-14 p-5 sm:flex-1 flex flex-col gap-10 max-w-full'>
         <div className='flex flex-col gap-5'>
             <div className='flex flex-col gap-1'>
                 <h1 className='font-semibold sm:text-3xl text-2xl'>Sign-in and security</h1>

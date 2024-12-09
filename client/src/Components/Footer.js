@@ -10,7 +10,7 @@ const Footer = () => {
         >
             <h1 className='font-serif text-2xl'>velora group</h1>
         </Link>
-        <div className='flex lg:justify-between lg:flex-row flex-col lg:gap-0 gap-14 py-5 border-b border-gray-300 pb-8'>
+        <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10 py-5 border-b border-gray-300 pb-8'>
             <div className='flex flex-col gap-3'>
                 <h3 className='font-medium text-sm'>Company</h3>
                 <div className='flex flex-col gap-3 text-[#1158a6] no-underline text-[0.8rem]'>

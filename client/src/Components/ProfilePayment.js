@@ -30,7 +30,7 @@ const ProfilePayment = () => {
     }, []);
 
   return (
-    <div className="bg-gray-100 rounded-3xl sm:p-14 p-5 flex-1 flex flex-col gap-10">
+    <div className="bg-blue-50 bg-opacity-50 rounded-3xl sm:p-14 p-5 flex-1 flex flex-col gap-10">
         <div className="bg-white flex flex-col">
             <h1 className="font-bold text-xl py-2 px-5">My Account Info</h1>
             <hr />

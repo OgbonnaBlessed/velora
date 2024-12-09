@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:ital,wght@0,400..700;1,400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 * {
   margin: 0;
   padding: 0;
@@ -134,35 +135,48 @@ input[type="number"] {
   max-height: 400px !important; /* Limits calendar height for smaller viewports */
 }
 
-/* Remove outline and borders for the main input field */
-.ant-picker {
-  outline: none;
-  border: none;
-  box-shadow: none; /* Removes default Ant Design shadow */
-  width: 100%;
-  margin-top: .3rem;
-  background-color: transparent;
-}
-
-/* Remove bottom border for the RangePicker on hover */
-.ant-picker:hover {
-  border: none;
-  box-shadow: none;
-  background-color: transparent;
-}
-
 .ant-picker-outlined {
   background: transparent;
 }
 
-/* Remove focus outline for the RangePicker */
-.ant-picker-focused {
-  border: none;
-  box-shadow: none;
+/* Ensure the input always has a transparent background and no border/outline */
+.ant-picker {
+  background-color: transparent !important; /* Always transparent */
+  border: none !important; /* Remove borders */
+  box-shadow: none !important; /* Remove shadow */
+  outline: none !important; /* Remove focus outline */
+  width: 100%;
+  margin-top: 0.3rem;
 }
 
+/* Ensure the hover state does not change the background or border */
+.ant-picker:hover {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove styles applied on focus */
+.ant-picker-focused {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Ensure the active state doesn't modify styles */
 .ant-picker:focus {
-  background-color: transparent;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Ensure the dropdown panel styles are also consistent */
+.ant-picker-dropdown {
+  background-color: transparent !important;
+}
+
+.ant-picker .ant-picker-clear {
+  display: none !important;
 }
 
 /* Allow the calendar to adjust on various screen sizes */
@@ -203,5 +217,11 @@ input[type="number"] {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
+  }
+}
+
+@media (max-width: 400px) {
+  .ant-picker-date-range-wrapper {
+    margin-left: 2.8rem;
   }
 }

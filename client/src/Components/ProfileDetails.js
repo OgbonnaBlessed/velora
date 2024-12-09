@@ -8,7 +8,7 @@ const ProfileDetails = () => {
     const navigate = useNavigate();
 
   return (
-    <div className='bg-gray-100 rounded-3xl sm:p-14 p-5 flex-1 flex flex-col gap-10 max-w-full'>
+    <div className='bg-blue-50 bg-opacity-50 rounded-3xl sm:p-14 p-5 flex-1 flex flex-col gap-10 max-w-full'>
         <div className='flex items-start justify-between'>
             <div className='flex flex-col gap-5'>
                 <div className='flex flex-col gap-1'>

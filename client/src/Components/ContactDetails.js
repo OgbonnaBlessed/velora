@@ -131,7 +131,7 @@ const ContactDetails = () => {
     }, [updateUserSuccess, updateUserError]);
 
   return (
-    <div className='bg-gray-100 flex-1 rounded-3xl relative p-14 flex flex-col w-full items-center gap-5'>
+    <div className='bg-blue-50 bg-opacity-50 flex-1 rounded-3xl relative p-14 flex flex-col w-full items-center gap-5'>
         <div 
             className='bg-[#48aadf13] absolute left-3 top-3 p-2.5 rounded-full cursor-pointer text-[#48aadf]'
             onClick={() => navigate(-1)}

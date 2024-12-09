@@ -109,7 +109,7 @@ const Navbar = () => {
 
   return (
     <nav ref={sidebarRef}>
-        <div className='lg:px-20 px-6 py-6 bg-[#48aadf] flex justify-between items-center font-medium fixed top-0 w-full z-20'>
+        <div className='lg:px-20 px-6 py-6 bg-[#fff] shadow shadow-gray-300 text-black flex justify-between items-center font-medium fixed top-0 w-full z-20 font-Roboto'>
             <div className='flex items-center gap-14'>
 
                 {/* Logo */}
@@ -120,14 +120,14 @@ const Navbar = () => {
                     <img 
                         src={`${process.env.PUBLIC_URL}/images/logo.png`} 
                         alt="Velora logo" 
-                        className='w-8 bg-black p-1 rounded-md'
+                        className='w-8 p-1 rounded-br-lg bg-black'
                     />
-                    <h1 className='text-xl font-sans text-white'>velora</h1>
+                    <h1 className='text-xl font-sans text-black'>velora</h1>
                 </Link>
 
                 <div className='relative' ref={servicesRef}>
                     <div 
-                        className='hidden lg:flex items-center gap-1 text-white cursor-pointer text-[.9rem]'
+                        className='hidden lg:flex items-center gap-1 cursor-pointer text-[.9rem]'
                         onClick={() => setServices(!services)}
                     >
                         <p>view services</p>
@@ -211,7 +211,7 @@ const Navbar = () => {
                 </div>
             </div>
 
-            <div className='hidden lg:flex items-center gap-14 text-white text-[.9rem]'>
+            <div className='hidden lg:flex items-center gap-14 text-[.9rem] font-Grotesk'>
                 <div>
                     <div 
                         className='flex gap-2 items-center cursor-pointer'
@@ -322,7 +322,7 @@ const Navbar = () => {
                     </div>
                 :   <Link 
                         to="/signin" 
-                        className="text-white relative"
+                        className="relative text-black"
                         onClick={toggleSidebar}
                     >
                         <button

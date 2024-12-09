@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Stays from '../Components/Stays';
-import Flights from '../Components/Flights';
-import Packages from '../Components/Packages';
-import Things from '../Components/Things';
-import Cars from '../Components/Cars';
+import Stays from '../Components/Services/Stays';
+import Flights from '../Components/Services/Flights';
+import Packages from '../Components/Services/Packages';
+import Things from '../Components/Services/Things';
+import Cars from '../Components/Services/Cars';
 
 const Home = () => {
   const [visible, setVisible] = useState('stays');
@@ -31,7 +31,7 @@ const Home = () => {
     <div className="flex flex-col gap-5 px-4 sm:px-6 lg:px-20 pt-36 pb-10">
       <div className="border rounded-2xl w-full">
         <div
-          className="flex justify-center items-center border-b text-nowrap overflow-x-auto remove-scroll-bar font-semibold text-[#000000e3] text-[0.9rem] relative"
+          className="flex justify-center items-center border-b text-nowrap overflow-x-auto remove-scroll-bar font-semibold text-[#000000e3] text-[0.9rem] relative font-Grotesk"
           ref={tabContainerRef}
         >
           <p
