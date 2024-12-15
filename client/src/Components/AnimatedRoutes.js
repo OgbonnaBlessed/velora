@@ -18,6 +18,7 @@ import ConnectedDevices from './ConnectedDevices';
 import AirportSecurity from './AirportSecurity';
 import TravelDocument from './TravelDocument';
 import Preferences from './Preferences';
+import SearchPage from '../Pages/SearchPage';
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -30,6 +31,7 @@ const AnimatedRoutes = () => {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/policy" element={<Policy />} />
         <Route path='/user-data-deletion-policy' element={<UserData/>} />
+        <Route path='/flight-search' element={<SearchPage/>} />
         <Route element={<ProtectedRoute />}>
           <Route path="/profile" element={<Profile />} />
           <Route path='/verify-email' element={<VerifyEmail/>} />

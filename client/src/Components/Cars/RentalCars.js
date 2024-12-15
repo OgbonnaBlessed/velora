@@ -186,7 +186,7 @@ const RentalCars = () => {
                                 htmlFor="destination"
                                 className={`absolute left-3 text-sm font-Poppins cursor-text transition-all duration-500 ease-in-out 
                                     ${focused1 
-                                        ? 'top-[0.1rem] scale-75 -translate-x-3 transform -translate-y-1/2' 
+                                        ? 'top-[0.1rem] scale-75 -translate-x-4 transform -translate-y-1/2' 
                                         : 'top-1/2 transform -translate-y-1/2'
                                     }`
                                 }

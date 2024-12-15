@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FaMapMarkerAlt, FaRegCalendarAlt } from 'react-icons/fa';
 import dayjs from 'dayjs'
 import { DatePicker } from 'antd'
-const { RangePicker } = DatePicker;
+const { RangePicker } = DatePicker
 
 const Stays = () => {
   const [focused1, setFocused1] = useState(false);
@@ -139,8 +139,16 @@ const Stays = () => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+  }
+
   return (
-    <div className="p-4 sm:p-6 md:p-8 flex flex-col gap-8">
+    <form 
+      onSubmit={handleSubmit}
+      className="p-4 sm:p-6 md:p-8 flex flex-col gap-8"
+    >
       <div className="xl:flex xl:gap-8 xl:justify-between grid gap-4 md:gap-6 md:grid-cols-3 items-center">
         <div 
           className='relative' 
@@ -151,9 +159,12 @@ const Stays = () => {
             <div className="w-full h-full relative">
               <label
                 htmlFor="destination"
-                className={`absolute left-3 text-sm font-Poppins cursor-text transition-all duration-500 ease-in-out ${
-                  focused1 ? 'top-[0.1rem] scale-75 -translate-x-1 transform -translate-y-1/2' : 'top-1/2 transform -translate-y-1/2'
-                }`}
+                className={`absolute left-3 text-sm font-Poppins cursor-text transition-all duration-500 ease-in-out 
+                  ${focused1 
+                    ? 'top-[0.1rem] scale-75 -translate-x-2 transform -translate-y-1/2' 
+                    : 'top-1/2 transform -translate-y-1/2'
+                  }`
+                }
               >
                 Where to?
               </label>
@@ -328,7 +339,7 @@ const Stays = () => {
 
         {/* Search Button */}
         <button 
-          type="button" 
+          type="submit" 
           className="bg-[#48aadf] rounded-full font-semibold text-white cursor-pointer px-8 py-3 h-fit w-fit self-center"
         >
           Search
@@ -417,11 +428,12 @@ const Stays = () => {
             <div className="w-full h-full relative">
               <label
                 htmlFor="origin"
-                className={`absolute left-3 text-sm font-Poppins cursor-text transition-all duration-500 ease-in-out ${
-                  focused2 
-                    ? 'top-[0.1rem] scale-75 -translate-x-2 transform -translate-y-1/2' 
+                className={`absolute left-3 text-sm font-Poppins cursor-text transition-all duration-500 ease-in-out 
+                  ${focused2 
+                    ? 'top-[0.1rem] scale-75 -translate-x-3 transform -translate-y-1/2' 
                     : 'top-1/2 transform -translate-y-1/2'
-                }`}
+                  }`
+                }
               >
                 From where?
               </label>
@@ -464,7 +476,7 @@ const Stays = () => {
           </div>
         </div>
       }
-    </div>
+    </form>
   );
 };
 

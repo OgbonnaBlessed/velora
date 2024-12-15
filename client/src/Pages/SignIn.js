@@ -361,7 +361,10 @@ const SignIn = ({ length = 4}) => {
               type="submit"
               disabled={loading}
               className={`w-full py-3 text-white rounded-full border-none outline-none mt-5 flex items-center justify-center gap-2 transition-all duration-300 ease-in-out
-                ${loading ? 'bg-[#48aadf96] cursor-not-allowed' : 'bg-[#48aadf] cursor-pointer'}`
+                ${loading 
+                  ? 'bg-[#48aadf96] cursor-not-allowed' 
+                  : 'bg-[#48aadf] cursor-pointer'
+                }`
               }
             >
               <p>

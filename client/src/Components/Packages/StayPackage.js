@@ -161,7 +161,7 @@ const OneWay = () => {
                             htmlFor="origin"
                             className={`absolute left-3 text-sm font-Poppins cursor-text transition-all duration-500 ease-in-out 
                                 ${focused2 
-                                    ? 'top-[0.1rem] scale-75 -translate-x-2 transform -translate-y-1/2' 
+                                    ? 'top-[0.1rem] scale-75 -translate-x-3 transform -translate-y-1/2' 
                                     : 'top-1/2 transform -translate-y-1/2'
                                 }`
                             }
@@ -218,9 +218,12 @@ const OneWay = () => {
                     <div className="w-full h-full relative">
                         <label
                             htmlFor="destination"
-                            className={`absolute left-3 text-sm font-Poppins cursor-text transition-all duration-500 ease-in-out ${
-                            focused1 ? 'top-[0.1rem] scale-75 -translate-x-1 transform -translate-y-1/2' : 'top-1/2 transform -translate-y-1/2'
-                            }`}
+                            className={`absolute left-3 text-sm font-Poppins cursor-text transition-all duration-500 ease-in-out 
+                                ${focused1 
+                                    ? 'top-[0.1rem] scale-75 -translate-x-2 transform -translate-y-1/2' 
+                                    : 'top-1/2 transform -translate-y-1/2'
+                                }`
+                            }
                         >
                             Where to?
                         </label>
@@ -300,7 +303,7 @@ const OneWay = () => {
                 <div className="w-full h-full relative">
                     <label
                         htmlFor="travelers"
-                        className="absolute left-3 text-sm font-Poppins cursor-text top-[0.1rem] scale-75 -translate-x-1 transform -translate-y-1/2"
+                        className="absolute left-3 text-sm font-Poppins cursor-text top-[0.1rem] scale-75 -translate-x-2 transform -translate-y-1/2"
                     >
                         Travelers
                     </label>
