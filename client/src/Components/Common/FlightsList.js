@@ -1,6 +1,6 @@
 import React from 'react';
 import Filters from './Filters';
-import FlightCard from './FlightCard';
+import FlightCard from './Cards/FlightCard';
 
 const FlightsList = ({ flights, formatTime, getFlightDuration, filters }) => {
   if (!flights || flights?.data?.length === 0) {

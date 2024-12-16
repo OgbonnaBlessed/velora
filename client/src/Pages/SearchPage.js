@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { BounceLoader } from 'react-spinners'
 import { locations } from '../Data/Locations'
-import OriginInput from '../Components/Common/OriginInput';
-import DestinationInput from '../Components/Common/DestinationInput';
-import TravelersInput from '../Components/Common/TravelerInput';
-import DateRangePicker from '../Components/Common/DateRangePicker';
+import OriginInput from '../Components/Common/Inputs/OriginInput';
+import DestinationInput from '../Components/Common/Inputs/DestinationInput';
+import TravelersInput from '../Components/Common/Inputs/TravelerInput';
+import DateRangePicker from '../Components/Common/Date Picker/DateRangePicker';
 import FlightsList from '../Components/Common/FlightsList';
 
 function SearchPage() {
@@ -93,7 +93,7 @@ function SearchPage() {
   }).format(new Date(date));
 
   return (
-    <div className='flex flex-col gap-5 px-4 sm:px-6 lg:px-20 pt-36 pb-10'>
+    <div className='flex flex-col gap-5 px-4 sm:px-6 lg:px-20 pt-28 md:pt-36 pb-10'>
       <form 
         onSubmit={handleSubmit}
         className="xl:flex xl:gap-3 xl:justify-between grid gap-4 md:gap-6 md:grid-cols-3 items-center"
