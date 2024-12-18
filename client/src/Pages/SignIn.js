@@ -320,7 +320,6 @@ const SignIn = ({ length = 4}) => {
             </div>
 
             <div className='flex items-center justify-between'>
-
               {/* Keep Me Signed in Checkbox */}
               <div className="flex items-center">
                 <input 
@@ -349,7 +348,6 @@ const SignIn = ({ length = 4}) => {
                   <span className="ml-2 text-black text-sm">Keep me signed in</span>
                 </label>
               </div>
-
               <div 
                 className='cursor-pointer'
                 onClick={() => setForgotPasswordModal(true)}

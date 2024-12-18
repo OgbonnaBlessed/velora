@@ -35,7 +35,7 @@ const AnimatedRoutes = () => {
         <Route path='/user-data-deletion-policy' element={<UserData/>} />
         <Route path='/flight-search' element={<SearchPage/>} />
         <Route path='/flight-details' element={<FlightDetails/>} />
-        <Route path='/Check-out' element={<CheckOut/>} />
+        <Route path='/check-out' element={<CheckOut/>} />
         <Route element={<ProtectedRoute />}>
           <Route path="/profile" element={<Profile />} />
           <Route path='/verify-email' element={<VerifyEmail/>} />
