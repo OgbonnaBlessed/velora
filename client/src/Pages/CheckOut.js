@@ -2,21 +2,113 @@ import { CheckCheck, ChevronDown } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import DebitCard from "../Components/DebitCard";
 import ClickToPay from "../Components/ClickToPay";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { listItems, subListItems } from "../Data/ListItems";
+import { countries } from '../Data/Locations'
+import { SyncLoader } from 'react-spinners';
+import { updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice';
 
 const CheckoutPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.user);
   const [receiveSMS, setRecieveSMS] = useState(false);
   const [formData, setFormData] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [updateUserError, setUpdateUserError] = useState(null);
+  const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
   const [visible, setVisible] = useState('debit-card');
+  const [validationError, setValidationError] = useState(false);
   const indicatorRef = useRef(null);
   const tabContainerRef = useRef(null);
+  const { flight, tax, total } = location.state;
+  console.log(flight);
 
-  const handleCheckboxChange = () => {
-    setRecieveSMS(!receiveSMS);
+  useEffect(() => {
+    if (currentUser) {
+      const userData = {
+        firstName: currentUser.firstName || '',
+        lastName: currentUser.lastName || '',
+        middleName: currentUser.middleName || '',
+        number: currentUser.number || '',
+        countryCode: currentUser.countryCode || '',
+        DOB: currentUser.DOB || '',
+        travelDocument: {
+          country: currentUser.travelDocument?.country || '',
+        },
+      };
+      setFormData(userData);
+    }
+  }, [currentUser]);
+
+  const handleDebitCardChange = (updatedData) => {
+    setFormData((prev) => ({
+      ...prev,
+      ...updatedData,
+    }));
+  };
+
+  const handleValidateError = (hasError) => {
+    setValidationError(hasError);
   }
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
+    const { id, value } = e.target;
+
+    setFormData((prev) => {
+      const keys = id.split('.'); // Split nested keys like "location.city"
+      let updatedData = { ...prev };
+
+      // Traverse and update nested keys
+      let currentLevel = updatedData;
+      keys.forEach((key, index) => {
+        if (index === keys.length - 1) {
+          currentLevel[key] = value;
+        } else {
+          currentLevel[key] = { ...currentLevel[key] };
+          currentLevel = currentLevel[key];
+        }
+      });
+
+      return updatedData;
+    });
+  };
+
+  const handleNumberChange = (e) => {
+    const { value } = e.target;
+  
+    // Allow only digits or an empty field
+    const isValid = /^\d*$/.test(value);
+    if (isValid) {
+      setFormData((prev) => ({
+        ...prev,
+        number: value,
+      }));
+    }
+  };
+
+  const isValidDOB = (month, day, year) => {
+    if (!month || !day || !year) return false;
+
+    // Convert to numbers
+    const m = parseInt(month, 10);
+    const d = parseInt(day, 10);
+    const y = parseInt(year, 10);
+
+    // Check for valid ranges
+    if (isNaN(m) || isNaN(d) || isNaN(y) || m < 1 || m > 12 || d < 1 || d > 31 || y < 1900 || y > new Date().getFullYear() - 16) {
+      return false;
+    }
+
+    // Check for valid dates
+    const date = new Date(y, m - 1, d); // JS months are 0-indexed
+    return date.getMonth() + 1 === m && date.getDate() === d && date.getFullYear() === y;
+  };
+
+  const handleCheckboxChange = () => {
+    setRecieveSMS(!receiveSMS);
   }
 
   const OpenTab = (tabname) => {
@@ -36,32 +128,134 @@ const CheckoutPage = () => {
     }
   }, [visible]);
 
-  const handleSubmit = (e) => {
+    // Helper to calculate total duration in minutes
+    const getFlightDuration = (flight) => {
+      const segments = flight.itineraries[0]?.segments;
+      const departureTime = new Date(segments[0].departure.at).getTime();
+      const arrivalTime = new Date(segments[segments.length - 1].arrival.at).getTime();
+      return (arrivalTime - departureTime) / (1000 * 60); // Convert to minutes
+    };
+  
+  // Helper to calculate the arrival time by adding the flight duration to the departure time
+  const getArrivalDate = (flight) => {
+    const segments = flight.itineraries[0]?.segments;
+    const departureTime = new Date(segments[0].departure.at).getTime();
+    const flightDurationInMinutes = getFlightDuration(flight);
+    
+    // Adding flight duration to the departure time (in milliseconds)
+    const arrivalTime = departureTime + (flightDurationInMinutes * 60 * 1000); 
+    return new Date(arrivalTime);
+  };
+
+  const arrivalDate = getArrivalDate(flight);
+
+  // Helper to format time
+  const formatTime = (date) =>
+    new Intl.DateTimeFormat('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+  }).format(new Date(date));
+
+  const formatDate = (dateString) => {
+    const options = { month: 'short', day: 'numeric', year: 'numeric' };
+    return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
+  };
+
+  const formatWord = (word) => {
+    return word.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setUpdateUserError(null);
+    setUpdateUserSuccess(null);
+
+    if (!formData.firstName || !formData.lastName) {
+      setUpdateUserError('Please fill in all required fields.');
+      return;
+    }
+
+    // Validate phone number specifically
+    if (!/^\d{10,15}$/.test(formData.number)) {
+      setUpdateUserError('Please enter a valid phone number.');
+      return;
+    }
+
+    // Validate DOB
+    const [month, day, year] = formData.DOB?.split('/') || [];
+    if (!isValidDOB(month, day, year)) {
+      setUpdateUserError('Please provide a valid Date of Birth.');
+      return;
+    }
+
+    if (validationError) {
+      setUpdateUserError('Please fix the highlighted errors before submitting.');
+      return;
+    }
+
+    try {
+      dispatch(updateStart());
+      setLoading(true);
+
+      const res = await fetch(`/api/user/book/${currentUser._id}`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ formData, flight }), // Sending both formData and flight
+      });
+            
+      const data = await res.json();
+            
+      if (!res.ok) {
+        dispatch(updateFailure(data.message));
+        setUpdateUserError(data.message);
+        console.log(data.message);
+        setLoading(false);
+  
+      } else {
+        dispatch(updateSuccess(data));
+        setUpdateUserSuccess("Update successful");
+        setLoading(false);
+
+        setTimeout(() => {
+          navigate('/booking-completed');
+        }, 3000);
+      }
+    } catch (error) {
+      dispatch(updateFailure(error.message));
+      setUpdateUserError(error.message);
+      console.log(error);
+    }
   }
 
-  const listItems = [
-    "Review your trip details to make sure the dates and times are correct.",
-    "Check your spelling. Flight passenger names must match government-issued photo ID exactly.",
-    "Review the terms of your booking:"
-  ];  
+  useEffect(() => {
+    if (updateUserSuccess || updateUserError) {
+      const timer = setTimeout(() => {
+        setUpdateUserSuccess(null);
+        setUpdateUserError(null);
+      }, 3000); // 3 seconds
+  
+      // Cleanup the timer if the component unmounts or the state changes before 5 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [updateUserSuccess, updateUserError]);
 
-  const subListItems = [
-    "If you book a fare that allows changes, the airline may charge a change or cancel fee, plus any fare difference. Airlines set change and cancel policies and fee amounts. We may collect these change or cancel fees, which are then passed on to the airline.",
-    "Tickets are refundable with a penalty fee of $200 for itinerary cancellations.",
-    "Fares are not guaranteed until ticketed.",
-    "A change fee of $50 per ticket is charged by the airline for all itinerary changes.",
-    "Federal law forbids the carriage of hazardous materials aboard aircraft in your luggage or on your person.",
-    "In case of a no-show or cancellation, you may be entitled to a refund of airport taxes and fees included in the price of the flight purchased. In this instance, you can request such a refund from us, and we will submit your request to the airline on your behalf."
-  ]
+  // If state is missing (e.g., direct access), navigate back
+  if (!flight || !tax || !total) {
+    navigate(-1); // Redirect to the previous page
+    return null;
+  }
 
   return (
     <div className="flex flex-col-reverse lg:flex-row bg-white rounded-lg overflow-hidden items-start gap-5 px-4 sm:px-6 lg:px-20 pt-28 md:pt-36 pb-10">
+
       {/* Left Section - Checkout Form */}
       <form 
         onSubmit={handleSubmit}
-        className="w-full flex-1 flex flex-col gap-5 lg:w-2/3">
-        <div className="w-full flex-1 p-6 bg-blue-50 rounded-xl flex flex-col gap-5">
+        className="w-full flex-1 flex flex-col gap-5 lg:w-2/3 relative">
+        <div className="w-full flex-1 p-6 bg-blue-50 rounded-3xl flex flex-col gap-5">
           <div className="flex flex-col gap-2">
             <h2 className="sm:text-2xl text-xl font-semibold">Who's traveling?</h2>
             <p className="text-sm">Traveler names must match government-issued photo ID exactly.</p>
@@ -73,7 +267,11 @@ const CheckoutPage = () => {
                 <input 
                   type="text" 
                   placeholder="Ogbonna"
-                  className="rounded-md bg-white px-3 py-2 shadow shadow-[#48aadf]"
+                  id="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  autoComplete="off"
+                  className="rounded-md bg-white p-3 border-b-2 border-[#48aadf]"
                 />
               </div>
               <div className="flex flex-col gap-1">
@@ -81,7 +279,11 @@ const CheckoutPage = () => {
                 <input 
                   type="text" 
                   placeholder="Chibuike"
-                  className="rounded-md bg-white px-3 py-2 shadow shadow-[#48aadf]"
+                  id="middleName"
+                  value={formData.middleName}
+                  onChange={handleChange}
+                  autoComplete="off"
+                  className="rounded-md bg-white p-3 border-b-2 border-[#48aadf]"
                 />
               </div>
               <div className="flex flex-col gap-1">
@@ -89,7 +291,11 @@ const CheckoutPage = () => {
                 <input 
                   type="text" 
                   placeholder="Blessed"
-                  className="rounded-md bg-white px-3 py-2 shadow shadow-[#48aadf]"
+                  id="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  autoComplete="off"
+                  className="rounded-md bg-white p-3 border-b-2 border-[#48aadf]"
                 />
               </div>
             </div>
@@ -101,14 +307,19 @@ const CheckoutPage = () => {
                   <div className='relative w-fit'>
                     <ChevronDown className='absolute right-3 p-1 top-1/2 transform -translate-y-1/2 pointer-events-none'/>
                     <select 
-                      id="country-code"
-                      className='bg-white shadow shadow-[#48aadf] rounded-md py-3 px-3 bg-transparent w-52 sm:w-72 text-black appearance-none text-base cursor-pointer'
+                      id="countryCode"
+                      value={formData.countryCode}
+                      onChange={(e) => handleChange(e)}
+                      className='bg-white border-b-2 border-[#48aadf] rounded-md py-3 px-3 bg-transparent w-52 sm:w-72 text-black appearance-none text-base cursor-pointer'
                     >
-                      <option value="+1" className="py-5">United states +1</option>
-                      <option value="+44">United kingdom +44</option>
-                      <option value="+234">Nigeria +234</option>
-                      <option value="+380">Ukraine +380</option>
-                      <option value="+256">Uganda +256</option>
+                      {countries.map((country, i) => (
+                        <option 
+                          key={i} 
+                          value={country.phone_code}
+                        >
+                          {country.name} {country.phone_code}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -116,8 +327,12 @@ const CheckoutPage = () => {
                   <h2 className="font-semibold text-sm">Phone number</h2>
                   <input 
                     type="text" 
-                    placeholder="9088776346"
-                    className="rounded-md bg-white px-3 py-2 shadow shadow-[#48aadf]"
+                    id="number"
+                    placeholder="123456789"
+                    value={formData.number !== 'Not provided' ? formData.number : ''}
+                    onChange={(e) => handleNumberChange(e)}
+                    autoComplete="off"
+                    className="rounded-md bg-white p-3 border-b-2 border-[#48aadf]"
                   />
                 </div>
               </div>
@@ -172,13 +387,19 @@ const CheckoutPage = () => {
               <div className='relative w-fit'>
                 <ChevronDown className='absolute right-3 p-1 top-1/2 transform -translate-y-1/2 pointer-events-none'/>
                 <select 
-                  id="needs"
-                  className='bg-white shadow shadow-[#48aadf] rounded-md py-3 px-3 bg-transparent sm:w-72 w-52 text-black appearance-none text-base cursor-pointer'
+                  id="travelDocument.country"
+                  value={formData.travelDocument?.country}
+                  onChange={(e) => handleChange(e)}
+                  className='bg-white border-b-2 border-[#48aadf] rounded-md py-3 px-3 bg-transparent sm:w-72 w-52 text-black appearance-none text-base cursor-pointer'
                 >
-                  <option value="Not provided">Not provided</option>
-                  <option value="No, I don't have accessibility needs">No, I don't have accessibility needs</option>
-                  <option value="Yes, I have accessibility needs">Yes, I have accessibility needs</option>
-                  <option value="Rather not say">Rather not say</option>
+                  {countries.map((country, i) => (
+                    <option 
+                      key={i} 
+                      value={country.name}
+                    >
+                      {country.name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -193,27 +414,56 @@ const CheckoutPage = () => {
                   <p className="text-sm">Month</p>
                   <input 
                     type="number" 
+                    id="DOB"
                     placeholder="MM"
-                    maxLength={2}
-                    className="rounded-md px-3 py-2 sm:w-20 w-16 shadow-sm shadow-[#48aadf] inset-0"
+                    value={formData.DOB === 'Not provided' ? '' : formData.DOB?.split('/')[0]}
+                    maxLength={2} // Limit to 2 digits
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                      setFormData((prev) => ({
+                        ...prev,
+                        DOB: `${value}/${prev.DOB?.split('/')[1] || ''}/${prev.DOB?.split('/')[2] || ''}`,
+                      }));
+                    }}
+                    className="rounded-md p-3 sm:w-20 w-16 border-b-2 border-[#48aadf] inset-0"
                   />
                 </div>
                 <div className="flex flex-col gap-1">
                   <p className="text-sm">Day</p>
                   <input 
                     type="number" 
-                    placeholder="DD"
-                    maxLength={2}
-                    className="rounded-md px-3 py-2 sm:w-20 w-16 shadow-sm shadow-[#48aadf] inset-0"
+                    id='DOB'
+                    autoComplete='off'
+                    placeholder='DD'
+                    value={formData.DOB?.split('/')[1] || ''}
+                    maxLength={2} // Limit to 2 digits
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                      setFormData((prev) => ({
+                        ...prev,
+                        DOB: `${prev.DOB?.split('/')[0] || ''}/${value}/${prev.DOB?.split('/')[2] || ''}`,
+                      }));
+                    }}
+                    className="rounded-md p-3 sm:w-20 w-16 border-b-2 border-[#48aadf] inset-0"
                   />
                 </div>
                 <div className="flex flex-col gap-1">
                   <p className="text-sm">Year</p>
                   <input 
                     type="number" 
-                    placeholder="YYYY"
-                    maxLength={4}
-                    className="rounded-md px-3 py-2 sm:w-20 w-16 shadow-sm shadow-[#48aadf] inset-0"
+                    id='DOB'
+                    autoComplete='off'
+                    placeholder='YYYY'
+                    value={formData.DOB?.split('/')[2] || ''}
+                    maxLength={4} // Limit to 4 digits
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                      setFormData((prev) => ({
+                        ...prev,
+                        DOB: `${prev.DOB?.split('/')[0] || ''}/${prev.DOB?.split('/')[1] || ''}/${value}`,
+                      }));
+                    }}
+                    className="rounded-md p-3 sm:w-20 w-16 border-b-2 border-[#48aadf] inset-0"
                   />
                 </div>
               </div>
@@ -247,13 +497,18 @@ const CheckoutPage = () => {
                   />
                 </div>
 
-                {visible === 'debit-card' && <DebitCard/>}
+                {visible === 'debit-card' && 
+                  <DebitCard 
+                    onDataChange={handleDebitCardChange} 
+                    onValidationError={handleValidateError}
+                  />
+                }
                 {visible === 'click-to-pay' && <ClickToPay/>}
               </div>
             </div>
           </div>
         </div>
-        <div className="bg-blue-50 rounded-xl p-6 flex flex-col gap-4">
+        <div className="bg-blue-50 rounded-3xl p-6 flex flex-col gap-4 relative">
           <div className="flex flex-col gap-3">
             <h1 className="font-semibold sm:text-2xl text-xl">Review and book your Trip</h1>
             <div className="flex sm:items-center items-start gap-2">
@@ -295,30 +550,62 @@ const CheckoutPage = () => {
                 User data policy
               </Link>.
             </p>
-            <button 
+            <button
               type="submit"
-              className="bg-[#48aadf] w-fit self-center rounded-md text-white font-semibold py-3 px-8 cursor-pointer mt-5"
+              className={`w-52 max-w-full py-3 text-white font-semibold outline-none mt-5 self-center text-sm rounded-full shrink-button 
+                  transition-all duration-300 ease-in-out
+                ${loading 
+                  ? 'bg-[#48aadf96] cursor-not-allowed' 
+                  : 'bg-[#48aadf] cursor-pointer'
+                }`
+              }
             >
-              Complete Booking
+              <p>
+                {loading 
+                  ? <SyncLoader 
+                      color="#fff" // Customize the color
+                      loading={loading} 
+                      size={7} // Customize the size
+                      margin={2} // Customize the margin between circles
+                    />
+                  : 'Complete Booking'
+                }
+              </p>
             </button>
           </div>
+          <p 
+            className={`text-[0.7rem] absolute bottom-1 left-1/2 -translate-x-1/2 text-center text-red-500 transform transition-all duration-700 ease-in-out 
+              ${
+                updateUserError 
+                ? 'opacity-1 translate-y-0 pointer-events-auto' 
+                : 'opacity-0 -translate-y-5 pointer-events-none'
+              }`
+            }
+          >
+            {updateUserError}
+          </p>
         </div>
       </form>
 
       {/* Right Section - Price Summary */}
-      <div className="w-full bg-blue-50 p-5 rounded-xl flex flex-col lg:w-1/3">
-        <h3 className="text-xl font-semibold">Roundtrip Flight</h3>
+      <div className="w-full bg-blue-50 p-5 rounded-3xl flex flex-col lg:w-1/3">
         <div className="py-3 border-b-2 border-white">
-          <p className="font-medium">Algiers (ALG) to Lagos (LOS)</p>
-          <p className="text-sm">Dec 30, 2024 | 4:45pm - 12:25pm</p>
-          <p className="text-sm">Arrives Dec 31, 2024</p>
+          <p className="font-medium">
+            {formatWord(flight.itineraries[0].segments[0].departure.cityName)} ({formatWord(flight.itineraries[0].segments[0].departure.iataCode)}) to {formatWord(flight.itineraries[0].segments.slice(-1)[0].arrival.cityName)} ({formatWord(flight.itineraries[0].segments[0].arrival.iataCode)})
+          </p>
+          <p className="text-sm">
+            {formatDate(flight.itineraries[0].segments[0].departure.at)} | 
+            {`${formatTime(flight.itineraries[0].segments[0].departure.at)} - 
+                ${formatTime(flight.itineraries[0].segments.slice(-1)[0].arrival.at)}`}
+          </p>
+          <p className="text-sm">Arrives {formatDate(arrivalDate)}</p>
         </div>
         <div className="flex flex-col gap-2 pt-3">
           <div>
             <p className="font-semibold">Your Price Summary</p>
             <p>Traveler 1: Adult</p>
           </div>
-          <p className="text-xl font-semibold">$1,763.30</p>
+          <p className="text-xl font-semibold">${total.toFixed(2)}</p>
         </div>
       </div>
     </div>

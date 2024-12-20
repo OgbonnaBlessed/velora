@@ -1,5 +1,4 @@
 import axios from 'axios';
-import FlightSearch from '../models/Flight.model.js';
 import { getAmadeusToken } from '../helpers/tokenService.js'; // Token helper
 
 // Helper to fetch IATA code for a city name
@@ -51,7 +50,7 @@ const fetchCityName = async (iataCode, token) => {
 };
 
 export const searchFlights = async (req, res) => {
-  const { origin, destination, departureDate, returnDate, adults, userId } = req.body
+  const { origin, destination, departureDate, returnDate, adults } = req.body
 
   try {
     // Get a fresh access token
@@ -99,13 +98,6 @@ export const searchFlights = async (req, res) => {
         return { ...flight, itineraries: updatedItineraries };
       })
     );
-
-    // Save the search record in the database
-    const searchRecord = new FlightSearch({
-      userId,
-      searchData: flightsWithCityNames,
-    });
-    await searchRecord.save();
 
     res.status(200).json({ data: flightsWithCityNames });
   } catch (error) {

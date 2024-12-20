@@ -1,6 +1,5 @@
 import { LucideMessageSquareWarning, Search } from 'lucide-react';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { BounceLoader } from 'react-spinners'
 import { locations } from '../Data/Locations'
 import OriginInput from '../Components/Common/Inputs/OriginInput';
@@ -10,7 +9,6 @@ import DateRangePicker from '../Components/Common/Date Picker/DateRangePicker';
 import FlightsList from '../Components/Common/FlightsList';
 
 function SearchPage() {
-  const { currentUser } = useSelector((state) => state.user);
   const [flights, setFlights] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -52,7 +50,6 @@ function SearchPage() {
         departureDate: formData.departureDate,
         returnDate: formData.returnDate,
         adults: parseInt(formData.adults, 10),
-        userId: currentUser?._id,
       };
   
       const response = await fetch('/api/flight/search-flights', {

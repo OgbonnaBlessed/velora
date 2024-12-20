@@ -90,7 +90,7 @@ const ContactDetails = () => {
             const res = await fetch(`/api/user/update/${currentUser._id}`, {
                 method: 'PUT',
                 headers: {
-                'Content-Type': 'application/json',
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(formData),
             });
@@ -206,7 +206,10 @@ const ContactDetails = () => {
                         <label htmlFor="SMS" className="flex items-start cursor-pointer">
                             <div className={`relative w-5 h-5 flex items-center justify-center rounded border-2 
                                     transition-all duration-300 
-                                    ${isChecked ? 'border-[#4078bc] bg-[#4078bc]' : 'border-black'} `
+                                    ${isChecked 
+                                        ? 'border-[#4078bc] bg-[#4078bc]' 
+                                        : 'border-black'
+                                    }`
                                 }
                             >
                                 <svg

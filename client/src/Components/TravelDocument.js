@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice';
 import { SyncLoader } from 'react-spinners';
+import { countries } from '../Data/Locations';
 
 const TravelDocument = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -152,7 +153,7 @@ const TravelDocument = () => {
 
   return (
     <div>
-      <div className='fixed inset-0 bg-white z-20 flex justify-center items-center'>
+      <div className='fixed inset-0 bg-white z-[10000] flex justify-center items-center'>
         <form 
           className='flex flex-col gap-5 w-[28rem] max-w-[90%]'
           onSubmit={handleSubmit}
@@ -183,18 +184,17 @@ const TravelDocument = () => {
                   id="travelDocument.country"
                   value={formData.travelDocument?.country || ''} // Set the value to reflect the current state
                   onChange={(e) => handleChange(e)} // Handle state updates
-                  className='w-full border border-black pt-5 pb-1 px-3 pr-5 bg-transparent rounded-md text-black appearance-none text-base cursor-pointer'
+                  className='w-full shadow shadow-gray-400 pt-6 pb-3 px-3 pr-5 bg-transparent rounded-md text-black appearance-none text-base cursor-pointer'
                 >
-                  <option value="United state">United state</option>
-                  <option value="Canada">Canada</option>
-                  <option value="Nigeria">Nigeria</option>
-                  <option value="United kingdom">United kingdom</option>
+                  {countries.map((country, i) => (
+                    <option key={i} value={country.name}>{country.name}</option>
+                  ))}
                 </select>
               </div>
               <div className='rounded-xl w-full h-14 relative'>
                 <label
                   htmlFor="travelDocument.passportNumber"
-                  className={`absolute left-4 transition-all duration-300 ease-in-out cursor-text ${
+                  className={`absolute left-4 transition-all duration-500 ease-in-out cursor-text ${
                   isFocused3 || (formData.travelDocument?.passportNumber && formData.travelDocument?.passportNumber !== "Not provided")
                     ? 'top-[0.05rem] scale-75 text-[#48aadf] transform -translate-x-4' // Label moves up and scales down when focused
                     : 'top-1/2 transform -translate-y-1/2 text-black'
@@ -205,9 +205,12 @@ const TravelDocument = () => {
                 <input
                   type="text"
                   id="travelDocument.passportNumber"
-                  value={formData.travelDocument?.passportNumber === "Not provided" ? "" : formData.travelDocument?.passportNumber || ""}
+                  value={formData.travelDocument?.passportNumber === "Not provided" 
+                    ? "" 
+                    : formData.travelDocument?.passportNumber || ""
+                  }
                   onChange={handleChange}
-                  className="w-full border border-black rounded-lg h-14 pl-4 pt-3 pb-1 text-base"
+                  className="w-full shadow shadow-gray-400 rounded-lg h-14 px-4 py-3 text-base"
                   onFocus={() => setIsFocused3(true)}
                   autoComplete='off'
                   onBlur={(e) => {
@@ -228,7 +231,7 @@ const TravelDocument = () => {
           <div className='flex flex-col gap-3 w-full'>
             <h1 className='font-medium text-lg'>Expiration date</h1>
             <div className='w-full flex items-center justify-between'>
-              <div className='flex flex-col gap-1 border border-black p-2 rounded-md'>
+              <div className='flex flex-col gap-1 shadow shadow-gray-400 p-2 rounded-md'>
                 <p className='text-[0.7rem]'>Month</p>
                 <input 
                   type="text" 
@@ -244,7 +247,7 @@ const TravelDocument = () => {
                   className='sm:w-24 w-16 bg-transparent'
                 />
               </div>
-              <div className='flex flex-col gap-1 border border-black p-2 rounded-md'>
+              <div className='flex flex-col gap-1 shadow shadow-gray-400 p-2 rounded-md'>
                 <p className='text-[0.7rem]'>Day</p>
                 <input 
                   type="text" 
@@ -257,7 +260,7 @@ const TravelDocument = () => {
                   className='sm:w-24 w-16 bg-transparent'
                 />
               </div>
-                <div className='flex flex-col gap-1 border border-black p-2 rounded-md'>
+                <div className='flex flex-col gap-1 shadow shadow-gray-400 p-2 rounded-md'>
                   <p className='text-[0.7rem]'>Year</p>
                   <input 
                     type="text" 
@@ -285,7 +288,7 @@ const TravelDocument = () => {
                       loading={loading} 
                       size={7} // Customize the size
                       margin={2} // Customize the margin between circles
-                  />
+                    />
                   : 'Save'
                 }
               </p>

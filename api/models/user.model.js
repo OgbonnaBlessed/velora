@@ -27,7 +27,7 @@ const emergencyContactSchema = new mongoose.Schema({
 const locationSchema = new mongoose.Schema({
     region: {
         type: String,
-        default: 'United state'
+        default: 'United states'
     },
     address: {
         type: String,
@@ -61,7 +61,7 @@ const airportSecuritySchema = new mongoose.Schema({
 const travelDocumentSchema = new mongoose.Schema({
     country: {
         type: String,
-        default: 'United state',
+        default: 'United states',
     },
     passportNumber: {
         type: String,
@@ -76,7 +76,7 @@ const travelDocumentSchema = new mongoose.Schema({
 const preferencesSchema = new mongoose.Schema({
     country: {
         type: String,
-        default: 'United state'
+        default: 'United states'
     },
     seatPreference: {
         type: String,
@@ -88,11 +88,32 @@ const preferencesSchema = new mongoose.Schema({
     }
 })
 
+const cardSchema = new mongoose.Schema({
+    cardName: {
+        type: String,
+        default: 'Not provided'
+    },
+    cardNumber: {
+        type: String,
+    },
+    expirationDate: {
+        type: String,
+        default: 'Not provided'
+    },
+    securityCode: {
+        type: String,
+        default: 'Not provided'
+    }
+});
+
 const userSchema = new mongoose.Schema ({
     firstName: {
         type: String,
         required: true,
         unique: true,
+    },
+    middleName: {
+        type: String,   
     },
     lastName: {
         type: String,
@@ -143,6 +164,10 @@ const userSchema = new mongoose.Schema ({
         type: preferencesSchema,
         default: null
     },
+    paymentCard: {
+        type: cardSchema,
+        default: null
+    },
     email: {
         type: String,
         required: true,
@@ -171,10 +196,7 @@ const userSchema = new mongoose.Schema ({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'hotels'
     }],
-    bookings: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'hotels'
-    }],
+    bookings: [{}],
     sessions: [sessionSchema], // Add this field to track sessions
 }, { timestamps: true });
 

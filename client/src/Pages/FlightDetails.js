@@ -23,7 +23,7 @@ const FlightDetails = () => {
   const total = parseFloat(flight.price.total) + tax;
 
   const proceedToCheckOut = () => {
-    navigate('/check-out', { state: { flight, tax, total } });
+    navigate(`/check-out`, { state: { flight, tax, total } });
   };
 
   // Helper to format time

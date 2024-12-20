@@ -61,7 +61,7 @@ const BasicDetails = () => {
         return date.getMonth() + 1 === m && date.getDate() === d && date.getFullYear() === y;
     };
 
-    const handleSubmit = async (e) =>{
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setUpdateUserError(null);
         setUpdateUserSuccess(null);
@@ -232,7 +232,7 @@ const BasicDetails = () => {
                                   ...prev,
                                   DOB: `${value}/${prev.DOB?.split('/')[1] || ''}/${prev.DOB?.split('/')[2] || ''}`,
                                 }));
-                              }}
+                            }}
                             className='bg-transparent w-16'
                         />
                     </div>

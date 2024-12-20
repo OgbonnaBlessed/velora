@@ -14,7 +14,7 @@ const FlightCard = ({ flight, formatTime, getFlightDuration }) => {
     const minutes = flightDuration % 60;
 
     const handleSelect = () => {
-        navigate('/flight-details', { state: { flight } });
+        navigate(`/flight-details/${flight.id}`, { state: { flight } });
     };
 
     const formatWord = (word) => {

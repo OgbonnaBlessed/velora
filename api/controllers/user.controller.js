@@ -193,3 +193,31 @@ export const getBookmarks = async (req, res, next) => {
         next(error);
     }
 };
+
+// Handle user bookings
+export const bookings = async (req, res, next) => {
+    if (req.user.id !== req.params.userId) {
+      return next(errorHandler(403, 'You are not allowed to book for this user'));
+    }
+
+    const { formData, flight } = req.body; // Ensure you are getting flight details and formData
+  
+    try {
+        // Once booking is successful, update the user document with the booking details
+        const updatedUser = await User.findByIdAndUpdate(
+            req.params.userId,
+            {
+                $push: { bookings: flight }, // Add booking details to the bookings array
+                $set: { ...formData }, // Update the user data (if applicable)
+            },
+            { new: true }
+        );
+    
+        // Exclude password in response
+        const { password, ...rest } = updatedUser._doc;
+        res.status(200).json(rest);
+    
+      } catch (error) {
+        next(error);
+      }
+  };

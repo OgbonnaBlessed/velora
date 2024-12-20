@@ -21,6 +21,7 @@ import Preferences from './Preferences';
 import SearchPage from '../Pages/SearchPage';
 import FlightDetails from '../Pages/FlightDetails';
 import CheckOut from '../Pages/CheckOut';
+import BookingCompleted from '../Pages/BookingCompleted';
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -33,9 +34,6 @@ const AnimatedRoutes = () => {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/policy" element={<Policy />} />
         <Route path='/user-data-deletion-policy' element={<UserData/>} />
-        <Route path='/flight-search' element={<SearchPage/>} />
-        <Route path='/flight-details' element={<FlightDetails/>} />
-        <Route path='/check-out' element={<CheckOut/>} />
         <Route element={<ProtectedRoute />}>
           <Route path="/profile" element={<Profile />} />
           <Route path='/verify-email' element={<VerifyEmail/>} />
@@ -48,6 +46,10 @@ const AnimatedRoutes = () => {
           <Route path='/airport_security' element={<AirportSecurity/>} />
           <Route path='/travel_document' element={<TravelDocument/>} />
           <Route path='/preference' element={<Preferences/>} />
+          <Route path='/flight-details/:flightId' element={<FlightDetails/>} />
+          <Route path='/flight-search' element={<SearchPage/>} />
+          <Route path='/check-out' element={<CheckOut/>} />
+          <Route path='/booking-completed' element={<BookingCompleted/>} />
         </Route>
       </Routes>
     </AnimatePresence>
