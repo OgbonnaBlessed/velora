@@ -94,7 +94,7 @@ const Flights = () => {
               <MdArrowDropDown/>
             </div>
               <div 
-                className={`bg-white shadow shadow-gray-300 rounded-xl flex flex-col absolute top-[3.3rem] font-serif text-nowrap py-3 transform left-1/2 -translate-x-1/2 text-sm transition-all duration-300 ease-in-out z-20
+                className={`bg-white shadow shadow-gray-300 rounded-xl flex flex-col absolute top-[2.8rem] font-serif text-nowrap py-3 transform left-1/2 -translate-x-1/2 text-sm transition-all duration-300 ease-in-out z-20
                   ${flightClassModal 
                     ? 'translate-y-0 opacity-1 pointer-events-auto' 
                     : '-translate-y-5 opacity-0 pointer-events-none'}`

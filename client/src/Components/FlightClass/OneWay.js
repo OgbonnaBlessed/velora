@@ -123,7 +123,6 @@ const OneWay = () => {
         </button>
       </div>
       <div className='flex items-center gap-10'>
-
         {/* Add Flight Checkbox */}
         <div className="flex items-center font-Grotesk">
           <input 
