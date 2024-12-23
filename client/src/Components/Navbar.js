@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useSelector, useDispatch } from "react-redux";
 import { signOutSuccess } from "../redux/user/userSlice";
 import axios from 'axios'
+import { countries } from '../Data/Locations'
 
 const Navbar = () => {
     const { currentUser } = useSelector((state) => state.user);
@@ -477,7 +478,7 @@ const Navbar = () => {
                         duration: .5,
                         ease: "easeInOut"
                     }}
-                    className='fixed inset-0 bg-black bg-opacity-50 z-20 flex items-center justify-center'
+                    className='fixed inset-0 bg-black bg-opacity-50 z-[10000] flex items-center justify-center'
                 >
                     <motion.div
                         initial={{
@@ -496,41 +497,74 @@ const Navbar = () => {
                             duration: .5,
                             ease: "easeInOut"
                         }}
-                        className='rounded-lg p-4 flex flex-col gap-3 bg-white w-96 max-w-[90%]'
+                        className='rounded-2xl p-4 flex flex-col gap-3 bg-white w-96 max-w-[90%]'
                         ref={languageRef}
                     >
                         <div className='flex items-center gap-3'>
                             <div 
-                                className='bg-[#48aadf13] p-2.5 rounded-full cursor-pointer text-[#48aadf]'
+                                className='bg-[#48aadf13] p-1.5 rounded-full cursor-pointer text-[#48aadf]'
                                 onClick={() => {
                                     setLanguageModal(false)
                                 }}
                             >
-                                <X />
+                                <X className='p-0.5' />
                             </div>
                             <p>Language settings</p>
                         </div>
-                        <div className='flex flex-col border border-black rounded-lg p-2'>
-                            <p className='text-[.75rem]'>Region</p>
-                            <select className='w-full'>
-                                <option value="United states">United states</option>
+                        <div className='relative w-full'>
+                            <ChevronDown className='absolute right-3 p-1 top-1/2 transform -translate-y-1/2 pointer-events-none'/>
+                            <label 
+                                htmlFor="region"
+                                className='text-[0.7rem] absolute top-1.5 left-3'
+                            >
+                                Region
+                            </label>
+                            <select 
+                                id="travelDocument.country"
+                                className='w-full shadow shadow-gray-300 pt-6 pb-3 px-3 pr-5 bg-transparent rounded-md text-black appearance-none text-base cursor-pointer'
+                            >
+                                {countries.map((country, i) => (
+                                    <option key={i} value={country.name}>{country.name}</option>
+                                ))}
                             </select>
                         </div>
-                        <div className='flex flex-col border border-black rounded-lg p-2'>
-                            <p className='text-[.75rem]'>Language</p>
-                            <select>
-                                <option value="English">English</option>
+                        <div className='relative w-full'>
+                            <ChevronDown className='absolute right-3 p-1 top-1/2 transform -translate-y-1/2 pointer-events-none'/>
+                            <label 
+                                htmlFor="language"
+                                className='text-[0.7rem] absolute top-1.5 left-3'
+                            >
+                                Language
+                            </label>
+                            <select 
+                                id="travelDocument.country"
+                                className='w-full shadow shadow-gray-300 pt-6 pb-3 px-3 pr-5 bg-transparent rounded-md text-black appearance-none text-base cursor-pointer'
+                            >
+                                {countries.map((country, i) => (
+                                    <option key={i} value={country.language}>{country.language}</option>
+                                ))}
                             </select>
                         </div>
-                        <div className='flex flex-col border border-slate-600 rounded-lg p-2'>
-                            <p className='text-[.75rem] text-slate-600'>Currency</p>
-                            <select disabled="disabled">
-                                <option value="USD $">USD $</option>
+                        <div className='relative w-full'>
+                            <ChevronDown className='absolute right-3 p-1 top-1/2 transform -translate-y-1/2 pointer-events-none'/>
+                            <label 
+                                htmlFor="currency"
+                                className='text-[0.7rem] absolute top-1.5 left-3'
+                            >
+                                Currency
+                            </label>
+                            <select 
+                                id="currency"
+                                disabled
+                                className='w-full shadow shadow-gray-300 pt-6 pb-3 px-3 pr-5 bg-transparent rounded-md text-black appearance-none text-base cursor-pointer'
+                            >
+                                <option value="$ USD">$ USD</option>
+                                <option value="€ EURO">€ EURO</option>
                             </select>
                         </div>
                         <button 
                             type="submit"
-                            className='bg-[#48aadf] text-white rounded-full py-3 font-semibold cursor-pointer'
+                            className='bg-[#48aadf] text-white rounded-full py-3 font-semibold cursor-pointer mt-3'
                         >
                             Save
                         </button>

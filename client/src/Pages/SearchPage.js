@@ -1,5 +1,5 @@
-import { LucideMessageSquareWarning, Search } from 'lucide-react';
-import React, { useState } from 'react';
+import { LucideMessageSquareWarning } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { BounceLoader } from 'react-spinners'
 import { locations } from '../Data/Locations'
 import OriginInput from '../Components/Common/Inputs/OriginInput';
@@ -7,19 +7,43 @@ import DestinationInput from '../Components/Common/Inputs/DestinationInput';
 import TravelersInput from '../Components/Common/Inputs/TravelerInput';
 import DateRangePicker from '../Components/Common/Date Picker/DateRangePicker';
 import FlightsList from '../Components/Common/FlightsList';
+import { useLocation } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 function SearchPage() {
+  const location = useLocation();
   const [flights, setFlights] = useState('');
   const [error, setError] = useState(null);
+  const [errors, setErrors] = useState({ origin: '', destination: '' });
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     origin: '',
     destination: '',
-    departureDate: new Date().toISOString().split('T')[0],
-    returnDate: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString().split('T')[0],
+    departureDate: dayjs().format('YYYY-MM-DD'),
+    returnDate: dayjs().add(2, 'day').format('YYYY-MM-DD'),
     adults: 1,
+    rooms: 1,
   });
-  console.log(formData);
+
+  useEffect(() => {
+    if (location.state) {
+      setFormData({
+        origin: location.state.origin,
+        destination: location.state.destination,
+        departureDate: location.state.departureDate,
+        returnDate: location.state.returnDate,
+        adults: location.state.adults,
+        rooms: location.state.rooms,
+      });
+    }
+  }, [location.state]);
+  
+  useEffect(() => {
+    if (formData.origin && formData.destination) {
+      handleSubmit();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData]);
 
   const handleDateChange = ([startDate, endDate]) => {
     setFormData((prev) => ({
@@ -30,17 +54,34 @@ function SearchPage() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     setLoading(true); // Show loading indicator
     setError(null); // Clear previous errors
 
+    let hasError = false;
+    const newErrors = { origin: '', destination: '' };
+
     if (!formData.origin) {
-      setError('Kindly select an origin');
-      return;
+      newErrors.origin = 'Please select an origin.';
+      hasError = true;
     }
 
     if (!formData.destination) {
-      setError('Kindly select a destination');
+      newErrors.destination = 'Please select a destination.';
+      hasError = true;
+    }
+
+    if (formData.destination && formData.origin && formData.origin === formData.destination) {
+      newErrors.destination = 'Origin and destination cannot be the same.';
+      hasError = true;
+    }
+
+    if (hasError) {
+      setErrors(newErrors);
+      setTimeout(() => {
+        setErrors({ origin: '', destination: '' });
+      }, 3000);
+      return;
     }
   
     try {
@@ -92,24 +133,42 @@ function SearchPage() {
   return (
     <div className='flex flex-col gap-5 px-4 sm:px-6 lg:px-20 pt-28 md:pt-36 pb-10'>
       <form 
-        onSubmit={handleSubmit}
+        onSubmit={(e) => handleSubmit(e)}
         className="xl:flex xl:gap-3 xl:justify-between grid gap-4 md:gap-6 md:grid-cols-3 items-center"
       >
-        <OriginInput
-          formData={formData}
-          setFormData={setFormData}
-          locations={locations}
-        />
+        <div className="relative">
+          <OriginInput
+            formData={formData}
+            setFormData={setFormData}
+            locations={locations}
+          />
+          {errors.origin && (
+            <p className="text-red-500 text-[0.7rem] absolute mt-1">
+              {errors.origin}
+            </p>
+          )}
+        </div>
 
-        <DestinationInput
-          formData={formData}
-          setFormData={setFormData}
-          locations={locations}
-        />
+        <div className="relative">
+          <DestinationInput
+            formData={formData}
+            setFormData={setFormData}
+            locations={locations}
+          />
+          {errors.destination && (
+            <p className="text-red-500 text-[0.7rem] absolute mt-1">
+              {errors.destination}
+            </p>
+          )}
+        </div>
 
         {/* Date Picker */}
         <DateRangePicker
           onDateChange={handleDateChange}
+          defaultDates={[
+            dayjs(formData.departureDate),
+            dayjs(formData.returnDate),
+          ]}
         />
 
         {/* Travelers Input */}
@@ -128,14 +187,14 @@ function SearchPage() {
       </form>
       <div>
         {loading
-        ? <div className='min-h-screen w-full flex items-center justify-center'>
+        ? <div className='min-h-64 w-full flex items-center justify-center'>
             <BounceLoader
               color="#48aadf" // Customize the color
               loading={loading} 
             />
           </div>
         : error 
-        ? <div className='flex flex-col gap-5 items-center font-Poppins font-semibold min-h-screen w-full justify-center'>
+        ? <div className='flex flex-col gap-5 items-center font-Poppins font-semibold min-h-64 w-full justify-center'>
             <div className='flex flex-col gap items-center'>
               <LucideMessageSquareWarning />
               <p className='text-lg'>
@@ -143,33 +202,14 @@ function SearchPage() {
               </p>
               <p className='font-normal font-sans'>Please try again later</p>
             </div>
-            <button className='px-8 py-3 bg-[#48aadf] font-semibold cursor-pointer rounded-full text-white'>
-              Try again
-            </button>
           </div>
 
-          // Flights Display
-        : <div>
-            {flights && flights?.data?.length === 0 
-            ? <div className='flex flex-col gap-5 items-center font-Poppins font-semibold min-h-screen w-full justify-center'>
-                <div className='flex flex-col gap items-center'>
-                  <Search/>
-                  <p className='text-lg'>
-                    Sorry, we couldn't find any flights from {formData.origin} to {formData.destination} on {formData.departureDate}
-                  </p>
-                  <p className='font-normal font-sans'>Kindly change your selected parameters to view available flights.</p>
-                </div>
-                <button className='px-8 py-3 bg-[#48aadf] font-semibold cursor-pointer rounded-full text-white'>
-                  Edit search
-                </button>
-              </div>
-           :  <FlightsList
-                flights={flights}
-                formatTime={formatTime}
-                getFlightDuration={getFlightDuration}
-              />
-            }
-          </div>
+        : // Flights Display
+          <FlightsList
+            flights={flights}
+            formatTime={formatTime}
+            getFlightDuration={getFlightDuration}
+          />
         }
       </div>
     </div>

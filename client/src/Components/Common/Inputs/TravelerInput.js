@@ -4,6 +4,7 @@ import { FaUserAlt } from 'react-icons/fa';
 const TravelersInput = ({ formData, setFormData }) => {
     const [rooms, setRooms] = useState([{ adults: 1, children: 0 }]);
     const [travelersInput, setTravelersInput] = useState('1 traveler, 1 room');
+    console.log(formData);
     const [travelerModalOpen, setTravelerModalOpen] = useState(false);
     const travelerRef = useRef();
 
@@ -34,7 +35,8 @@ const TravelersInput = ({ formData, setFormData }) => {
         // Update parent formData state
         setFormData((prev) => ({
             ...prev,
-            adults: totalTravelers 
+            adults: totalTravelers,
+            rooms: rooms.length
         }));
 
         // Update input display
@@ -43,6 +45,12 @@ const TravelersInput = ({ formData, setFormData }) => {
         );
         setTravelerModalOpen(false);
     };
+
+    useEffect(() => {
+        setTravelersInput(
+            `${formData.adults} traveler${formData.adults > 1 ? 's' : ''}, ${formData.rooms} room${formData.rooms > 1 ? 's' : ''}`
+        );
+    }, [formData]);
 
     const handleOutsideClick = (event) => {
         if (travelerRef.current && !travelerRef.current.contains(event.target)) {
@@ -82,7 +90,7 @@ const TravelersInput = ({ formData, setFormData }) => {
             </div>
             <div
                 className={`absolute top-16 left-0 z-20 bg-white p-4 shadow shadow-gray-300 rounded-xl text-sm w-52 flex flex-col gap-4 transition-all duration-300 ease-in-out
-                ${travelerModalOpen
+                    ${travelerModalOpen
                         ? 'translate-y-0 opacity-1 pointer-events-auto'
                         : '-translate-y-5 opacity-0 pointer-events-none'
                     }
@@ -96,8 +104,12 @@ const TravelersInput = ({ formData, setFormData }) => {
                                 <span>Adults</span>
                                 <div className="flex gap-3 items-center">
                                     <button
-                                        className={`border font-semibold text-2xl px-3 pb-1 rounded-full
-                                        ${rooms[index].adults === 1 ? 'bg-gray-50 text-gray-300 cursor-no-drop' : 'bg-white text-black'}`}
+                                        className={`border border-gray-50 font-semibold text-xl px-3 pb-1 rounded-full
+                                            ${rooms[index].adults === 1 
+                                                ? 'bg-gray-50 text-gray-300 cursor-no-drop' 
+                                                : 'bg-white text-black'
+                                            }`
+                                        }
                                         onClick={() =>
                                             handleRoomChange(index, 'adults', Math.max(1, rooms[index].adults - 1))
                                         }
@@ -107,8 +119,12 @@ const TravelersInput = ({ formData, setFormData }) => {
                                     </button>
                                     <span>{rooms[index].adults}</span>
                                     <button
-                                        className={`border font-semibold text-2xl px-3 pb-1 rounded-full
-                                        ${rooms[index].adults === 14 ? 'bg-gray-50 text-gray-300 cursor-no-drop' : 'bg-white text-black'}`}
+                                        className={`border border-gray-50 font-semibold text-lg px-2.5 pb-1 rounded-full
+                                            ${rooms[index].adults === 14 
+                                                ? 'bg-gray-50 text-gray-300 cursor-no-drop' 
+                                                : 'bg-white text-black'
+                                            }`
+                                        }
                                         onClick={() =>
                                             handleRoomChange(index, 'adults', Math.min(14, rooms[index].adults + 1))
                                         }
@@ -122,8 +138,12 @@ const TravelersInput = ({ formData, setFormData }) => {
                                 <span>Children</span>
                                 <div className="flex gap-3 items-center">
                                     <button
-                                        className={`border font-semibold text-2xl px-3 pb-1 rounded-full
-                                        ${rooms[index].children === 0 ? 'bg-gray-50 text-gray-300 cursor-no-drop' : 'bg-white text-black'}`}
+                                        className={`border border-gray-50 font-semibold text-xl px-3 pb-1 rounded-full
+                                            ${rooms[index].children === 0 
+                                                ? 'bg-gray-50 text-gray-300 cursor-no-drop' 
+                                                : 'bg-white text-black'
+                                            }`
+                                        }
                                         onClick={() =>
                                             handleRoomChange(index, 'children', Math.max(0, rooms[index].children - 1))
                                         }
@@ -133,8 +153,12 @@ const TravelersInput = ({ formData, setFormData }) => {
                                     </button>
                                     <span>{rooms[index].children}</span>
                                     <button
-                                        className={`border font-semibold text-2xl px-3 pb-1 rounded-full
-                                        ${rooms[index].children === 6 ? 'bg-gray-50 text-gray-300 cursor-no-drop' : 'bg-white text-black'}`}
+                                        className={`border border-gray-50 font-semibold text-lg px-3 pb-1 rounded-full
+                                            ${rooms[index].children === 6 
+                                                ? 'bg-gray-50 text-gray-300 cursor-no-drop' 
+                                                : 'bg-white text-black'
+                                            }`
+                                        }
                                         onClick={() =>
                                             handleRoomChange(index, 'children', Math.min(6, rooms[index].children + 1))
                                         }
@@ -157,7 +181,10 @@ const TravelersInput = ({ formData, setFormData }) => {
                     </div>
                 ))}
                 {rooms.length < 3 && (
-                    <p className="text-[#48aadf] cursor-pointer" onClick={addRoom}>
+                    <p 
+                        className="text-[#48aadf] cursor-pointer" 
+                        onClick={addRoom}
+                    >
                         Add another room
                     </p>
                 )}

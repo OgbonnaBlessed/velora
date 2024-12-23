@@ -9,7 +9,10 @@ const OriginInput = ({ formData, setFormData, locations }) => {
 
     const toggleOriginList = () => {
         setFocused(true);
-        setFilteredOrigins(locations);
+        const sortedLocations = [...locations].sort((a, b) =>
+            a.city.localeCompare(b.city)
+        );
+        setFilteredOrigins(sortedLocations);
         setIsOriginListVisible(true);
     };
 
@@ -22,12 +25,13 @@ const OriginInput = ({ formData, setFormData, locations }) => {
     const handleOriginChange = (e) => {
         const value = e.target.value;
         setFormData((prev) => ({ ...prev, origin: value }));
+        const sortedLocations = [...locations].sort((a, b) =>
+            a.city.localeCompare(b.city)
+        );
         setFilteredOrigins(
-        value.trim() === ""
-            ? locations
-            : locations.filter((location) =>
-                location.city?.toLowerCase().includes(value.trim().toLowerCase())
-            )
+            value.trim() === ""
+                ? sortedLocations
+                : sortedLocations.filter((location) =>  location.city?.toLowerCase().includes(value.trim().toLowerCase()))
         );
         setIsOriginListVisible(true);
     };
@@ -108,7 +112,8 @@ const OriginInput = ({ formData, setFormData, locations }) => {
                     <li className='px-3 py-2 text-[#48aadf] select-none text-center'>
                         No Location Found
                     </li>
-                )}
+                  )
+                }
             </ul>
         </div>
     </div>

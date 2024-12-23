@@ -119,13 +119,13 @@ const Filters = ({ handleSubmit }) => {
             <ChevronDown className="absolute right-3 p-1 top-1/2 transform -translate-y-1/2 pointer-events-none" />
             <label 
                 htmlFor="price-filter" 
-                className="text-[0.7rem] absolute top-1.5 left-3"
+                className="text-[0.7rem] absolute top-2.5 left-4"
             >
                 Sort by
             </label>
             <select
                 id="price-filter"
-                className="border border-black pt-5 pb-1 px-3 pr-5 bg-transparent rounded-md w-56 text-black appearance-none cursor-pointer text-sm"
+                className="shadow shadow-gray-300 pt-7 pb-3 px-4 bg-transparent rounded-md w-56 text-black appearance-none cursor-pointer text-sm"
                 value={sortBy}
                 onChange={(e) => {
                     setSortBy(e.target.value);

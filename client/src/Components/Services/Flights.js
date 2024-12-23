@@ -87,7 +87,7 @@ const Flights = () => {
             ref={flightClassModalRef}
           >
             <div 
-              className='bg-blue-50 border-b-2 border-b-gray-300 px-5 py-2 text-sm cursor-pointer font-[500] text-[#000000e3] flex items-center gap-2 text-nowrap'
+              className='bg-blue-100 border-b-2 border-b-gray-300 px-5 py-2 text-sm cursor-pointer font-[500] text-[#000000e3] flex items-center gap-2 text-nowrap'
               onClick={toggleFlightClassModal}
             >
               <p>{flightClass}</p>

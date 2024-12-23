@@ -17,7 +17,7 @@ const AirportTransportation = () => {
                     <div className='grid sm:grid-cols-3 grid-cols-2 items-center gap-3 text-[0.75rem] text-nowrap w-fit text-[#000000e3] relative font-Grotesk font-semibold'>
                         <p 
                             className={`py-2 px-4 w-fit border cursor-pointer rounded-full transition-all duration-500 ease-in-out 
-                                ${visible === 'airport-to-hotel' && 'bg-blue-50'}`
+                                ${visible === 'airport-to-hotel' && 'bg-blue-100'}`
                             }
                             onClick={() => OpenTab('airport-to-hotel')}
                         >
@@ -25,7 +25,7 @@ const AirportTransportation = () => {
                         </p>
                         <p
                             className={`py-2 px-4 w-fit border cursor-pointer rounded-full transition-all duration-500 ease-in-out 
-                                ${visible === 'hotel-to-airport' && 'bg-blue-50'}`
+                                ${visible === 'hotel-to-airport' && 'bg-blue-100'}`
                             }
                             onClick={() => OpenTab('hotel-to-airport')}
                         >
@@ -33,7 +33,7 @@ const AirportTransportation = () => {
                         </p>
                         <p
                             className={`py-2 px-4 w-fit border cursor-pointer rounded-full transition-all duration-500 ease-in-out 
-                                ${visible === 'round-trip' && 'bg-blue-50'}`
+                                ${visible === 'round-trip' && 'bg-blue-100'}`
                             }
                             onClick={() => OpenTab('round-trip')}
                         >

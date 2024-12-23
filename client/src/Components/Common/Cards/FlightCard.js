@@ -22,7 +22,7 @@ const FlightCard = ({ flight, formatTime, getFlightDuration }) => {
     };
 
   return (
-    <div className="p-5 rounded-xl bg-blue-50 flex flex-col gap-5 shadow shadow-gray-300">
+    <div className="p-5 rounded-xl bg-blue-100 flex flex-col gap-5">
         <div className="flex justify-between items-start">
             <div>
                 <p className="text-lg font-Roboto">{`${departureTime} - ${arrivalTime}`}</p>
@@ -48,7 +48,7 @@ const FlightCard = ({ flight, formatTime, getFlightDuration }) => {
         <button
             type="button"
             onClick={handleSelect}
-            className="border-2 border-white px-5 py-1 bg-blue-50 w-fit self-center rounded-full font-semibold font-Grotesk text-sm"
+            className="border-2 border-white px-5 py-1 bg-blue-100 w-fit self-center rounded-full font-semibold font-Grotesk text-sm"
         >
             Select
         </button>

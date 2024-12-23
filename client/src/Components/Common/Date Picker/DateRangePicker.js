@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { DatePicker } from 'antd';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 
 const { RangePicker } = DatePicker;
 
-const DateRangePicker = ({ onDateChange }) => {
+const DateRangePicker = ({ onDateChange, defaultDates }) => {
     const today = dayjs();
-    const twoDaysLater = today.add(2, 'day');
+    const [dates, setDates] = useState(defaultDates);
+
+    useEffect(() => {
+        setDates(defaultDates); // Update dates when prop changes
+    }, [defaultDates]);
 
     const handleDateChange = (selectedDates) => {
         if (selectedDates?.length === 2) {
@@ -29,7 +33,7 @@ const DateRangePicker = ({ onDateChange }) => {
             <RangePicker
                 suffixIcon={null}
                 format={"MMM DD"}
-                defaultValue={[today, twoDaysLater]}
+                value={dates}
                 minDate={today}
                 allowClear={false} // Optional: allows clearing the input
                 inputReadOnly={true}

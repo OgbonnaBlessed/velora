@@ -46,8 +46,8 @@ const AnimatedRoutes = () => {
           <Route path='/airport_security' element={<AirportSecurity/>} />
           <Route path='/travel_document' element={<TravelDocument/>} />
           <Route path='/preference' element={<Preferences/>} />
-          <Route path='/flight-details/:flightId' element={<FlightDetails/>} />
           <Route path='/flight-search' element={<SearchPage/>} />
+          <Route path='/flight-details/:flightId' element={<FlightDetails/>} />
           <Route path='/check-out' element={<CheckOut/>} />
           <Route path='/booking-completed' element={<BookingCompleted/>} />
         </Route>
