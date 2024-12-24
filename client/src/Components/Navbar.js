@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { signOutSuccess } from "../redux/user/userSlice";
 import axios from 'axios'
 import { countries } from '../Data/Locations'
+import { setActiveTab } from '../redux/tab/tabSlice'
 
 const Navbar = () => {
     const { currentUser } = useSelector((state) => state.user);
@@ -108,6 +109,10 @@ const Navbar = () => {
         }
     }, []);
 
+    const handleServiceClick = (service) => {
+        dispatch(setActiveTab(service));
+    };
+
   return (
     <nav ref={sidebarRef}>
         <div className='lg:px-20 px-6 py-6 bg-[#fff] shadow shadow-gray-300 text-black flex justify-between items-center font-medium fixed top-0 w-full z-[10000] font-Roboto'>
@@ -134,17 +139,20 @@ const Navbar = () => {
                         <p>view services</p>
                         <ChevronDown className='p-1' />
                     </div>
-                    <div className={`hidden absolute top-8  bg-white rounded-xl lg:flex flex-col transition-all duration-500 ease-in-out transform
+                    <div className={`hidden absolute top-8  bg-white rounded-xl lg:flex flex-col transition-all duration-500 ease-in-out transform overflow-hidden shadow shadow-gray-300 font-normal text-sm
                         ${services 
                             ? 'w-64 h-96 translate-y-0 opacity-100' 
-                            : 'w-0 h-0 -translate-y-3 opacity-0'} overflow-hidden shadow shadow-gray-300 font-normal text-sm`
+                            : 'w-0 h-0 -translate-y-3 opacity-0'}`
                         }
                     >
                         <div className='flex flex-col py-3 w-full border-b-2 border-gray-400'>
                             <Link 
-                                to='/stays'
+                                to='/'
                                 className='pl-5 py-3 w-full hover:bg-gray-200 transition-colors duration-300 ease-in-out'
-                                onClick={toggleServices}
+                                onClick={() => {
+                                    toggleServices()
+                                    handleServiceClick('stays')
+                                }}
                             >
                                 <div className='flex items-center gap-2'>
                                     <FaHotel className='text-2xl'/>
@@ -152,9 +160,12 @@ const Navbar = () => {
                                 </div>
                             </Link>
                             <Link 
-                                to='/roundtrip'
+                                to='/'
                                 className='pl-5 py-3 w-full hover:bg-gray-200 transition-colors duration-300 ease-in-out'
-                                onClick={toggleServices}
+                                onClick={() => {
+                                    toggleServices()
+                                    handleServiceClick('flights')
+                                }}
                             >
                                 <div className='flex items-center gap-2'>
                                     <FaTelegramPlane className='text-2xl'/>
@@ -162,9 +173,12 @@ const Navbar = () => {
                                 </div>
                             </Link>
                             <Link 
-                                to='/cars'
+                                to='/'
                                 className='pl-5 py-3 w-full hover:bg-gray-200 transition-colors duration-300 ease-in-out'
-                                onClick={toggleServices}
+                                onClick={() => {
+                                    toggleServices()
+                                    handleServiceClick('cars')
+                                }}
                             >
                                 <div className='flex items-center gap-2'>
                                     <FaCar className='text-2xl'/>
@@ -172,9 +186,12 @@ const Navbar = () => {
                                 </div>
                             </Link>
                             <Link 
-                                to='/packages'
+                                to='/'
                                 className='pl-5 py-3 w-full hover:bg-gray-200 transition-colors duration-300 ease-in-out'
-                                onClick={toggleServices}
+                                onClick={() => {
+                                    toggleServices()
+                                    handleServiceClick('packages')
+                                }}
                             >
                                 <div className='flex items-center gap-2'>
                                     <FaBriefcase className='text-2xl'/>
@@ -182,9 +199,12 @@ const Navbar = () => {
                                 </div>
                             </Link>
                             <Link 
-                                to='/things'
+                                to='/'
                                 className='pl-5 py-3 w-full hover:bg-gray-200 transition-colors duration-300 ease-in-out'
-                                onClick={toggleServices}
+                                onClick={() => {
+                                    toggleServices()
+                                    handleServiceClick('things-to-do')
+                                }}
                             >
                                 <div className='flex items-center gap-2'>
                                     <FaClone className='text-2xl'/>

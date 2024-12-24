@@ -4,28 +4,32 @@ import Flights from '../Components/Services/Flights';
 import Packages from '../Components/Services/Packages';
 import Things from '../Components/Services/Things';
 import Cars from '../Components/Services/Cars';
+import { useDispatch, useSelector } from 'react-redux';
+import { setActiveTab } from '../redux/tab/tabSlice';
 
 const Home = () => {
-  const [visible, setVisible] = useState('stays');
+  const dispatch = useDispatch()
+  const activeTab = useSelector((state) => state.tab.activeTab); // Get the active tab from Redux
   const indicatorRef = useRef();
   const tabContainerRef = useRef();
 
-  const OpenTab = (tabname) => {
-    setVisible(tabname.toLowerCase().replace(/\s+/g, '-'));
+  const OpenTab = (tabName) => {
+    dispatch(setActiveTab(tabName.toLowerCase().replace(/\s+/g, "-")));
   };
 
   useEffect(() => {
-    const tabs = tabContainerRef.current?.querySelectorAll('p');
-    const activeTab = Array.from(tabs).find(
-      (tab) => tab.textContent.toLowerCase().replace(/\s+/g, '-') === visible
+    const tabs = tabContainerRef.current?.querySelectorAll("p");
+    const activeTabElement = Array.from(tabs).find(
+      (tab) =>
+        tab.textContent.toLowerCase().replace(/\s+/g, "-") === activeTab
     );
 
-    if (activeTab && indicatorRef.current) {
-      const { offsetLeft, offsetWidth } = activeTab;
+    if (activeTabElement && indicatorRef.current) {
+      const { offsetLeft, offsetWidth } = activeTabElement;
       indicatorRef.current.style.width = `${offsetWidth}px`;
       indicatorRef.current.style.left = `${offsetLeft}px`;
     }
-  }, [visible]);
+  }, [activeTab]);
 
   return (
     <div className="flex flex-col gap-5 px-4 sm:px-6 lg:px-20 pt-36 pb-10">
@@ -73,11 +77,11 @@ const Home = () => {
         </div>
 
         {/* Tab Contents */}
-        {visible === 'stays' && <Stays />}
-        {visible === 'flights' && <Flights />}
-        {visible === 'cars' && <Cars />}
-        {visible === 'packages' && <Packages />}
-        {visible === 'things-to-do' && <Things />}
+        {activeTab === 'stays' && <Stays />}
+        {activeTab === 'flights' && <Flights />}
+        {activeTab === 'cars' && <Cars />}
+        {activeTab === 'packages' && <Packages />}
+        {activeTab === 'things-to-do' && <Things />}
       </div>
     </div>
   );

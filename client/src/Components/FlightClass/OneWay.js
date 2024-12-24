@@ -72,7 +72,7 @@ const OneWay = () => {
   return (
     <div className="flex flex-col gap-8 w-full">
       <div className="xl:flex xl:gap-3 xl:justify-between grid gap-4 md:gap-6 md:grid-cols-3 items-center">
-        <div className="relative">
+        <div className="relative flex-1">
           <OriginInput
             formData={formData}
             setFormData={setFormData}
@@ -85,7 +85,7 @@ const OneWay = () => {
           )}
         </div>
 
-        <div className="relative">
+        <div className="relative flex-1">
           <DestinationInput
             formData={formData}
             setFormData={setFormData}

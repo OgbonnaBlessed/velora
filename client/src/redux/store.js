@@ -4,11 +4,13 @@ import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import themeReducer from './theme/themeSlice'
 import bookmarkReducer from './bookmark/bookmarkSlice'
+import tabReducer from "./tab/tabSlice";
 
 const rootReducer = combineReducers({
     user: userReducer,
     theme: themeReducer,
     bookmarks: bookmarkReducer,
+    tab: tabReducer, // Add tab reducer
 });
 
 const persistConfig = {
