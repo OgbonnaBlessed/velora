@@ -22,6 +22,7 @@ import SearchPage from '../Pages/SearchPage';
 import FlightDetails from '../Pages/FlightDetails';
 import CheckOut from '../Pages/CheckOut';
 import BookingCompleted from '../Pages/BookingCompleted';
+import HotelSearch from '../Pages/HotelSearch';
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -47,6 +48,7 @@ const AnimatedRoutes = () => {
           <Route path='/travel_document' element={<TravelDocument/>} />
           <Route path='/preference' element={<Preferences/>} />
           <Route path='/flight-search' element={<SearchPage/>} />
+          <Route path='/hotel-search' element={<HotelSearch/>} />
           <Route path='/flight-details/:flightId' element={<FlightDetails/>} />
           <Route path='/check-out' element={<CheckOut/>} />
           <Route path='/booking-completed' element={<BookingCompleted/>} />

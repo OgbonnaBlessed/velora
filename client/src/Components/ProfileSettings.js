@@ -80,7 +80,7 @@ const ProfileSettings = () => {
     } 
     
   return (
-    <div className='bg-blue-50 bg-opacity-50 rounded-3xl sm:p-14 p-5 sm:flex-1 flex flex-col gap-10 max-w-full'>
+    <div className='bg-blue-100 rounded-3xl sm:p-14 p-5 sm:flex-1 flex flex-col gap-10 max-w-full'>
         <div className='flex flex-col gap-5'>
             <div className='flex flex-col gap-1'>
                 <h1 className='font-semibold sm:text-3xl text-2xl'>Sign-in and security</h1>
@@ -90,12 +90,13 @@ const ProfileSettings = () => {
             </div>
             <div className='flex flex-col gap-5'>
                 <div 
-                    className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg w-72 max-w-full'
+                    className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg w-72 max-w-full relative shadow shadow-gray-300'
                     onClick={() => {
                         handleConfirmEmail();
                         navigate('/verify-user-email');
                     }}
                 >
+                    <div className='bg-[#48aadf] h-[70%] w-1.5 rounded-r-xl absolute left-0'></div>
                     <div>
                         <h2 className='font-semibold'>Email</h2>
                         <p className='text-sm'>{currentUser.email}</p>
@@ -103,12 +104,13 @@ const ProfileSettings = () => {
                     <ChevronRight/>
                 </div>
                 <div 
-                    className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg h-16 w-72 max-w-full'
+                    className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg h-16 w-72 max-w-full relative shadow shadow-gray-300'
                     onClick={() => {
                         handleSendConfirmEmail();
                         navigate('/verify-email');
                     }}
                 >
+                    <div className='bg-[#48aadf] h-[70%] w-1.5 rounded-r-xl absolute left-0'></div>
                     <div>
                         <h2 className='font-semibold'>Change password</h2>
                     </div>
@@ -116,9 +118,10 @@ const ProfileSettings = () => {
                 </div>
                 <div className='flex flex-col gap-5 '>
                     <div 
-                        className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg h-16 w-72 max-w-full'
+                        className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg h-16 w-72 max-w-full relative shadow shadow-gray-300'
                         onClick={() => setDisplayConnectedDevices(!displayConnectedDevices)}
                     >
+                        <div className='bg-[#48aadf] h-[70%] w-1.5 rounded-r-xl absolute left-0'></div>
                         <div>
                             <h2 className='font-semibold'>Connected devices</h2>
                         </div>
@@ -143,7 +146,8 @@ const ProfileSettings = () => {
                 <p className='text-sm'>Control other options to manage your data, like deleting your account.</p>
             </div>
             <div className='flex flex-col gap-5'>
-                <div className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg h-16 w-72 max-w-full'>
+                <div className='bg-white py-3 px-4 flex items-center justify-between cursor-pointer rounded-lg h-16 w-72 max-w-full relative shadow shadow-gray-300'>
+                    <div className='bg-[#48aadf] h-[70%] w-1.5 rounded-r-xl absolute left-0'></div>
                     <div>
                         <h2 className='font-semibold'>Traveler arranger</h2>
                     </div>
@@ -172,7 +176,7 @@ const ProfileSettings = () => {
                         ease: 'easeInOut'
                     }}
                     exit={{ opacity: 0 }}
-                    className="fixed left-0 right-0 top-0 bottom-0 z-50 bg-black/25 flex items-center justify-center"
+                    className="fixed left-0 right-0 top-0 bottom-0 z-[10000] bg-black/25 flex items-center justify-center"
                 >
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -215,7 +219,7 @@ const ProfileSettings = () => {
                         ease: 'easeInOut'
                     }}
                     exit={{ opacity: 0 }}
-                    className="fixed left-0 right-0 top-0 bottom-0 z-50 bg-black/25 flex items-center justify-center"
+                    className="fixed left-0 right-0 top-0 bottom-0 z-[10000] bg-black/25 flex items-center justify-center"
                 >
                     <motion.div
                         initial={{ opacity: 0 }}

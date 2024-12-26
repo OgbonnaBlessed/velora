@@ -111,7 +111,7 @@ const Preferences = () => {
 
   return (
     <div>
-        <div className='fixed inset-0 bg-white z-20 flex justify-center items-center'>
+        <div className='fixed inset-0 bg-white z-[10000] flex justify-center items-center'>
             <form 
                 className='flex flex-col gap-3 w-[28rem] max-w-[90%]'
                 onSubmit={handleSubmit}

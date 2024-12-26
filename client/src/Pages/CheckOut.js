@@ -128,13 +128,13 @@ const CheckoutPage = () => {
     }
   }, [visible]);
 
-    // Helper to calculate total duration in minutes
-    const getFlightDuration = (flight) => {
-      const segments = flight.itineraries[0]?.segments;
-      const departureTime = new Date(segments[0].departure.at).getTime();
-      const arrivalTime = new Date(segments[segments.length - 1].arrival.at).getTime();
-      return (arrivalTime - departureTime) / (1000 * 60); // Convert to minutes
-    };
+  // Helper to calculate total duration in minutes
+  const getFlightDuration = (flight) => {
+    const segments = flight.itineraries[0]?.segments;
+    const departureTime = new Date(segments[0].departure.at).getTime();
+    const arrivalTime = new Date(segments[segments.length - 1].arrival.at).getTime();
+    return (arrivalTime - departureTime) / (1000 * 60); // Convert to minutes
+  };
   
   // Helper to calculate the arrival time by adding the flight duration to the departure time
   const getArrivalDate = (flight) => {
@@ -255,7 +255,7 @@ const CheckoutPage = () => {
       <form 
         onSubmit={handleSubmit}
         className="w-full flex-1 flex flex-col gap-5 lg:w-2/3 relative">
-        <div className="w-full flex-1 p-6 bg-blue-50 rounded-3xl flex flex-col gap-5">
+        <div className="w-full flex-1 p-6 bg-blue-100 rounded-3xl flex flex-col gap-5">
           <div className="flex flex-col gap-2">
             <h2 className="sm:text-2xl text-xl font-semibold">Who's traveling?</h2>
             <p className="text-sm">Traveler names must match government-issued photo ID exactly.</p>
@@ -508,7 +508,7 @@ const CheckoutPage = () => {
             </div>
           </div>
         </div>
-        <div className="bg-blue-50 rounded-3xl p-6 flex flex-col gap-4 relative">
+        <div className="bg-blue-100 rounded-3xl p-6 flex flex-col gap-4 relative">
           <div className="flex flex-col gap-3">
             <h1 className="font-semibold sm:text-2xl text-xl">Review and book your Trip</h1>
             <div className="flex sm:items-center items-start gap-2">
@@ -588,13 +588,13 @@ const CheckoutPage = () => {
       </form>
 
       {/* Right Section - Price Summary */}
-      <div className="w-full bg-blue-50 p-5 rounded-3xl flex flex-col lg:w-1/3">
+      <div className="w-full bg-blue-100 p-5 rounded-3xl flex flex-col lg:w-1/3">
         <div className="py-3 border-b-2 border-white">
           <p className="font-medium">
             {formatWord(flight.itineraries[0].segments[0].departure.cityName)} ({formatWord(flight.itineraries[0].segments[0].departure.iataCode)}) to {formatWord(flight.itineraries[0].segments.slice(-1)[0].arrival.cityName)} ({formatWord(flight.itineraries[0].segments[0].arrival.iataCode)})
           </p>
           <p className="text-sm">
-            {formatDate(flight.itineraries[0].segments[0].departure.at)} | 
+            {formatDate(flight.itineraries[0].segments[0].departure.at)} |{" "} 
             {`${formatTime(flight.itineraries[0].segments[0].departure.at)} - 
                 ${formatTime(flight.itineraries[0].segments.slice(-1)[0].arrival.at)}`}
           </p>

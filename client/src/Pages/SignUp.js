@@ -153,7 +153,7 @@ const SignUp = ({ length = 4}) => {
       const res = await fetch('/api/auth/resend-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: formData.email }),
+        body: JSON.stringify({ email: formData.email, firstName: formData.firstName }),
       });
       
       const data = await res.json();

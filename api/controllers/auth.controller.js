@@ -57,10 +57,36 @@ export const signup = async (req, res, next) => {
         });
     
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: `"Velora" <${process.env.EMAIL_USER}>`,
             to: email,
             subject: 'Verify your account',
-            text: `Your verification code is ${otp}`
+            html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
+                <div style="text-align: center; padding-bottom: 20px;">
+                    <h2 style="color: #333;">Welcome to Velora!</h2>
+                </div>
+                
+                <p style="font-size: 16px; line-height: 1.6; color: #333;">Dear ${firstName},</p>
+                <p style="font-size: 16px; line-height: 1.6; color: #333;">Thank you for signing up. To complete your registration, please use the verification code below:</p>
+                
+                <div style="background-color: #48aadf; padding: 15px 30px; border-radius: 5px; color: #fff; font-size: 18px; text-align: center; font-weight: bold; margin: 20px 0;">
+                    ${otp}
+                </div>
+
+                <p style="font-size: 16px; line-height: 1.6; color: #333;"><strong>Note:</strong> This code will expire in 10 minutes.</p>
+                
+                <p style="font-size: 16px; line-height: 1.6; color: #333;">If you did not request this, please ignore this message.</p>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <a href="#" style="background-color: #48aadf; color: white; padding: 12px 30px; border-radius: 5px; text-decoration: none; font-size: 16px; font-weight: bold;">Complete Registration</a>
+                </div>
+                
+                <p style="font-size: 14px; color: #999; text-align: center; margin-top: 40px;">Thank you for choosing Velora.</p>
+                
+                <div style="background-color: #48aadf; color: #ffffff; text-align: center; padding: 10px; margin-top: 40px;">
+                    <p style="margin: 0; font-size: 14px;">&copy; 2024 Velora. All rights reserved.</p>
+                </div>
+            </div>`
         };
     
         transporter.sendMail(mailOptions, (err) => {
@@ -110,7 +136,7 @@ export const verifyOTP = async (req, res, next) => {
 };
 
 export const resendOTP = async (req, res) => {
-    const { email } = req.body;
+    const { email, firstName } = req.body;
   
     // Find the temp user
     const tempUser = await TempUser.findOne({ email });
@@ -140,19 +166,41 @@ export const resendOTP = async (req, res) => {
     });
   
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: `"Velora" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: 'Your new verification code',
-      text: `Your new verification code is ${otp}`
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
+            <div style="text-align: center; padding-bottom: 20px;">
+                <h2 style="color: #333;">Velora Account Verification</h2>
+            </div>
+            
+            <p style="font-size: 16px; line-height: 1.6; color: #333;">Dear ${firstName},</p>
+            <p style="font-size: 16px; line-height: 1.6; color: #333;">We received a request to resend your verification code. Please find the new verification code below:</p>
+            
+            <div style="background-color: #48aadf; padding: 15px 30px; border-radius: 5px; color: #fff; font-size: 18px; text-align: center; font-weight: bold; margin: 20px 0;">
+                ${otp}
+            </div>
+    
+            <p style="font-size: 16px; line-height: 1.6; color: #333;"><strong>Note:</strong> This code will expire in 10 minutes.</p>
+            
+            <p style="font-size: 16px; line-height: 1.6; color: #333;">If you did not request this, please ignore this message.</p>
+            
+            <p style="font-size: 16px; line-height: 1.6; color: #333;">Thank you for choosing Velora.</p>
+            
+            <div style="background-color: #48aadf; color: #ffffff; text-align: center; padding: 10px; margin-top: 40px;">
+                <p style="margin: 0; font-size: 14px;">&copy; 2024 Velora. All rights reserved.</p>
+            </div>
+        </div>`
     };
   
     transporter.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ success: false, message: 'Error resending OTP' });
-      }
-  
-      res.status(200).json({ success: true, message: 'New OTP sent' });
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ success: false, message: 'Error resending OTP' });
+        }
+    
+        res.status(200).json({ success: true, message: 'New OTP sent' });
     });
 };
 
@@ -322,8 +370,8 @@ export const handlePasswordResetRequest = async (req, res, next) => {
         
         // Save the verification code temporarily (this can be improved with a TTL using Redis or similar)
         verificationCodes[email] = {
-        code: verificationCode,
-        expires: Date.now() + 20 * 60 * 1000 // 10 minutes expiration
+            code: verificationCode,
+            expires: Date.now() + 20 * 60 * 1000 // 10 minutes expiration
         };
 
         const transporter = nodemailer.createTransport({
@@ -340,10 +388,31 @@ export const handlePasswordResetRequest = async (req, res, next) => {
         });
 
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: `"Velora" <${process.env.EMAIL_USER}>`,
             to: email,
             subject: 'Reset your password',
-            text: `Your password reset verification code is: ${verificationCode}`,
+            html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
+                <div style="text-align: center; padding-bottom: 20px;">
+                    <h2 style="color: #333;">Velora Password Reset</h2>
+                </div>
+                
+                <p style="font-size: 16px; line-height: 1.6; color: #333;">We received a request to reset your password. To proceed, please use the verification code below:</p>
+                
+                <div style="background-color: #48aadf; padding: 15px 30px; border-radius: 5px; color: #fff; font-size: 18px; text-align: center; font-weight: bold; margin: 20px 0;">
+                    ${verificationCode}
+                </div>
+        
+                <p style="font-size: 16px; line-height: 1.6; color: #333;"><strong>Note:</strong> This code will expire in 10 minutes.</p>
+                
+                <p style="font-size: 16px; line-height: 1.6; color: #333;">If you did not request a password reset, please ignore this email. Your password will remain unchanged.</p>
+                
+                <p style="font-size: 16px; line-height: 1.6; color: #333;">Thank you for choosing Velora.</p>
+                
+                <div style="background-color: #48aadf; color: #ffffff; text-align: center; padding: 10px; margin-top: 40px;">
+                    <p style="margin: 0; font-size: 14px;">&copy; 2024 Velora. All rights reserved.</p>
+                </div>
+            </div>`
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
@@ -374,8 +443,8 @@ export const confirmEmail = async (req, res, next) => {
         
         // Save the verification code temporarily (this can be improved with a TTL using Redis or similar)
         verificationCodes[email] = {
-        code: verificationCode,
-        expires: Date.now() + 20 * 60 * 1000 // 10 minutes expiration
+            code: verificationCode,
+            expires: Date.now() + 20 * 60 * 1000 // 10 minutes expiration
         };
 
         const transporter = nodemailer.createTransport({
@@ -392,10 +461,31 @@ export const confirmEmail = async (req, res, next) => {
         });
 
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: `"Velora" <${process.env.EMAIL_USER}>`,
             to: email,
             subject: 'Confirm your email',
-            text: `Here's your email confirmation code: ${verificationCode}`,
+            html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
+                <div style="text-align: center; padding-bottom: 20px;">
+                    <h2 style="color: #333;">Velora Email Confirmation</h2>
+                </div>
+                
+                <p style="font-size: 16px; line-height: 1.6; color: #333;">Thank you for registering with Velora. To complete your registration and confirm your email address, please use the verification code below:</p>
+                
+                <div style="background-color: #48aadf; padding: 15px 30px; border-radius: 5px; color: #fff; font-size: 18px; text-align: center; font-weight: bold; margin: 20px 0;">
+                    ${verificationCode}
+                </div>
+        
+                <p style="font-size: 16px; line-height: 1.6; color: #333;"><strong>Note:</strong> This code will expire in 10 minutes.</p>
+                
+                <p style="font-size: 16px; line-height: 1.6; color: #333;">If you did not register for an account with Velora, please disregard this email.</p>
+                
+                <p style="font-size: 16px; line-height: 1.6; color: #333;">Thank you for choosing Velora.</p>
+                
+                <div style="background-color: #48aadf; color: #ffffff; text-align: center; padding: 10px; margin-top: 40px;">
+                    <p style="margin: 0; font-size: 14px;">&copy; 2024 Velora. All rights reserved.</p>
+                </div>
+            </div>`
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
@@ -449,10 +539,31 @@ export const resendCode = async (req, res, next) => {
         });
 
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: `"Velora" <${process.env.EMAIL_USER}>`,
             to: email,
             subject: 'Confirm your email',
-            text: `Here's your email confirmation code: ${verificationCode}`,
+            html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
+                <div style="text-align: center; padding-bottom: 20px;">
+                    <h2 style="color: #333;">Velora Email Confirmation</h2>
+                </div>
+                
+                <p style="font-size: 16px; line-height: 1.6; color: #333;">Thank you for registering with Velora. To complete your registration and confirm your email address, please use the verification code below:</p>
+                
+                <div style="background-color: #48aadf; padding: 15px 30px; border-radius: 5px; color: #fff; font-size: 18px; text-align: center; font-weight: bold; margin: 20px 0;">
+                    ${verificationCode}
+                </div>
+        
+                <p style="font-size: 16px; line-height: 1.6; color: #333;"><strong>Note:</strong> This code will expire in 10 minutes.</p>
+                
+                <p style="font-size: 16px; line-height: 1.6; color: #333;">If you did not register for an account with Velora, please disregard this email.</p>
+                
+                <p style="font-size: 16px; line-height: 1.6; color: #333;">Thank you for choosing Velora.</p>
+                
+                <div style="background-color: #48aadf; color: #ffffff; text-align: center; padding: 10px; margin-top: 40px;">
+                    <p style="margin: 0; font-size: 14px;">&copy; 2024 Velora. All rights reserved.</p>
+                </div>
+            </div>`
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
@@ -493,7 +604,7 @@ export const resetPassword = async (req, res, next) => {
         // Verify if the email is associated with a user
         const user = await User.findOne({ email });
         if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'User not found' });
         }
 
         // Hash the new password

@@ -77,7 +77,7 @@ const UpdateEmail = () => {
     }, [modalMessage]);
 
   return (
-    <div className='bg-white fixed w-full h-full inset-0 z-20 flex justify-center'>
+    <div className='bg-white fixed w-full h-full inset-0 z-[10000] flex justify-center'>
         <form onSubmit={handleSubmit} className='pt-16 w-[30rem] max-w-[90%] flex flex-col gap-5'>
             <div 
                 className='bg-[#48aadf13] absolute left-3 top-3 p-2.5 rounded-full cursor-pointer text-[#48aadf]'
@@ -92,7 +92,7 @@ const UpdateEmail = () => {
                 <img 
                     src={`${process.env.PUBLIC_URL}/images/logo.png`} 
                     alt="Velora logo" 
-                    className='w-14 bg-black p-1 rounded-md'
+                    className='w-14 bg-black p-1 rounded-br-xl'
                 />
             </div>
             <h1 className='text-3xl font-semibold'>Change Email</h1>
@@ -111,7 +111,7 @@ const UpdateEmail = () => {
                         id='current-email'
                         type='email'
                         value={currentUser.email}
-                        className="w-full border border-black rounded-xl h-14 pl-5 pt-3 pb-1 text-base"
+                        className="w-full shadow shadow-gray-400 rounded-xl h-14 pl-5 pt-3 pb-1 text-base"
                         readOnly
                     />
                 </div>
@@ -133,7 +133,7 @@ const UpdateEmail = () => {
                         onFocus={() => setIsFocused3(true)}
                         onBlur={(e) => !e.target.value && setIsFocused3(false)} // Reset if input is empty
                         onChange={handleChange} 
-                        className="w-full border border-black rounded-xl h-14 pl-5 pt-3 pb-1 text-base"
+                        className="w-full shadow shadow-gray-400 rounded-xl h-14 pl-5 pt-3 pb-1 text-base"
                     />
                 </div>
             </div>
@@ -151,7 +151,12 @@ const UpdateEmail = () => {
             <button 
                 type="submit"
                 disabled={loading}
-                className='w-full rounded-full cursor-pointer py-3 text-white font-semibold bg-[#48aadf]'
+                className={`w-full h-12 text-white rounded-full border-none outline-none flex items-center justify-center gap-2 transition-all duration-300 ease-in-out font-semibold
+                    ${loading 
+                        ? 'bg-[#48aadf96] cursor-not-allowed' 
+                        : 'bg-[#48aadf] cursor-pointer'
+                    }`
+                }
             >
                 {loading 
                     ? <SyncLoader 

@@ -56,7 +56,7 @@ const FlightDetails = () => {
       </div>
       <div className='flex max-lg:flex-col-reverse w-full max-lg:items-center justify-between items-start lg:gap-20 gap-5'>
         <div className='flex flex-col gap-5 flex-1 max-w-full'>
-          <div className='bg-blue-50 rounded-xl p-5 flex flex-col gap-1 w-full'>
+          <div className='bg-blue-100 rounded-3xl p-5 flex flex-col gap-1 w-full'>
             <div className='font-semibold font-Grotesk text-lg'>
               {`${formatWord(flight.itineraries[0].segments[0].departure.cityName)} to 
               ${formatWord(flight.itineraries[0].segments.slice(-1)[0].arrival.cityName)}`}
@@ -78,28 +78,28 @@ const FlightDetails = () => {
               {flight.itineraries[0].segments[0].carrierCode} Airline • {formatDate(flight.itineraries[0].segments[0].departure.at)}
             </div>
           </div>
-          <div className='flex flex-col gap-2 p-5 bg-blue-50 rounded-xl w-full'>
+          <div className='flex flex-col gap-2 p-5 bg-blue-100 rounded-3xl w-full'>
             <h1 className='font-semibold font-Grotesk text-lg'>
               Your fare: {formatWord(flight.travelerPricings[0].fareDetailsBySegment[0].cabin)}
             </h1>
             <div className='flex flex-col gap-2'>
               <div className='flex items-start gap-2'>
-                <CheckCheck className='p-1 bg-white rounded-full'/> 
+                <CheckCheck className='p-1 bg-white text-gray-500 rounded-full'/> 
                 <p>Seat choice included</p>
               </div>
               <div className='flex items-start gap-2'>
-                <CheckCheck className='p-1 bg-white rounded-full'/> 
+                <CheckCheck className='p-1 bg-white text-gray-500 rounded-full'/> 
                 <p>2 check bags included (30 Kg per bag)</p>
               </div>
               <div className='flex items-start gap-2'>
-                <CheckCheck className='p-1 bg-white rounded-full'/> 
+                <CheckCheck className='p-1 bg-white text-gray-500 rounded-full'/> 
                 <p>Cancellation fee applies</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className='bg-blue-50 rounded-xl p-5 flex flex-col gap-3 w-96 max-w-full'>
+        <div className='bg-blue-100 rounded-3xl p-5 flex flex-col gap-3 w-96 max-w-full'>
           <h1 className='text-lg font-semibold font-Grotesk'>Payment summary</h1>
           <div className='flex flex-col gap-2'>
             <div className='flex items-center justify-between'>
@@ -117,7 +117,7 @@ const FlightDetails = () => {
           </div>
           <button
             type="button"
-            className='bg-[#48aadf] rounded-full py-2 w-full font-semibold cursor-pointer text-white'
+            className='bg-[#48aadf] rounded-full py-3 w-full font-semibold cursor-pointer text-white'
             onClick={proceedToCheckOut}
           >
             Check out

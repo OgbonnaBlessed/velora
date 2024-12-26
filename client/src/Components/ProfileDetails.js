@@ -6,9 +6,10 @@ import { useNavigate } from 'react-router-dom';
 const ProfileDetails = () => {
     const { currentUser } = useSelector((state) => state.user);
     const navigate = useNavigate();
+    console.log(currentUser)
 
   return (
-    <div className='bg-blue-50 rounded-3xl sm:p-14 p-5 flex-1 flex flex-col gap-10 max-w-full'>
+    <div className='bg-blue-100 rounded-3xl sm:p-14 p-5 flex-1 flex flex-col gap-10 max-w-full'>
         <div className='flex items-start justify-between'>
             <div className='flex flex-col gap-5'>
                 <div className='flex flex-col gap-1'>
@@ -40,7 +41,7 @@ const ProfileDetails = () => {
                         </div>
                         <div>
                             <h3 className='font-medium'>Gender</h3>
-                            <p>{currentUser.gender}</p>
+                            <p className='first-letter:uppercase'>{currentUser.gender}</p>
                         </div>
                     </div>
                 </div>
@@ -63,7 +64,7 @@ const ProfileDetails = () => {
                     <div className='flex flex-col gap-2'>
                         <div>
                             <h3 className='font-medium'>Mobile number</h3>
-                            <div>{currentUser.number === 'Not provided' || ' '
+                            <div>{currentUser.number === 'Not provided' || ""
                                 ? 'Not provided' 
                                 :   <div className='flex items-center'>
                                         <p>{currentUser.countryCode}</p> 
@@ -137,10 +138,10 @@ const ProfileDetails = () => {
                 </div>
                 <div className='flex flex-col gap-5'>
                     <div 
-                        className='bg-white py-3 pl-8 flex items-center cursor-pointer rounded-xl w-72 max-w-[95%] relative overflow-hidden'
+                        className='bg-white py-3 pl-8 flex items-center cursor-pointer rounded-lg w-72 max-w-[95%] relative shadow shadow-gray-300'
                         onClick={() => navigate('/airport_security')}
                     >
-                        <div className='bg-[#48aadf] h-[85%] w-2 rounded-r-xl absolute left-0'></div>
+                        <div className='bg-[#48aadf] h-[70%] w-1.5 rounded-r-xl absolute left-0'></div>
                         <div>
                             <h2 className='font-medium'>Airport security</h2>
                             <p className='text-sm'>TSA Precheck and Redress number</p>
@@ -148,10 +149,10 @@ const ProfileDetails = () => {
                         <ChevronRight className='absolute right-3'/>
                     </div>
                     <div 
-                        className='bg-white py-3 pl-8 flex items-center cursor-pointer rounded-xl w-72 max-w-[95%] relative overflow-hidden'
+                        className='bg-white py-3 pl-8 flex items-center cursor-pointer rounded-lg w-72 max-w-[95%] relative shadow shadow-gray-300'
                         onClick={() => navigate('/travel_document')}
                     >
-                        <div className='bg-[#48aadf] h-[85%] w-2 rounded-r-xl absolute left-0'></div>
+                        <div className='bg-[#48aadf] h-[70%] w-1.5 rounded-r-xl absolute left-0'></div>
                         <div>
                             <h2 className='font-medium'>Travel documents</h2>
                             <p className='text-sm'>Passport</p>
@@ -159,10 +160,10 @@ const ProfileDetails = () => {
                         <ChevronRight className='absolute right-3'/>
                     </div>
                     <div 
-                        className='bg-white py-3 pl-8 flex items-center cursor-pointer rounded-xl w-72 max-w-[95%] relative overflow-hidden'
+                        className='bg-white py-3 pl-8 flex items-center cursor-pointer rounded-lg w-72 max-w-[95%] relative shadow shadow-gray-300'
                         onClick={() => navigate('/preference')}
                     >
-                        <div className='bg-[#48aadf] h-[85%] w-2 rounded-r-xl absolute left-0'></div>
+                        <div className='bg-[#48aadf] h-[70%] w-1.5 rounded-r-xl absolute left-0'></div>
                         <div>
                             <h2 className='font-medium'>Flight preferences</h2>
                             <p className='text-sm'>Seat preference and home airport</p>

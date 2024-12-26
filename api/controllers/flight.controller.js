@@ -105,3 +105,32 @@ export const searchFlights = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const searchHotels = async (req, res) => {
+  const { destination, checkInDate, checkOutDate, adults, rooms } = req.body;
+
+  if (!destination || !checkInDate || !checkOutDate || !adults || !rooms) {
+    return res.status(400).json({ error: 'Missing required parameters' });
+  }
+
+  try {
+    const token = await getAmadeusToken();
+
+    // Translate city names to IATA codes
+    const destinationCode = await fetchIATACode(destination, token);
+
+    const response = await axios.get('https://test.api.amadeus.com/v1/reference-data/locations/hotels/by-city', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        cityCode: destinationCode
+      },
+    });
+
+    res.status(200).json(response.data);
+  } catch (error) {
+    console.error('Error fetching hotels:', error);
+    res.status(500).json({ error: 'Failed to fetch hotels. Please try again.' });
+  }
+};

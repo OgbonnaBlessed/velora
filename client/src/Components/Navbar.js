@@ -369,7 +369,7 @@ const Navbar = () => {
                             <Search /> View services
                         </div>
                         <div 
-                            className={`lg:hidden  bg-blue-50 text-black rounded-xl flex flex-col transition-all duration-700 ease-in-out transform overflow-hidden font-normal text-sm
+                            className={`lg:hidden  bg-blue-100 text-black rounded-xl flex flex-col transition-all duration-700 ease-in-out transform overflow-hidden font-normal text-sm
                                 ${sidebarServices 
                                     ? 'h-96' 
                                     : 'h-0'

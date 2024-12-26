@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { SyncLoader } from 'react-spinners';
+import { countries } from '../Data/Locations';
 
 const ContactDetails = () => {
     const { currentUser } = useSelector((state) => state.user);
@@ -131,7 +132,7 @@ const ContactDetails = () => {
     }, [updateUserSuccess, updateUserError]);
 
   return (
-    <div className='bg-blue-50 bg-opacity-50 flex-1 rounded-3xl relative p-14 flex flex-col w-full items-center gap-5'>
+    <div className='bg-blue-100 flex-1 rounded-3xl relative p-14 flex flex-col w-full items-center gap-5'>
         <div 
             className='bg-[#48aadf13] absolute left-3 top-3 p-2.5 rounded-full cursor-pointer text-[#48aadf]'
             onClick={() => navigate(-1)}
@@ -163,16 +164,19 @@ const ContactDetails = () => {
                                 id="countryCode"
                                 value={formData.countryCode ?? currentUser.countryCode}
                                 onChange={(e) => handleChange(e)} // Handle state updates
-                                className='border border-black pt-5 pb-2 px-3 pr-5 bg-transparent rounded-xl w-72 text-black appearance-none text-base cursor-pointer'
+                                className='border-b-2 border-[#48aadf] bg-white pt-5 pb-2 px-3 pr-5 bg-transparent rounded-lg w-72 text-black appearance-none text-base cursor-pointer'
                             >
-                                <option value="+1">United states +1</option>
-                                <option value="+44">United kingdom +44</option>
-                                <option value="+234">Nigeria +234</option>
-                                <option value="+380">Ukraine +380</option>
-                                <option value="+256">Uganda +256</option>
+                                {countries.map((country, index) => (
+                                    <option 
+                                        key={index} 
+                                        value={country.phone_code}
+                                    >
+                                        {country.name} {country.phone_code}
+                                    </option>
+                                ))}
                             </select>
                         </div>
-                        <div className='rounded-xl w-72 h-14 relative'>
+                        <div className='rounded-lg w-72 h-14 relative'>
                             <label
                                 htmlFor="number"
                                 className={`absolute left-5 transition-all duration-300 ease-in-out cursor-text ${
@@ -188,7 +192,7 @@ const ContactDetails = () => {
                                 id="number"
                                 value={formData.number === 'Not provided' ? '' : formData.number}
                                 onChange={handleChange}
-                                className="w-full border border-black bg-transparent rounded-xl h-14 pl-5 pt-3 pb-1 text-base"
+                                className="w-full border-b-2 border-[#48aadf] bg-white rounded-lg h-14 pl-5 pt-3 pb-1 text-base"
                                 onFocus={() => setIsFocused1(true)}
                                 autoComplete='off'
                                 onBlur={(e) => !e.target.value && setIsFocused1(false)} // Reset if input is empty
@@ -203,18 +207,21 @@ const ContactDetails = () => {
                             onClick={handleCheckboxChange}
                             className='hidden'
                         />
-                        <label htmlFor="SMS" className="flex items-start cursor-pointer">
-                            <div className={`relative w-5 h-5 flex items-center justify-center rounded border-2 
+                        <label 
+                            htmlFor="SMS" 
+                            className="flex items-start cursor-pointer"
+                        >
+                            <div className={`relative w-4 h-4 flex items-center justify-center rounded border-2 
                                     transition-all duration-300 
                                     ${isChecked 
                                         ? 'border-[#4078bc] bg-[#4078bc]' 
-                                        : 'border-black'
+                                        : 'border-gray-500'
                                     }`
                                 }
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    className={`absolute w-4.5 h-4 text-white transition-opacity duration-300 
+                                    className={`absolute w-3.5 h-3.5 text-white transition-opacity duration-300 
                                         ${isChecked ? 'opacity-100' : 'opacity-0'}`
                                     }
                                     viewBox="0 0 24 24"
@@ -222,7 +229,11 @@ const ContactDetails = () => {
                                     stroke="currentColor"
                                     strokeWidth="3.5"
                                 >
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                <path 
+                                    strokeLinecap="round" 
+                                    strokeLinejoin="round" 
+                                    d="M5 13l4 4L19 7" 
+                                />
                                 </svg>
                             </div>
                             <span className="ml-2 text-black text-sm -mt-0.5">
@@ -254,7 +265,7 @@ const ContactDetails = () => {
                         id="emergency.name"
                         value={formData.emergency?.name || ''}
                         onChange={handleChange}
-                        className="w-full border border-black bg-transparent rounded-xl h-14 pl-5 pt-3 pb-1 text-base"
+                        className="w-full border-b-2 border-[#48aadf] bg-white rounded-lg h-14 pl-5 pt-3 pb-1 text-base"
                         onFocus={() => setIsFocused2(true)}
                         autoComplete='off'
                         onBlur={(e) => !e.target.value && setIsFocused2(false)} // Reset if input is empty
@@ -273,13 +284,11 @@ const ContactDetails = () => {
                             id="emergency.countryCode"
                             value={formData.emergency?.countryCode || ''}
                             onChange={handleChange}
-                            className='border border-black pt-5 pb-2 px-3 pr-5 bg-transparent rounded-xl w-72 text-black appearance-none text-base cursor-pointer'
+                            className='border-b-2 border-[#48aadf] bg-white pt-5 pb-2 px-3 pr-5 bg-transparent rounded-lg w-72 text-black appearance-none text-base cursor-pointer'
                         >
-                            <option value="+1">United states +1</option>
-                            <option value="+44">United kingdom +44</option>
-                            <option value="+234">Nigeria +234</option>
-                            <option value="+380">Ukraine +380</option>
-                            <option value="+256">Uganda +256</option>
+                            {countries.map((country, index) => (
+                                <option key={index} value={country.phone_code}>{country.name} {country.phone_code}</option>
+                            ))}
                         </select>
                     </div>
                     <div className='rounded-xl w-72 h-14 relative'>
@@ -298,7 +307,7 @@ const ContactDetails = () => {
                             id="emergency.phoneNumber"
                             value={formData.emergency?.phoneNumber || ''}
                             onChange={handleChange}
-                            className="w-full border border-black bg-transparent rounded-xl h-14 pl-5 pt-3 pb-1 text-base"
+                            className="w-full border-b-2 border-[#48aadf] bg-white rounded-lg h-14 pl-5 pt-3 pb-1 text-base"
                             onFocus={() => setIsFocused3(true)}
                             autoComplete='off'
                             onBlur={(e) => !e.target.value && setIsFocused3(false)} // Reset if input is empty
@@ -333,13 +342,11 @@ const ContactDetails = () => {
                             id="location.region"
                             value={formData.location?.region || ''}
                             onChange={handleChange} // Handle state updates
-                            className='border border-black pt-5 pb-2 px-3 pr-5 bg-transparent rounded-xl w-72 text-black appearance-none text-base cursor-pointer'
+                            className='border-b-2 border-[#48aadf] pt-5 pb-2 px-3 pr-5 bg-white rounded-lg w-72 text-black appearance-none text-base cursor-pointer'
                         >
-                            <option value="United state">United state</option>
-                            <option value="United kingdom">United kingdom</option>
-                            <option value="Nigeria">Nigeria</option>
-                            <option value="Ukraine">Ukraine</option>
-                            <option value="Uganda">Uganda</option>
+                            {countries.map((country, index) => (
+                                <option key={index} value={country.name}>{country.name}</option>
+                            ))}
                         </select>
                     </div>
                     <div className='rounded-xl w-72 h-14 relative'>
@@ -358,7 +365,7 @@ const ContactDetails = () => {
                             id="location.address"
                             value={formData.location?.address || ''}
                             onChange={handleChange}
-                            className="w-full border border-black bg-transparent rounded-xl h-14 pl-5 pt-3 pb-1 text-base"
+                            className="w-full border-b-2 border-[#48aadf] bg-white rounded-lg h-14 pl-5 pt-3 pb-1 text-base"
                             onFocus={() => setIsFocused4(true)}
                             autoComplete='off'
                             onBlur={(e) => !e.target.value && setIsFocused4(false)} // Reset if input is empty
@@ -380,7 +387,7 @@ const ContactDetails = () => {
                             id="location.city"
                             value={formData.location?.city || ''}
                             onChange={handleChange}
-                            className="w-full border border-black bg-transparent rounded-xl h-14 pl-5 pt-3 pb-1 text-base"
+                            className="w-full border-b-2 border-[#48aadf] bg-white rounded-lg h-14 pl-5 pt-3 pb-1 text-base"
                             onFocus={() => setIsFocused5(true)}
                             autoComplete='off'
                             onBlur={(e) => !e.target.value && setIsFocused5(false)} // Reset if input is empty
@@ -402,7 +409,7 @@ const ContactDetails = () => {
                             id="location.state"
                             value={formData.location?.state || ''}
                             onChange={handleChange}
-                            className="w-full border border-black bg-transparent rounded-xl h-14 pl-5 pt-3 pb-1 text-base"
+                            className="w-full border-b-2 border-[#48aadf] bg-white rounded-lg h-14 pl-5 pt-3 pb-1 text-base"
                             onFocus={() => setIsFocused6(true)}
                             autoComplete='off'
                             onBlur={(e) => !e.target.value && setIsFocused6(false)} // Reset if input is empty
@@ -424,7 +431,7 @@ const ContactDetails = () => {
                             id="location.zip"
                             value={formData.location?.zip || ''}
                             onChange={handleChange}
-                            className="w-full border border-black bg-transparent rounded-xl h-14 pl-5 pt-3 pb-1 text-base"
+                            className="w-full border-b-2 border-[#48aadf] bg-white rounded-lg h-14 pl-5 pt-3 pb-1 text-base"
                             onFocus={() => setIsFocused7(true)}
                             autoComplete='off'
                             onBlur={(e) => !e.target.value && setIsFocused7(false)} // Reset if input is empty

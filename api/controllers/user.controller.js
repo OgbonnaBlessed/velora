@@ -1,6 +1,7 @@
 import bcryptjs from "bcryptjs"
 import { errorHandler } from "../utils/error.js"
 import User from "../models/user.model.js"
+import nodemailer from 'nodemailer'
 
 export const test = (req, res) => {
     res.json({ message: "API is working."})
@@ -212,12 +213,123 @@ export const bookings = async (req, res, next) => {
             },
             { new: true }
         );
+
+        // Helper to format time
+        const formatTime = (date) =>
+            new Intl.DateTimeFormat('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true,
+        }).format(new Date(date));
+
+        const formatDate = (dateString) => {
+            const options = { month: 'short', day: 'numeric', year: 'numeric' };
+            return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
+        };
+
+        const formatWord = (word) => {
+            return word.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+        };
+
+        // Helper to calculate total duration in minutes
+        const getFlightDuration = (flight) => {
+            const segments = flight.itineraries[0]?.segments;
+            const departureTime = new Date(segments[0].departure.at).getTime();
+            const arrivalTime = new Date(segments[segments.length - 1].arrival.at).getTime();
+            return (arrivalTime - departureTime) / (1000 * 60); // Convert to minutes
+        };
+
+        // Helper to calculate the arrival time by adding the flight duration to the departure time
+        const getArrivalDate = (flight) => {
+            const segments = flight.itineraries[0]?.segments;
+            const departureTime = new Date(segments[0].departure.at).getTime();
+            const flightDurationInMinutes = getFlightDuration(flight);
+            
+            // Adding flight duration to the departure time (in milliseconds)
+            const arrivalTime = departureTime + (flightDurationInMinutes * 60 * 1000); 
+            return new Date(arrivalTime);
+        };
+
+        const arrivalDate = getArrivalDate(flight);
+
+        // Send booking confirmation email
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.mail.yahoo.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
+            },
+            tls: {
+                rejectUnauthorized: false,
+            },
+        });
+
+        const mailOptions = {
+            from: `"Velora" <${process.env.EMAIL_USER}>`,
+            to: updatedUser.email,
+            subject: 'Booking Confirmation',
+            html: `
+            <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+                <div style="background-color: #f5f5f5; padding: 20px; text-align: center;">
+                    <h2 style="color: #48aadf;">Booking Confirmation</h2>
+                    <p style="font-size: 1.1em;">Thank you for booking with Velora!</p>
+                </div>
+                <div style="padding: 20px; background-color: #ffffff; border: 1px solid #ddd; border-radius: 5px; margin: 20px auto; max-width: 600px;">
+                    <p><strong>Dear ${formData.firstName} ${formData.lastName},</strong></p>
+                    <p>We are pleased to confirm your flight booking. Here are your flight details:</p>
+                    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Flight Number:</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">${flight.id}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Origin:</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                ${formatWord(flight.itineraries[0].segments[0].departure.cityName)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Destination:</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                ${formatWord(flight.itineraries[0].segments.slice(-1)[0].arrival.cityName)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Departure:</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                ${formatDate(flight.itineraries[0].segments[0].departure.at)} at ${formatTime(flight.itineraries[0].segments[0].departure.at)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Arrival:</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                ${formatDate(arrivalDate)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Total Price:</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                ${flight.price.currency} ${flight.price.total}
+                            </td>
+                        </tr>
+                    </table>
+                    <p>We wish you a pleasant journey! If you have any questions, please feel free to contact us.</p>
+                </div>
+                <div style="background-color: #48aadf; color: #ffffff; text-align: center; padding: 10px;">
+                    <p style="margin: 0;">&copy; 2024 Velora. All rights reserved.</p>
+                </div>
+            </div>`,
+        };
+
+        await transporter.sendMail(mailOptions);
     
         // Exclude password in response
         const { password, ...rest } = updatedUser._doc;
         res.status(200).json(rest);
     
-      } catch (error) {
+    } catch (error) {
         next(error);
-      }
-  };
+    }
+};

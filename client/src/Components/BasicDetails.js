@@ -136,7 +136,7 @@ const BasicDetails = () => {
     }, [updateUserSuccess, updateUserError]);
 
   return (
-    <div className='bg-blue-50 bg-opacity-50 flex-1 rounded-3xl relative p-14 flex flex-col w-full items-center gap-5'>
+    <div className='bg-blue-100 flex-1 rounded-3xl relative p-14 flex flex-col w-full items-center gap-5'>
         <div 
             className='bg-[#48aadf13] absolute left-3 top-3 p-2.5 rounded-full cursor-pointer text-[#48aadf]'
             onClick={() => navigate(-1)}
@@ -155,7 +155,7 @@ const BasicDetails = () => {
             <div className='flex flex-col gap-1'>
                 <h3 className='font-medium'>Full name</h3>
                 <div className='flex flex-col gap-3'>
-                    <div className='rounded-xl w-72 h-14 relative'>
+                    <div className='rounded-lg w-72 h-14 relative'>
                         <label
                             htmlFor="firstName"
                             className={`absolute left-5 transition-all duration-300 ease-in-out cursor-text ${
@@ -171,13 +171,13 @@ const BasicDetails = () => {
                             id="firstName"
                             value={formData.firstName ?? currentUser.firstName}
                             onChange={handleChange}
-                            className="w-full border border-black bg-transparent rounded-xl h-14 pl-5 pt-3 pb-1 text-base"
+                            className="w-full border-b-2 border-[#48aadf] bg-white rounded-lg h-14 pl-5 pt-3 pb-1 text-base"
                             onFocus={() => setIsFocused1(true)}
                             autoComplete='off'
                             onBlur={(e) => !e.target.value && setIsFocused1(false)} // Reset if input is empty
                         />
                     </div>
-                    <div className='rounded-xl w-72 h-14 relative'>
+                    <div className='rounded-lg w-72 h-14 relative'>
                         <label
                             htmlFor="lastName"
                             className={`absolute left-5 transition-all duration-300 ease-in-out cursor-text ${
@@ -193,7 +193,7 @@ const BasicDetails = () => {
                             id="lastName"
                             value={formData.lastName ?? currentUser.lastName}
                             onChange={handleChange}
-                            className="w-full border border-black bg-transparent rounded-xl h-14 pl-5 pt-3 pb-1 text-base"
+                            className="w-full border-b-2 border-[#48aadf] bg-white rounded-lg h-14 pl-5 pt-3 pb-1 text-base"
                             onFocus={() => setIsFocused2(true)}
                             autoComplete='off'
                             onBlur={(e) => !e.target.value && setIsFocused2(false)} // Reset if input is empty
@@ -203,7 +203,7 @@ const BasicDetails = () => {
             </div>
             <div className='flex flex-col gap-1'>
                 <h3 className='font-semibold'>About you</h3>
-                <div className='flex flex-col border border-black rounded-xl p-3 w-72'>
+                <div className='flex flex-col border-b-2 border-[#48aadf] bg-white rounded-lg p-3 w-72'>
                     <p className='text-sm'>Bio</p>
                     <textarea 
                         id="bio" 
@@ -217,7 +217,7 @@ const BasicDetails = () => {
             <div className='flex flex-col gap-1'>
                 <h3 className='font-semibold'>Date of Birth</h3>
                 <div className='flex items-center w-72 justify-between'>
-                    <div className='border border-black py-2 px-3 rounded-xl flex flex-col gap-1'>
+                    <div className='border-b-2 border-[#48aadf] bg-white py-2 px-3 rounded-lg flex flex-col gap-1'>
                         <p className='text-[0.7rem]'>Month</p>
                         <input 
                             type="text"
@@ -236,7 +236,7 @@ const BasicDetails = () => {
                             className='bg-transparent w-16'
                         />
                     </div>
-                    <div className='border border-black py-2 px-3 rounded-xl flex flex-col gap-1'>
+                    <div className='border-b-2 border-[#48aadf] bg-white py-2 px-3 rounded-lg flex flex-col gap-1'>
                         <p className='text-[0.7rem]'>Day</p>
                         <input 
                             type="text"
@@ -255,7 +255,7 @@ const BasicDetails = () => {
                             className='bg-transparent w-16'
                         />
                     </div>
-                    <div className='border border-black py-2 px-3 rounded-xl flex flex-col gap-1'>
+                    <div className='border-b-2 border-[#48aadf] bg-white py-2 px-3 rounded-lg flex flex-col gap-1'>
                         <p className='text-[0.7rem]'>Year</p>
                         <input 
                             type="text"
@@ -351,7 +351,7 @@ const BasicDetails = () => {
                         id="needs"
                         value={formData.needs ?? "Not provided"} // Set the value to reflect the current state
                         onChange={(e) => handleChange(e)} // Handle state updates
-                        className='border border-black pt-5 pb-1 px-3 pr-5 bg-transparent rounded-md w-72 text-black appearance-none text-base cursor-pointer'
+                        className='border-b-2 border-[#48aadf] bg-white pt-5 pb-1 px-3 pr-5 bg-transparent rounded-md w-72 text-black appearance-none text-base cursor-pointer'
                     >
                         <option value="Not provided">Not provided</option>
                         <option value="No, I don't have accessibility needs">No, I don't have accessibility needs</option>

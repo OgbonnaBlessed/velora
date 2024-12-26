@@ -104,98 +104,101 @@ const VerifyUserEmail = () => {
     }, [modalMessage]);
 
   return (
-    <>
-        <div className='bg-white fixed w-full h-full inset-0 z-20 flex justify-center'>
-            <div className='pt-16 w-[30rem] max-w-[90%] flex flex-col gap-5'>
-                <div 
-                    className='bg-[#48aadf13] absolute left-3 top-3 p-2.5 rounded-full cursor-pointer text-[#48aadf]'
-                    onClick={() => {
-                        navigate(-1);
-                    }}
-                >
-                    <ArrowLeft />
-                </div>
+    <div className='bg-white fixed w-full h-full inset-0 z-[10000] flex justify-center'>
+        <div className='pt-16 w-[30rem] max-w-[90%] flex flex-col gap-5'>
+            <div 
+                className='bg-[#48aadf13] absolute left-3 top-3 p-2.5 rounded-full cursor-pointer text-[#48aadf]'
+                onClick={() => {
+                    navigate(-1);
+                }}
+            >
+                <ArrowLeft />
+            </div>
 
-                <div className='flex items-center justify-center gap-1 w-full mb-5'>
-                    <img 
-                        src={`${process.env.PUBLIC_URL}/images/logo.png`} 
-                        alt="Velora logo" 
-                        className='w-14 bg-black p-1 rounded-md'
-                    />
-                </div>
+            <div className='flex items-center justify-center gap-1 w-full mb-5'>
+                <img 
+                    src={`${process.env.PUBLIC_URL}/images/logo.png`} 
+                    alt="Velora logo" 
+                    className='w-14 bg-black p-1 rounded-br-xl'
+                />
+            </div>
 
-                <>
-                    <h1 className='text-2xl font-semibold'>Let's confirm your email</h1>
-                    <p className='text-sm'>
-                        To continue, enter the secure code we sent to <b>{currentUser.email}</b>. Check junk mail if it's not in your inbox
-                    </p>
-                    <div className='rounded-xl w-full h-14 relative'>
-                        <label
-                            htmlFor="token"
-                            className={`absolute left-5 transition-all duration-300 ease-in-out cursor-text ${
-                            isFocused2
+            <>
+                <h1 className='text-2xl font-semibold'>Let's confirm your email</h1>
+                <p className='text-sm'>
+                    To continue, enter the secure code we sent to <b>{currentUser.email}</b>. Check junk mail if it's not in your inbox
+                </p>
+                <div className='rounded-xl w-full h-14 relative'>
+                    <label
+                        htmlFor="token"
+                        className={`absolute left-5 transition-all duration-500 ease-in-out cursor-text 
+                            ${isFocused2
                                 ? 'top-[0.05rem] scale-75 text-[#48aadf] transform -translate-x-2' // Label moves up and scales down when focused
                                 : 'top-1/2 transform -translate-y-1/2 text-black'
-                            }`}
-                        >
-                            4-digit code
-                        </label>
-                        <input
-                            type="number"
-                            id="token"
-                            value={otp}
-                            className="w-full border border-black rounded-xl h-14 pl-5 pt-3 pb-1 text-base"
-                            onFocus={() => setIsFocused2(true)}
-                            onChange={handleOtpChange}
-                            autoComplete='off'
-                            onBlur={(e) => !e.target.value && setIsFocused2(false)} // Reset if input is empty
-                        />
-                    </div>
-                    <p className={`text-[0.7rem] text-red-500 transform transition-all duration-700 ease-in-out ${
-                            modalMessage 
-                                ? 'opacity-1 translate-y-0 pointer-events-auto' 
-                                : 'opacity-0 -translate-y-5 pointer-events-none'
                             }`
                         }
                     >
-                        {modalMessage}
-                    </p>
-                    <button
-                        disabled={loading}
-                        className={`w-full py-3 text-white rounded-full border-none outline-none flex items-center justify-center gap-2 transition-all duration-300 ease-in-out
-                            ${loading ? 'bg-[#48aadf96] cursor-not-allowed' : 'bg-[#48aadf] cursor-pointer'}`
-                        }
-                        onClick={handleVerifyCode}
-                    >
-                    {loading 
-                        ? <SyncLoader 
+                        4-digit code
+                    </label>
+                    <input
+                        type="number"
+                        id="token"
+                        value={otp}
+                        className="w-full shadow shadow-gray-400 rounded-xl h-14 pl-5 pt-3 pb-1 text-base"
+                        onFocus={() => setIsFocused2(true)}
+                        onChange={handleOtpChange}
+                        autoComplete='off'
+                        onBlur={(e) => !e.target.value && setIsFocused2(false)} // Reset if input is empty
+                    />
+                </div>
+                <p 
+                    className={`text-[0.7rem] text-red-500 transform transition-all duration-700 ease-in-out 
+                        ${modalMessage 
+                            ? 'opacity-1 translate-y-0 pointer-events-auto' 
+                            : 'opacity-0 -translate-y-5 pointer-events-none'
+                        }`
+                    }
+                >
+                    {modalMessage}
+                </p>
+                <button
+                    disabled={loading}
+                    className={`w-full h-12 text-white rounded-full border-none outline-none flex items-center justify-center gap-2 transition-all duration-300 ease-in-out font-semibold
+                        ${loading 
+                            ? 'bg-[#48aadf96] cursor-not-allowed' 
+                            : 'bg-[#48aadf] cursor-pointer'
+                        }`
+                    }
+                    onClick={handleVerifyCode}
+                >
+                {loading 
+                    ?   <SyncLoader 
                             color="#fff" // Customize the color
                             loading={loading} 
                             size={7} // Customize the size
                             margin={2} // Customize the margin between circles
-                            />
-                        : 'Continue'
-                    }
+                        />
+                    : 'Continue'
+                }
+                </button>
+                {canResend 
+                ?  <button
+                        className='w-full rounded-full py-3 cursor-pointer font-semibold hover:bg-blue-100 text-[#48aadf] transition-all duration-300 ease-in-out'
+                        onClick={() => {
+                            setTimer(30); // Reset the timer to 30s after successful resend
+                            handleResendCode();
+                        }}
+                    >
+                        Resend another secured code
                     </button>
-                    {canResend 
-                    ?  <button
-                            className='w-full rounded-full py-3 cursor-pointer font-semibold hover:bg-[#48aadf13] text-[#48aadf] transition-all duration-300 ease-in-out'
-                            onClick={() => {
-                                setTimer(30); // Reset the timer to 30s after successful resend
-                                handleResendCode();
-                            }}
-                        >
-                            Resend another secured code
-                        </button>
-                    :   <p className='text-center font-semibold'>
-                            Your can request for a new code in {timer}s
-                        </p>
-                    }
-                </>
-            </div>
-
+                :   <p className='text-center font-semibold'>
+                        Your can request for a new code in {timer}s
+                    </p>
+                }
+            </>
         </div>
-    </>
+
+    </div>
   )
 }
 

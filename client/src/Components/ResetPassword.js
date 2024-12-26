@@ -84,7 +84,7 @@ const ResetPassword = () => {
     }, []);
 
   return (
-    <div className='bg-white fixed w-full h-full inset-0 z-20 flex justify-center'>
+    <div className='bg-white fixed w-full h-full inset-0 z-[10000] flex justify-center'>
         <div className='pt-16 w-[30rem] max-w-[90%] flex flex-col gap-5'>
             <div 
                 className='bg-[#48aadf13] absolute left-3 top-3 p-2.5 rounded-full cursor-pointer text-[#48aadf]'
@@ -99,7 +99,7 @@ const ResetPassword = () => {
                 <img 
                     src={`${process.env.PUBLIC_URL}/images/logo.png`} 
                     alt="Velora logo" 
-                    className='w-14 bg-black p-1 rounded-md'
+                    className='w-14 bg-black p-1 rounded-br-xl'
                 />
             </div>
             <h1 className='text-3xl font-semibold'>Change Password</h1>
@@ -107,11 +107,12 @@ const ResetPassword = () => {
                 <div className='relative text-black'>
                 <label
                     htmlFor="new-password"
-                    className={`absolute left-5 transition-all duration-300 ease-in-out cursor-text ${
-                    isFocused3
-                        ? 'top-[0.01rem] scale-75 text-[#48aadf] transform -translate-x-3' // Label moves up and scales down when focused
-                        : 'top-1/2 transform -translate-y-1/2 text-black'
-                    }`}
+                    className={`absolute left-5 transition-all duration-300 ease-in-out cursor-text 
+                        ${isFocused3
+                            ? 'top-[0.01rem] scale-75 text-[#48aadf] transform -translate-x-3' // Label moves up and scales down when focused
+                            : 'top-1/2 transform -translate-y-1/2 text-black'
+                        }`
+                    }
                 >
                     New password
                 </label>
@@ -125,95 +126,104 @@ const ResetPassword = () => {
                     }}
                     onBlur={(e) => !e.target.value && setIsFocused3(false)} // Reset if input is empty
                     onChange={handlePasswordChange} 
-                    className="w-full border border-black rounded-xl h-14 pl-5 pt-3 pb-1 text-base"
+                    className="w-full shadow shadow-gray-400 rounded-xl h-14 pl-5 pt-3 pb-1 text-base"
                 />
                 <span 
                     className='absolute right-4 top-1/2 transform -translate-y-1/2 text-lg cursor-pointer' 
                     onClick={() => setNewPasswordVisible(!newPasswordVisible)}>
-                    { newPasswordVisible ? <EyeClosedIcon className='p-0.5'/> : <EyeIcon className='p-0.5'/> }
+                    { newPasswordVisible 
+                        ? <EyeClosedIcon className='p-0.5'/> 
+                        : <EyeIcon className='p-0.5'/> 
+                    }
                 </span>
                 </div>
 
                 {/* Password Strength Indicator */}
                 <div 
                     className={`mt-2 transition-all duration-700 ease-in-out overflow-hidden 
-                    ${password ? 'h-36' : 'h-0'}`
+                        ${password ? 'h-36' : 'h-0'}`
                     }
                 >
                     <p 
-                    className={`text-sm 
-                        ${
-                        strength === "weak" ? "text-red-500" 
-                        : strength === "good" ? "text-[#f89a00]" 
-                        : "text-green-500"
-                        }`
+                        className={`text-sm 
+                            ${
+                                strength === "weak" ? "text-red-500" 
+                                : strength === "good" ? "text-[#f89a00]" 
+                                : "text-green-500"
+                            }`
                         }
                     >
-                    Password Strength: {strength.charAt(0).toUpperCase() + strength.slice(1)}
+                        Password Strength: {strength.charAt(0).toUpperCase() + strength.slice(1)}
                     </p>
                     <div className="flex gap-1 mt-2">
                     <div 
                         className={`h-1 w-14 rounded transition-colors duration-300 ease-in-out 
-                        ${strengthConditions.length ? "bg-[#48aadf]" : "bg-gray-300"}`} 
+                            ${strengthConditions.length ? "bg-[#48aadf]" : "bg-gray-300"}`
+                        } 
                     />
                     <div 
                         className={`h-1 w-14 rounded transition-colors duration-300 ease-in-out 
-                        ${strengthConditions.uppercase ? "bg-[#48aadf]" : "bg-gray-300"}`} 
+                            ${strengthConditions.uppercase ? "bg-[#48aadf]" : "bg-gray-300"}`
+                        } 
                     />
                     <div 
                         className={`h-1 w-14 rounded transition-colors duration-300 ease-in-out 
-                        ${strengthConditions.lowercase ? "bg-[#48aadf]" : "bg-gray-300"}`} 
+                            ${strengthConditions.lowercase ? "bg-[#48aadf]" : "bg-gray-300"}`
+                        } 
                     />
                     <div 
                         className={`h-1 w-14 rounded transition-colors duration-300 ease-in-out 
-                        ${strengthConditions.number ? "bg-[#48aadf]" : "bg-gray-300"}`} 
+                            ${strengthConditions.number ? "bg-[#48aadf]" : "bg-gray-300"}`
+                        } 
                     />
                     <div 
                         className={`h-1 w-14 rounded transition-colors duration-300 ease-in-out 
-                        ${strengthConditions.specialChar ? "bg-[#48aadf]" : "bg-gray-300"}`} 
+                            ${strengthConditions.specialChar ? "bg-[#48aadf]" : "bg-gray-300"}`
+                        } 
                     />
                     </div>
                     <ul className="mt-2 text-sm font-serif">
-                    <li
-                        className={`transition-colors duration-300 ease-in-out ${
-                        strengthConditions.length ? "text-[#1158a6]" : "text-gray-500"
-                        }`}
-                    >
-                        At least 8 characters
-                    </li>
-                    <li
-                        className={`transition-colors duration-300 ease-in-out ${
-                        strengthConditions.uppercase ? "text-[#1158a6]" : "text-gray-500"
-                        }`}
-                    >
-                        At least one uppercase letter
-                    </li>
-                    <li
-                        className={`transition-colors duration-300 ease-in-out ${
-                        strengthConditions.lowercase ? "text-[#1158a6]" : "text-gray-500"
-                        }`}
-                    >
-                        At least one lowercase letter
-                    </li>
-                    <li
-                        className={`transition-colors duration-300 ease-in-out ${
-                        strengthConditions.number ? "text-[#1158a6]" : "text-gray-500"
-                        }`}
-                    >
-                        At least one number
-                    </li>
-                    <li
-                        className={`transition-colors duration-300 ease-in-out ${
-                        strengthConditions.specialChar ? "text-[#1158a6]" : "text-gray-500"
-                        }`}
-                    >
-                        At least one special character
-                    </li>
+                        <li
+                            className={`transition-colors duration-300 ease-in-out 
+                                ${strengthConditions.length ? "text-[#1158a6]" : "text-gray-500"}`
+                            }
+                        >
+                            At least 8 characters
+                        </li>
+                        <li
+                            className={`transition-colors duration-300 ease-in-out 
+                                ${strengthConditions.uppercase ? "text-[#1158a6]" : "text-gray-500"}`
+                            }
+                        >
+                            At least one uppercase letter
+                        </li>
+                        <li
+                            className={`transition-colors duration-300 ease-in-out 
+                                ${strengthConditions.lowercase ? "text-[#1158a6]" : "text-gray-500"}`
+                            }
+                        >
+                            At least one lowercase letter
+                        </li>
+                        <li
+                            className={`transition-colors duration-300 ease-in-out 
+                                ${strengthConditions.number ? "text-[#1158a6]" : "text-gray-500"}`
+                            }
+                        >
+                            At least one number
+                        </li>
+                        <li
+                            className={`transition-colors duration-300 ease-in-out 
+                                ${strengthConditions.specialChar ? "text-[#1158a6]" : "text-gray-500"}`
+                            }
+                        >
+                            At least one special character
+                        </li>
                     </ul>
                 </div>
 
-                <p className={`text-[0.7rem] text-red-500 transform transition-all duration-700 ease-in-out ${
-                        modalMessage 
+                <p 
+                    className={`text-[0.7rem] text-red-500 transform transition-all duration-700 ease-in-out 
+                        ${modalMessage 
                             ? 'opacity-1 translate-y-0 pointer-events-auto' 
                             : 'opacity-0 -translate-y-5 pointer-events-none'
                         }`
@@ -225,9 +235,11 @@ const ResetPassword = () => {
                 <button 
                     onClick={handleResetPassword} 
                     disabled={ strength !== "strong" }
-                    className={`text-white w-full font-medium py-3 px-5 rounded-full outline-none mt-3 text-sm transition-all duration-300 ease-in-out 
-                    ${strength !== 'strong' ? 'bg-[#48aadf96] cursor-not-allowed' : 'bg-[#48aadf] cursor-pointer'} 
-                    shrink-button`
+                    className={`text-white w-full h-12 rounded-full outline-none mt-3 font-semibold transition-all duration-300 ease-in-out shrink-button
+                        ${strength !== 'strong' 
+                            ? 'bg-[#48aadf96] cursor-not-allowed' 
+                            : 'bg-[#48aadf] cursor-pointer'
+                        }`
                     }
                 >
                     Reset password

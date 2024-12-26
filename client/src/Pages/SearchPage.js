@@ -16,6 +16,7 @@ function SearchPage() {
   const [error, setError] = useState(null);
   const [errors, setErrors] = useState({ origin: '', destination: '' });
   const [loading, setLoading] = useState(false);
+  const [triggerSearch, setTriggerSearch] = useState(false); // New flag
   const [formData, setFormData] = useState({
     origin: '',
     destination: '',
@@ -35,15 +36,17 @@ function SearchPage() {
         adults: location.state.adults,
         rooms: location.state.rooms,
       });
+      setTriggerSearch(true); // Trigger search on mount when data is passed
     }
   }, [location.state]);
   
   useEffect(() => {
-    if (formData.origin && formData.destination) {
+    if (triggerSearch && formData.origin && formData.destination) {
       handleSubmit();
+      setTriggerSearch(false); // Reset the flag after submission
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [triggerSearch]);
 
   const handleDateChange = ([startDate, endDate]) => {
     setFormData((prev) => ({
