@@ -469,3 +469,198 @@ export const destinations = [
     "country": "Italy"
   },
 ]
+
+export const explore = [
+  {
+    rating: 9.4,
+    tag: "Exceptional",
+    count: 245,
+    name: "Brasada Ranch",
+    location: "Powell Butte",
+    newPrice: "$541",
+    oldPrice: "$682",
+    pricePerNight: "$271",
+    discount: "21%",
+    images: [
+      `${process.env.PUBLIC_URL}/images/explore/hotel1.jpg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel2.jpg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel3.jpg`,
+    ]
+  },
+  {
+    rating: 9.4,
+    tag: "Exceptional",
+    count: 712,
+    name: "Teton Valley Resort",
+    location: "Victor",
+    newPrice: "$408",
+    oldPrice: "$446",
+    pricePerNight: "$164",
+    discount: "8%",
+    images: [
+      `${process.env.PUBLIC_URL}/images/explore/hotel4.jpg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel5.jpg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel6.jpeg`,
+    ]
+  },
+  {
+    rating: 9.2,
+    tag: "Wonderful",
+    count: 96,
+    name: "Ocean Villa at Turtle Bay",
+    location: "Kahuku",
+    newPrice: "$1,992",
+    oldPrice: "$2,160",
+    pricePerNight: "$756",
+    discount: "8%",
+    images: [
+      `${process.env.PUBLIC_URL}/images/explore/hotel7.jpeg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel8.jpeg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel9.jpeg`,
+    ]
+  },
+  {
+    rating: 9.2,
+    tag: "Wonderful",
+    count: 621,
+    name: "Zion Mountain Ranch",
+    location: "Mount Carmel",
+    newPrice: "$461",
+    oldPrice: "$507",
+    pricePerNight: "$206",
+    discount: "9%",
+    images: [
+      `${process.env.PUBLIC_URL}/images/explore/hotel10.jpeg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel11.jpeg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel12.jpg`,
+    ]
+  },
+  {
+    rating: 10,
+    tag: "Exceptional",
+    count: 6,
+    name: "Clydescale Outpost",
+    location: "Whitefish",
+    newPrice: "$1,077",
+    oldPrice: "$1,177",
+    pricePerNight: "$449",
+    discount: "8%",
+    images: [
+      `${process.env.PUBLIC_URL}/images/explore/hotel13.jpg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel4.jpg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel5.jpg`,
+    ]
+  },
+  {
+    rating: 9.2,
+    tag: "Wonderful",
+    count: 226,
+    name: "AutoCamp Cape Cod",
+    location: "Falmouth",
+    newPrice: "$459",
+    oldPrice: "$497",
+    pricePerNight: "$170",
+    discount: "8%",
+    images: [
+      `${process.env.PUBLIC_URL}/images/explore/hotel16.jpg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel17.jpg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel18.jpg`,
+    ]
+  },
+  {
+    rating: 9.6,
+    tag: "Exceptional",
+    count: 161,
+    name: "Asheville River Cabins",
+    location: "Arden",
+    newPrice: "$463",
+    oldPrice: "$499",
+    pricePerNight: "$165",
+    discount: "7%",
+    images: [
+      `${process.env.PUBLIC_URL}/images/explore/hotel19.jpg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel20.jpg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel21.jpg`,
+    ]
+  },
+  {
+    rating: 9.4,
+    tag: "Exceptional",
+    count: 45,
+    name: "Cottages at Bay Harbor",
+    location: "Bay Harbor",
+    newPrice: "$961",
+    oldPrice: "$1,045",
+    pricePerNight: "$395",
+    discount: "8%",
+    images: [
+      `${process.env.PUBLIC_URL}/images/explore/hotel22.jpg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel23.jpg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel24.jpg`,
+    ]
+  },
+  {
+    rating: 9.4,
+    tag: "Exceptional",
+    count: 75,
+    name: "Dungeness Bay Cottages",
+    location: "Sequim",
+    newPrice: "$510",
+    oldPrice: "$555",
+    pricePerNight: "$181",
+    discount: "8%",
+    images: [
+      `${process.env.PUBLIC_URL}/images/explore/hotel25.jpg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel26.jpg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel27.jpg`,
+    ]
+  },
+  {
+    rating: 9.4,
+    tag: "Exceptional",
+    count: 438,
+    name: "Tanque Verde Ranch",
+    location: "Tucson",
+    newPrice: "$607",
+    oldPrice: "$662",
+    pricePerNight: "$271",
+    discount: "9%",
+    images: [
+      `${process.env.PUBLIC_URL}/images/explore/hotel28.jpg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel29.jpg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel30.jpg`,
+    ]
+  },
+  {
+    rating: 9.8,
+    tag: "Exceptional",
+    count: 18,
+    name: "Y.O. Ranch Headquarters",
+    location: "Mountain Home",
+    newPrice: "$768",
+    oldPrice: "$832",
+    pricePerNight: "$362",
+    discount: "21%",
+    images: [
+      `${process.env.PUBLIC_URL}/images/explore/hotel31.jpg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel32.jpg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel33.jpg`,
+    ]
+  },
+  {
+    rating: 9.8,
+    tag: "Exceptional",
+    count: 35,
+    name: "Eureka Sunset Cabins",
+    location: "Eureka Springs",
+    newPrice: "$377",
+    oldPrice: "$409",
+    pricePerNight: "$165",
+    discount: "9%",
+    images: [
+      `${process.env.PUBLIC_URL}/images/explore/hotel34.jpg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel35.jpg`,
+      `${process.env.PUBLIC_URL}/images/explore/hotel36.jpg`,
+    ]
+  },
+]

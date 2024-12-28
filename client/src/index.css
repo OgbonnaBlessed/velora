@@ -189,7 +189,8 @@ input[type="number"] {
   -ms-overflow-style: none;
 }
 
-.stay-outer-container {
+.stay-outer-container,
+.explore-outer-container {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -197,22 +198,25 @@ input[type="number"] {
   position: relative;
 }
 
-.stay-inner-container {
+.stay-inner-container,
+.explore-inner-container {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: 1.18rem;
+  gap: 1rem;
   padding: 5px 0;
   outline: none;
 }
 
 .stay-outer-container .stay-inner-container,
-.destination-outer-container .destination-inner-container {
+.destination-outer-container .destination-inner-container,
+.explore-outer-container .explore-inner-container {
   overflow-x: auto;
   scrollbar-width: none;
 }
 
 .stay-outer-container .stay-inner-container::-webkit-scrollbar,
-.destination-outer-container .destination-inner-container::-webkit-scrollbar {
+.destination-outer-container .destination-inner-container::-webkit-scrollbar,
+.explore-outer-container .explore-inner-container::-webkit-scrollbar {
   display: none;
 }
 
@@ -262,6 +266,60 @@ input[type="number"] {
   height: 60%;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
+}
+
+.explore-container {
+  width: 17rem;
+  height: 25rem;
+  border-radius: 20px;
+  cursor: pointer;
+  position: relative;
+}
+
+.explore-container .img-box {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  overflow-x: auto;
+  outline: none;
+  position: relative;
+}
+
+.explore-container .angle-left {
+  position: absolute;
+  font-size: 2rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 6px;
+  color: white;
+  border-radius: 50%;
+  z-index: 2;
+  cursor: pointer;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+}
+
+.explore-container .angle-right {
+  position: absolute;
+  font-size: 2rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 6px;
+  color: white;
+  border-radius: 50%;
+  z-index: 2;
+  cursor: pointer;
+  right: 0;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}
+
+.explore-container .img-box img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
 }
 
 .icon_button#former_slide,
