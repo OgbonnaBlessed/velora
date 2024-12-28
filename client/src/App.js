@@ -3,6 +3,7 @@ import { HashRouter as Router, useLocation } from 'react-router-dom';
 import AnimatedRoutes from './Components/AnimatedRoutes';
 import Navbar from './Components/Navbar';
 import Footer from './Components/Footer';
+import Help from './Components/Help';
 
 const App = () => {
   const location = useLocation();
@@ -29,6 +30,7 @@ const App = () => {
 // Wrap App in Router to allow useLocation to work
 const AppWithRouter = () => (
   <Router>
+    <Help/>
     <App />
   </Router>
 );

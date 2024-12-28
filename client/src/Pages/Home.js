@@ -331,7 +331,7 @@ const Home = () => {
                 <div className='flex flex-col gap-3'>
                   <div className='flex flex-col gap-1'>
                     <div className='flex gap-2 items-center text-sm font-semibold'>
-                      <div className='bg-blue-600 rounded-[0.25rem] px-2 py-1 text-white font-semibold text-sm'>
+                      <div className='bg-emerald-600 rounded-[0.25rem] px-2 py-1 text-white font-semibold text-sm'>
                         {explore.rating}
                       </div>
                       <div>
