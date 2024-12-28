@@ -79,7 +79,7 @@ const Flights = () => {
             {/* Underline Indicator */}
             <div
               ref={indicatorRef}
-              className="absolute bottom-0 h-[2px] bg-[#48aadf] rounded-full transition-all duration-300 ease-in-out"
+              className="absolute bottom-0 h-[0.27rem] bg-[#48aadf] rounded-t-full transition-all duration-300 ease-in-out"
             />
           </div>
           <div 
@@ -97,8 +97,9 @@ const Flights = () => {
                 className={`bg-white shadow shadow-gray-300 rounded-xl flex flex-col absolute top-[2.8rem] font-serif text-nowrap py-3 transform left-1/2 -translate-x-1/2 text-sm transition-all duration-300 ease-in-out z-20
                   ${flightClassModal 
                     ? 'translate-y-0 opacity-1 pointer-events-auto' 
-                    : '-translate-y-5 opacity-0 pointer-events-none'}`
-                  }
+                    : '-translate-y-5 opacity-0 pointer-events-none'
+                  }`
+                }
               >
                 <p 
                   className='px-5 py-2 text-black hover:bg-gray-100 flex items-center gap-4 cursor-pointer transition-all duration-300 ease-in-out'

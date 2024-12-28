@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice';
 import { SyncLoader } from 'react-spinners';
+import { countries } from '../Data/Locations';
 
 const Preferences = () => {
     const { currentUser } = useSelector((state) => state.user);
@@ -141,12 +142,11 @@ const Preferences = () => {
                         id="preference.country"
                         value={formData.preference?.country || ''} // Set the value to reflect the current state
                         onChange={handleChange} // Handle state updates
-                        className='w-full border border-black pt-5 pb-1 px-3 pr-5 bg-transparent rounded-md text-black appearance-none text-base cursor-pointer'
+                        className='w-full shadow shadow-gray-400 pt-6 pb-3 px-3 pr-5 bg-transparent rounded-md text-black appearance-none text-base cursor-pointer'
                     >
-                        <option value="United state">United state</option>
-                        <option value="Canada">Canada</option>
-                        <option value="Nigeria">Nigeria</option>
-                        <option value="United kingdom">United kingdom</option>
+                        {countries.map((country, index) => (
+                            <option key={index} value={country.name}>{country.name}</option>
+                        ))}
                     </select>
                 </div>
                 <div className='relative w-full'>
@@ -161,7 +161,7 @@ const Preferences = () => {
                         id="preference.seatPreference"
                         value={formData.preference?.seatPreference || ''} // Set the value to reflect the current state
                         onChange={handleChange} // Handle state updates
-                        className='w-full border border-black pt-5 pb-1 px-3 pr-5 bg-transparent rounded-md text-black appearance-none text-base cursor-pointer'
+                        className='w-full shadow shadow-gray-400 pt-6 pb-3 px-3 pr-5 bg-transparent rounded-md text-black appearance-none text-base cursor-pointer'
                     >
                         <option value="No preference">No preference</option>
                         <option value="Window">Window</option>
@@ -180,7 +180,7 @@ const Preferences = () => {
                         id="preference.specialAssisstance"
                         value={formData.preference?.specialAssisstance || ''} // Set the value to reflect the current state
                         onChange={handleChange} // Handle state updates
-                        className='w-full border border-black pt-5 pb-1 px-3 pr-5 bg-transparent rounded-md text-black appearance-none text-base cursor-pointer'
+                        className='w-full shadow shadow-gray-400 pt-6 pb-3 px-3 pr-5 bg-transparent rounded-md text-black appearance-none text-base cursor-pointer'
                     >
                         <option value="None">None</option>
                         <option value="Blind">Blind</option>

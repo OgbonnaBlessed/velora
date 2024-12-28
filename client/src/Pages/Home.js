@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Stays from '../Components/Services/Stays';
 import Flights from '../Components/Services/Flights';
 import Packages from '../Components/Services/Packages';
@@ -6,10 +6,15 @@ import Things from '../Components/Services/Things';
 import Cars from '../Components/Services/Cars';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveTab } from '../redux/tab/tabSlice';
+import { destinations, favorites } from '../Data/Locations'
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { BlurhashCanvas } from 'react-blurhash';
 
 const Home = () => {
   const dispatch = useDispatch()
   const activeTab = useSelector((state) => state.tab.activeTab); // Get the active tab from Redux
+  const [favoritesLoadedImages, setFavoritesLoadedImages] = useState({});
+  const [destinationsLoadedImages, setDestinationsLoadedImages] = useState({});
   const indicatorRef = useRef();
   const tabContainerRef = useRef();
 
@@ -31,8 +36,54 @@ const Home = () => {
     }
   }, [activeTab]);
 
+  const stayContainerRef = useRef(null);
+  const destinationContainerRef = useRef(null);
+
+  const [stayScroll, setStayScroll] = useState({ prev: false, next: true });
+  const [destinationScroll, setDestinationScroll] = useState({ prev: false, next: true });
+
+  const handleScroll = (containerRef, setScrollState) => {
+    const container = containerRef.current;
+    const maxScrollLeft = container.scrollWidth - container.clientWidth;
+
+    setScrollState({
+      prev: container.scrollLeft > 0,
+      next: container.scrollLeft < maxScrollLeft,
+    });
+  };
+
+  const scrollContainer = (containerRef, direction) => {
+    const container = containerRef.current;
+    const scrollAmount = container.clientWidth * direction;
+    container.scrollBy({ left: scrollAmount, behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    const handleResizeAndScroll = () => {
+      handleScroll(stayContainerRef, setStayScroll);
+      handleScroll(destinationContainerRef, setDestinationScroll);
+    };
+
+    window.addEventListener("resize", handleResizeAndScroll);
+    handleResizeAndScroll();
+
+    return () => {
+      window.removeEventListener("resize", handleResizeAndScroll);
+    };
+  }, []);
+
+  const handleImageLoad = (index, type) => {
+    if (type === "favorites") {
+      setFavoritesLoadedImages((prev) => ({ ...prev, [index]: true }));
+    } else if (type === "destinations") {
+      setDestinationsLoadedImages((prev) => ({ ...prev, [index]: true }));
+    }
+  };
+
   return (
-    <div className="flex flex-col gap-5 px-4 sm:px-6 lg:px-20 pt-36 pb-10">
+    <div className="flex flex-col gap-16 px-4 sm:px-6 lg:px-20 pt-36 pb-10">
+
+      {/* Home Navigation Component */}
       <div className="border rounded-2xl w-full">
         <div
           className="flex justify-center items-center border-b text-nowrap overflow-x-auto remove-scroll-bar font-semibold text-[#000000e3] text-[0.9rem] relative font-Grotesk"
@@ -72,7 +123,7 @@ const Home = () => {
           {/* Underline Indicator */}
           <div
             ref={indicatorRef}
-            className="absolute bottom-0 h-[2px] bg-[#48aadf] rounded-full transition-all duration-300 ease-in-out"
+            className="absolute bottom-0 h-[0.27rem] bg-[#48aadf] rounded-t-full transition-all duration-300 ease-in-out"
           />
         </div>
 
@@ -82,6 +133,137 @@ const Home = () => {
         {activeTab === 'cars' && <Cars />}
         {activeTab === 'packages' && <Packages />}
         {activeTab === 'things-to-do' && <Things />}
+      </div>
+
+      {/* Favorite Stays */}
+      <div className='stay-outer-container'>
+        <h1 className='md:text-3xl text-xl font-semibold'>Discover your new favorite stay</h1>
+
+          {/* Previous Icon */}
+          {stayScroll.prev && (
+            <div
+              className="slide_button back"
+              onClick={() => scrollContainer(stayContainerRef, -1)}
+            >
+              <ChevronLeft />
+            </div>
+          )}
+
+          {/* Images Container */}
+          <div 
+            className="stay-inner-container"
+            ref={stayContainerRef} 
+            onScroll={() => handleScroll(stayContainerRef, setStayScroll)}
+          >
+            {favorites.map((favorite, i) => (
+              <div
+                key={i}
+                className="stay-container"
+              >
+                {/* Blurhash Placeholder */}
+                {!favoritesLoadedImages[i] && (
+                  <BlurhashCanvas
+                    hash={favorite.blurhash}
+                    width={333}
+                    height={320}
+                    punch={1}
+                    className="absolute inset-0 w-full h-full blurhash-fade"
+                  />
+                )}
+
+                {/* Full Image */}
+                <img
+                  src={favorite.img}
+                  alt={favorite.name}
+                  className={`object-cover transition-all duration-500 
+                    ${favoritesLoadedImages[i] ? 'opacity-100' : 'opacity-0'}`
+                  }
+                  onLoad={() => handleImageLoad(i, "favorites")}
+                />
+                <p className="absolute font-semibold bottom-5 left-4 text-white text-shadow-md">
+                  {favorite.name}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Next Icon */}
+          {stayScroll.next && (
+            <div
+              className="slide_button next"
+              onClick={() => scrollContainer(stayContainerRef, 1)}
+            >
+              <ChevronRight />
+            </div>
+          )}
+      </div>
+
+      {/* Destination Stays */}
+      <div className='destination-outer-container'>
+        <h1 className='md:text-3xl text-xl font-semibold'>Explore stays in trending destinations</h1>
+
+          {/* Previous Icon */}
+          {destinationScroll.prev && (
+            <div
+              className="change_button before"
+              onClick={() => scrollContainer(destinationContainerRef, -1)}
+            >
+              <ChevronLeft />
+            </div>
+          )}
+
+          {/* Images Container */}
+          <div
+            className="destination-inner-container"
+            ref={destinationContainerRef} 
+            onScroll={() => handleScroll(destinationContainerRef, setDestinationScroll)}
+          >
+            {destinations.map((destination, i) => (
+              <div
+                key={i}
+                className="destination-container"
+              >
+                {/* Blurhash Placeholder */}
+                {!destinationsLoadedImages[i] && (
+                  <BlurhashCanvas
+                    hash={destination.blurhash}
+                    width={333}
+                    height={320}
+                    punch={1}
+                    className="absolute inset-0 w-full h-[60%] blurhash-fade"
+                  />
+                )}
+
+                {/* Full Image */}
+                <img
+                  src={destination.img}
+                  alt={destination.state}
+                  className={`w-full h-[60%] object-cover transition-opacity duration-500 
+                    ${destinationsLoadedImages[i] ? 'opacity-100' : 'opacity-0'}`
+                  }
+                  onLoad={() => handleImageLoad(i, "destinations")}
+                />
+                <div className='flex flex-col gap-1 px-2 font-Grotesk mt-5'>
+                  <p>
+                    {destination.state}
+                  </p>
+                  <p>
+                    {destination.country}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Next Icon */}
+          {destinationScroll.next && (
+            <div
+              className="change_button after"
+              onClick={() => scrollContainer(destinationContainerRef, 1)}
+            >
+              <ChevronRight />
+            </div>
+          )}
       </div>
     </div>
   );

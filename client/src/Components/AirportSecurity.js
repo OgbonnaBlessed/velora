@@ -169,7 +169,7 @@ const AirportSecurity = () => {
 
   return (
     <div>
-        <div className='fixed inset-0 bg-white z-20 flex justify-center items-center'>
+        <div className='fixed inset-0 bg-white z-[10000] flex justify-center items-center'>
             <div
                 className='h-full w-96 max-w-full bg-white flex pt-20 px-5'>
                 <div className='bg-[#48aadf13] absolute left-3 top-3 p-2.5 rounded-full cursor-pointer text-[#48aadf]'
@@ -186,7 +186,7 @@ const AirportSecurity = () => {
                 >
                     <h1 className='text-3xl font-semibold'>Airport Security</h1>
                     <div className='flex flex-col gap-5 w-full'>
-                        <div className='flex flex-col gap-3 w-full overflow-hidden'>
+                        <div className='flex flex-col gap-3 w-full'>
                             <h3 className='font-medium text-sm'>TSA PreCheck</h3>
                             <div className='rounded-xl w-full h-16 relative'>
                                 <label
@@ -204,7 +204,7 @@ const AirportSecurity = () => {
                                     id="airportSecurity.knownTravelarNumber"
                                     value={formData.airportSecurity?.knownTravelarNumber || ''}
                                     onChange={handleChange}
-                                    className="w-full border border-black rounded-xl h-16 pl-5 pt-3 pb-1 text-base"
+                                    className="w-full shadow shadow-gray-400 rounded-xl h-16 pl-5 pt-3 pb-1 text-base"
                                     onFocus={() => setIsFocused(true)}
                                     autoComplete='off'
                                     onBlur={(e) => !e.target.value && setIsFocused(false)} // Reset if input is empty
@@ -225,7 +225,7 @@ const AirportSecurity = () => {
                             }
                         </div>
 
-                        <div className='flex flex-col gap-3 w-full overflow-hidden'>
+                        <div className='flex flex-col gap-3 w-full'>
                             <h3 className='font-medium text-sm'>Redress Number</h3>
                             <div className='rounded-xl w-full h-16 relative'>
                                 <label
@@ -243,7 +243,7 @@ const AirportSecurity = () => {
                                     id="airportSecurity.redressNumber"
                                     value={formData.airportSecurity?.redressNumber || ''}
                                     onChange={handleChange}
-                                    className="w-full border border-black rounded-xl h-16 pl-5 pt-3 pb-1 text-base"
+                                    className="w-full shadow shadow-gray-400 rounded-xl h-16 pl-5 pt-3 pb-1 text-base"
                                     onFocus={() => setIsFocused2(true)}
                                     autoComplete='off'
                                     onBlur={(e) => !e.target.value && setIsFocused2(false)} // Reset if input is empty
@@ -314,7 +314,7 @@ const AirportSecurity = () => {
                                 duration: .5,
                                 ease: "easeInOut"
                             }}
-                            className='fixed inset-0 bg-black bg-opacity-50 z-20 flex items-center justify-center'
+                            className='fixed inset-0 bg-black bg-opacity-50 z-[10000] flex items-center justify-center'
                         >
                             <motion.div
                                 initial={{ opacity: 0 }}

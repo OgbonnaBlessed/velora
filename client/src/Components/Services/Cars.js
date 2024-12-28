@@ -48,7 +48,7 @@ const Cars = () => {
             {/* Underline Indicator */}
             <div
               ref={indicatorRef}
-              className="absolute bottom-0 h-[2px] bg-[#48aadf] rounded-full transition-all duration-300 ease-in-out"
+              className="absolute bottom-0 h-[0.27rem] bg-[#48aadf] rounded-t-full transition-all duration-300 ease-in-out"
             />
           </div>
         </div>

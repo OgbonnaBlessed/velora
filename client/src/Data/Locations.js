@@ -319,3 +319,153 @@ export const countries = [
   { "name": "Zambia", "phone_code": "+260", "language": "English" },
   { "name": "Zimbabwe", "phone_code": "+263", "language": "English" }
 ];
+
+export const favorites = [
+  {
+    "img": `${process.env.PUBLIC_URL}/images/favorites/favorite1.jpg`,
+    "blurhash": "LLGI[qm*8^E2N5_1MwkX}@r:S6Ir",
+    "name": "Resort",
+    "location": "New York"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/favorites/favorite2.jpg`,
+    "blurhash": "LON]h2RpKhW=?^R*nOayogITM{s:",
+    "name": "Spa",
+    "location": "London"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/favorites/favorite3.jpg`,
+    "blurhash": "L17,#+%f01rD0okD}mIB=~RQE1NZ",
+    "name": "Cabin",
+    "location": "Atlanta"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/favorites/favorite4.jpg`,
+    "blurhash": "LSIO^S9G~qIU%NIpxtV?t7ozadRi",
+    "name": "Hot tub",
+    "location": "Los Angelos"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/favorites/favorite5.jpg`,
+    "blurhash": "LSIEqf?^?vxu?wxv-:Rjgi%M%MRQ",
+    "name": "Pet friendly",
+    "location": "Delhi"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/favorites/favorite6.jpg`,
+    "blurhash": "L*H2pDRkNHoI.Af6WXj?XAWBoIkD",
+    "name": "Castle",
+    "location": "Frankfurt"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/favorites/favorite7.jpg`,
+    "blurhash": "LXFsMfIoM{s:?wRjt7WBD%aeozWC",
+    "name": "Ocean view",
+    "location": "Dallas"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/favorites/favorite8.jpg`,
+    "blurhash": "L6E3bpDOEOwf00Q-00x^M{~qWBE1",
+    "name": "Pet friendly",
+    "location": "Detroit"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/favorites/favorite9.jpg`,
+    "blurhash": "L%EDept7WBjs?wofaej[x^azj]kC",
+    "name": "Chalet",
+    "location": "Belfast"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/favorites/favorite10.jpg`,
+    "blurhash": "LCF?Chof9mj]0bR+NNae00obR2t6",
+    "name": "Villa",
+    "location": "Manchester"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/favorites/favorite11.jpg`,
+    "blurhash": "LaI}w|p0xts:~qVsW=j[tRV@IURj",
+    "name": "Condo",
+    "location": "Boston"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/favorites/favorite12.jpg`,
+    "blurhash": "L78EC[E14Toz~pNaIARQi_o#xaMx",
+    "name": "Cottage",
+    "location": "Edinburgh"
+  },
+]
+
+export const destinations = [
+  {
+    "img": `${process.env.PUBLIC_URL}/images/destinations/destination1.jpg`,
+    "blurhash": "LLGI[qm*8^E2N5_1MwkX}@r:S6Ir",
+    "state": "Cyclades Islands",
+    "country": "Greece"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/destinations/destination3.jpg`,
+    "blurhash": "LON]h2RpKhW=?^R*nOayogITM{s:",
+    "state": "Alberta",
+    "country": "Canada"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/destinations/destination4.jpg`,
+    "blurhash": "L17,#+%f01rD0okD}mIB=~RQE1NZ",
+    "state": "Queensland",
+    "country": "Australia"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/destinations/destination5.jpg`,
+    "blurhash": "LSIO^S9G~qIU%NIpxtV?t7ozadRi",
+    "state": "Cusco Region",
+    "country": "Peru"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/destinations/destination6.jpg`,
+    "blurhash": "LSIEqf?^?vxu?wxv-:Rjgi%M%MRQ",
+    "state": "Western Cape",
+    "country": "South Africa"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/destinations/destination7.jpg`,
+    "blurhash": "L*H2pDRkNHoI.Af6WXj?XAWBoIkD",
+    "state": "Kansai Region",
+    "country": "Japan"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/destinations/destination8.jpg`,
+    "blurhash": "LXFsMfIoM{s:?wRjt7WBD%aeozWC",
+    "state": "Ma'an Governorate",
+    "country": "Jordan"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/destinations/destination9.jpg`,
+    "blurhash": "L6E3bpDOEOwf00Q-00x^M{~qWBE1",
+    "state": "Lika-Senj County",
+    "country": "Croatia"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/destinations/destination10.jpg`,
+    "blurhash": "L%EDept7WBjs?wofaej[x^azj]kC",
+    "state": "Capital Region",
+    "country": "IceLand"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/destinations/destination11.jpg`,
+    "blurhash": "LCF?Chof9mj]0bR+NNae00obR2t6",
+    "state": "Uttar Pradesh",
+    "country": "India"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/destinations/destination2.jpg`,
+    "blurhash": "LaI}w|p0xts:~qVsW=j[tRV@IURj",
+    "state": "Hawaii",
+    "country": "United States"
+  },
+  {
+    "img": `${process.env.PUBLIC_URL}/images/destinations/destination12.jpg`,
+    "blurhash": "L78EC[E14Toz~pNaIARQi_o#xaMx",
+    "state": "Campania",
+    "country": "Italy"
+  },
+]

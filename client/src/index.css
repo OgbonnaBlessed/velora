@@ -1,4 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:ital,wght@0,400..700;1,400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+/* slick-carousel styles */
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+
 * {
   margin: 0;
   padding: 0;
@@ -179,6 +184,147 @@ input[type="number"] {
   display: none !important;
 }
 
+.remove-scroll-bar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.stay-outer-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+}
+
+.stay-inner-container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.18rem;
+  padding: 5px 0;
+  outline: none;
+}
+
+.stay-outer-container .stay-inner-container,
+.destination-outer-container .destination-inner-container {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.stay-outer-container .stay-inner-container::-webkit-scrollbar,
+.destination-outer-container .destination-inner-container::-webkit-scrollbar {
+  display: none;
+}
+
+.stay-container {
+  position: relative;
+  width: 15rem;
+  height: 100%;
+  border-radius: 20px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.stay-container img {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+}
+
+.destination-outer-container {
+  width: 100%;
+  /* padding: 2rem 0; */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.destination-inner-container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.5rem;
+  padding: 1rem 5px;
+}
+
+.destination-container {
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 0 .3rem gray;
+  border-radius: 20px;
+  width: 18rem;
+  height: 15rem;
+  overflow: hidden;
+}
+
+.destination-container img {
+  width: 100%;
+  height: 60%;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.icon_button#former_slide,
+.slide_button#prev_slide,
+.change_button#before_slide {
+  display: none;
+  transition: .5s ease-in-out;
+}
+
+.before,.former, .back {
+  position: absolute;
+  font-size: 2.5rem;
+  background-color: white;
+  box-shadow: 0 0 .3rem gray;
+  transition: all .5s ease;
+  color: #007bbd;
+  padding: 10px;
+  border-radius: 50%;
+  left: 10px;
+  top: 50%;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.after, .later, .next {
+  position: absolute;
+  font-size: 2.5rem;
+  background-color: white;
+  box-shadow: 0 0 .3rem gray;
+  transition: all .5s ease;
+  color: #007bbd;
+  padding: 10px;
+  border-radius: 50%;
+  right: 8px;
+  top: 50%;
+  cursor: pointer;
+  z-index: 2;
+}
+
+/* For Smooth Transition */
+.blurhash-fade {
+  animation: fadeOut 0.7s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Optional: Text Shadow for Better Readability */
+.text-shadow-md {
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Ensure Smooth Transition on Full Image */
+img {
+  transition: opacity 0.7s ease-in-out;
+}
+
 @keyframes tick {
   0% {
     transform: scale(0);
@@ -216,6 +362,10 @@ input[type="number"] {
 
 .animate-scale-circle {
   animation: scale-circle 1.8s infinite ease-out;
+}
+
+.transition-transform {
+  transition: transform 0.5s ease-in-out;
 }
 
 /* Allow the calendar to adjust on various screen sizes */
