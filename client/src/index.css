@@ -272,7 +272,6 @@ input[type="number"] {
   width: 17rem;
   height: 25rem;
   border-radius: 20px;
-  cursor: pointer;
   position: relative;
 }
 

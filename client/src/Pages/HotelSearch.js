@@ -17,6 +17,7 @@ function HotelSearch() {
     // console.log(`hotels: ${hotels}`)
     const [error, setError] = useState(null);
     const [errors, setErrors] = useState({ origin: '', destination: '' });
+    const [triggerSearch, setTriggerSearch] = useState(false); // New flag
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         destination: '',
@@ -28,6 +29,7 @@ function HotelSearch() {
 
     useEffect(() => {
         if (location.state) {
+            console.log(location.state)
             setFormData({
                 destination: location.state.destination,
                 departureDate: location.state.departureDate,
@@ -35,15 +37,17 @@ function HotelSearch() {
                 adults: location.state.adults,
                 rooms: location.state.rooms,
             });
+            setTriggerSearch(true); // Trigger search on mount when data is passed
         }
     }, [location.state]);
     
     useEffect(() => {
-        if (formData.origin && formData.destination) {
+        if (triggerSearch && formData.destination) {
             handleSubmit();
+            setTriggerSearch(false); // Reset the flag after submission
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [formData]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [triggerSearch]);
 
     const handleDateChange = ([startDate, endDate]) => {
         setFormData((prev) => ({

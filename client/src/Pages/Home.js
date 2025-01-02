@@ -10,9 +10,12 @@ import { destinations, explore, favorites } from '../Data/Locations'
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { BlurhashCanvas } from 'react-blurhash';
 import SearchData from '../Components/SearchData';
+import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate();
   const activeTab = useSelector((state) => state.tab.activeTab); // Get the active tab from Redux
   const [favoritesLoadedImages, setFavoritesLoadedImages] = useState({});
   const [destinationsLoadedImages, setDestinationsLoadedImages] = useState({});
@@ -97,6 +100,18 @@ const Home = () => {
     }
   };
 
+  const navigateToHotelSearch = (location) => {
+    navigate('/hotel-search', {
+      state: {
+        destination: location,
+        departureDate: dayjs().format('YYYY-MM-DD'),
+        returnDate: dayjs().add(2, 'day').format('YYYY-MM-DD'),
+        adults: 1,
+        rooms: 1,
+      },
+    });
+  };
+
   return (
     <div className="flex flex-col gap-16 px-4 sm:px-6 lg:px-20 sm:pt-36 pt-28 pb-10">
 
@@ -179,6 +194,7 @@ const Home = () => {
               <div
                 key={i}
                 className="stay-container"
+                onClick={() => navigateToHotelSearch(favorite.location)}
               >
                 {/* Blurhash Placeholder */}
                 {!favoritesLoadedImages[i] && (
@@ -242,6 +258,7 @@ const Home = () => {
               <div
                 key={i}
                 className="destination-container"
+                onClick={() => navigateToHotelSearch(destination.state)}
               >
                 {/* Blurhash Placeholder */}
                 {!destinationsLoadedImages[i] && (
@@ -268,7 +285,7 @@ const Home = () => {
                     {destination.state}
                   </p>
                   <p>
-                    {destination.country}
+                    {destination.location}
                   </p>
                 </div>
               </div>
@@ -332,10 +349,13 @@ const Home = () => {
                     <ChevronRight className='p-0.5' />
                   </div>
                 </div>
-                <div className='flex flex-col gap-3'>
+                <div 
+                  className='flex flex-col gap-3 cursor-pointer'
+                  onClick={() => navigateToHotelSearch(explore.location)}
+                >
                   <div className='flex flex-col gap-1'>
                     <div className='flex gap-2 items-center text-sm font-semibold'>
-                      <div className='bg-emerald-600 rounded-[0.25rem] px-2 py-1 text-white font-semibold text-sm'>
+                      <div className='bg-blue-600 rounded-[0.25rem] px-2 py-1 text-white font-semibold text-sm'>
                         {explore.rating}
                       </div>
                       <div>
@@ -361,13 +381,13 @@ const Home = () => {
                         {explore.oldPrice}
                       </div>
                     </div>
-                    <div className='text-sm font-serif'>
+                    <div className='text-sm font-Grotesk'>
                       {explore.pricePerNight} per night
                     </div>
-                    <div className='text-sm font-serif'>
+                    <div className='text-sm font-Grotesk'>
                       {explore.newPrice} total
                     </div>
-                    <div className='bg-emerald-600 rounded-[0.25rem] px-2 py-1 text-white font-semibold text-sm w-fit'>
+                    <div className='bg-blue-600 rounded-[0.25rem] px-2 py-1 text-white font-semibold text-sm w-fit'>
                       {explore.discount} off
                     </div>
                   </div>

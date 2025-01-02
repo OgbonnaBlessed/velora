@@ -122,6 +122,10 @@ const Navbar = () => {
                 <Link 
                     to='/'
                     className='flex items-center gap-1'
+                    onClick={() => {
+                        setIsOpen(false); 
+                        setServices(false)}
+                    }
                 >
                     <img 
                         src={`${process.env.PUBLIC_URL}/images/logo.png`} 

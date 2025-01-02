@@ -400,73 +400,73 @@ export const destinations = [
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination1.jpg`,
     "blurhash": "LLGI[qm*8^E2N5_1MwkX}@r:S6Ir",
     "state": "Cyclades Islands",
-    "country": "Greece"
+    "location": "Greece"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination3.jpg`,
     "blurhash": "LON]h2RpKhW=?^R*nOayogITM{s:",
     "state": "Alberta",
-    "country": "Canada"
+    "location": "Canada"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination4.jpg`,
     "blurhash": "L17,#+%f01rD0okD}mIB=~RQE1NZ",
     "state": "Queensland",
-    "country": "Australia"
+    "location": "Australia"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination5.jpg`,
     "blurhash": "LSIO^S9G~qIU%NIpxtV?t7ozadRi",
     "state": "Cusco Region",
-    "country": "Peru"
+    "location": "Peru"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination6.jpg`,
     "blurhash": "LSIEqf?^?vxu?wxv-:Rjgi%M%MRQ",
     "state": "Western Cape",
-    "country": "South Africa"
+    "location": "South Africa"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination7.jpg`,
     "blurhash": "L*H2pDRkNHoI.Af6WXj?XAWBoIkD",
     "state": "Kansai Region",
-    "country": "Japan"
+    "location": "Japan"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination8.jpg`,
     "blurhash": "LXFsMfIoM{s:?wRjt7WBD%aeozWC",
     "state": "Ma'an Governorate",
-    "country": "Jordan"
+    "location": "Jordan"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination9.jpg`,
     "blurhash": "L6E3bpDOEOwf00Q-00x^M{~qWBE1",
     "state": "Lika-Senj County",
-    "country": "Croatia"
+    "location": "Croatia"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination10.jpg`,
     "blurhash": "L%EDept7WBjs?wofaej[x^azj]kC",
     "state": "Capital Region",
-    "country": "IceLand"
+    "location": "IceLand"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination11.jpg`,
     "blurhash": "LCF?Chof9mj]0bR+NNae00obR2t6",
     "state": "Uttar Pradesh",
-    "country": "India"
+    "location": "India"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination2.jpg`,
     "blurhash": "LaI}w|p0xts:~qVsW=j[tRV@IURj",
     "state": "Hawaii",
-    "country": "United States"
+    "location": "United States"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination12.jpg`,
     "blurhash": "L78EC[E14Toz~pNaIARQi_o#xaMx",
     "state": "Campania",
-    "country": "Italy"
+    "location": "Italy"
   },
 ]
 
