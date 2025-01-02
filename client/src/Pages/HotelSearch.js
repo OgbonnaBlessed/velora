@@ -13,8 +13,8 @@ import { useSelector } from 'react-redux';
 function HotelSearch() {
     const location = useLocation();
     const { currentUser } = useSelector((state) => state.user);
-    console.log(currentUser)
     const [hotels, setHotels] = useState('');
+    // console.log(`hotels: ${hotels}`)
     const [error, setError] = useState(null);
     const [errors, setErrors] = useState({ origin: '', destination: '' });
     const [loading, setLoading] = useState(false);
