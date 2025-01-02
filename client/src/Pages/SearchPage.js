@@ -9,9 +9,11 @@ import DateRangePicker from '../Components/Common/Date Picker/DateRangePicker';
 import FlightsList from '../Components/Common/FlightsList';
 import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { useSelector } from 'react-redux';
 
 function SearchPage() {
   const location = useLocation();
+  const { currentUser } = useSelector((state) => state.user);
   const [flights, setFlights] = useState('');
   const [error, setError] = useState(null);
   const [errors, setErrors] = useState({ origin: '', destination: '' });
@@ -89,6 +91,7 @@ function SearchPage() {
   
     try {
       const payload = {
+        userId: currentUser._id,
         origin: formData.origin,
         destination: formData.destination,
         departureDate: formData.departureDate,

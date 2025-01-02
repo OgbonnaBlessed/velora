@@ -9,6 +9,7 @@ import { setActiveTab } from '../redux/tab/tabSlice';
 import { destinations, explore, favorites } from '../Data/Locations'
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { BlurhashCanvas } from 'react-blurhash';
+import SearchData from '../Components/SearchData';
 
 const Home = () => {
   const dispatch = useDispatch()
@@ -150,6 +151,9 @@ const Home = () => {
         {activeTab === 'packages' && <Packages />}
         {activeTab === 'things-to-do' && <Things />}
       </div>
+
+      {/* Recent Searches */}
+      <SearchData/>
 
       {/* Favorite Stays */}
       <div className='stay-outer-container'>

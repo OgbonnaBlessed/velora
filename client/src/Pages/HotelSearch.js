@@ -2,16 +2,18 @@ import { LucideMessageSquareWarning } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { BounceLoader } from 'react-spinners'
 import { locations } from '../Data/Locations'
-import OriginInput from '../Components/Common/Inputs/OriginInput';
 import DestinationInput from '../Components/Common/Inputs/DestinationInput';
 import TravelersInput from '../Components/Common/Inputs/TravelerInput';
 import DateRangePicker from '../Components/Common/Date Picker/DateRangePicker';
 import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 import HotelList from '../Components/Common/HotelList';
+import { useSelector } from 'react-redux';
 
 function HotelSearch() {
     const location = useLocation();
+    const { currentUser } = useSelector((state) => state.user);
+    console.log(currentUser)
     const [hotels, setHotels] = useState('');
     const [error, setError] = useState(null);
     const [errors, setErrors] = useState({ origin: '', destination: '' });
@@ -74,6 +76,7 @@ function HotelSearch() {
       
         try {
             const payload = {
+                userId: currentUser._id,
                 destination: formData.destination, // Assuming destination is the IATA code of the city
                 checkInDate: formData.departureDate,
                 checkOutDate: formData.returnDate,

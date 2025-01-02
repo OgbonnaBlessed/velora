@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getAmadeusToken } from '../helpers/tokenService.js'; // Token helper
+import SearchData from '../models/search.model.js';
 
 // Helper to fetch IATA code for a city name
 const fetchIATACode = async (query, token) => {
@@ -50,7 +51,7 @@ const fetchCityName = async (iataCode, token) => {
 };
 
 export const searchFlights = async (req, res) => {
-  const { origin, destination, departureDate, returnDate, adults } = req.body
+  const { userId, origin, destination, departureDate, returnDate, adults } = req.body
 
   try {
     // Get a fresh access token
@@ -59,6 +60,17 @@ export const searchFlights = async (req, res) => {
     // Translate city names to IATA codes
     const originCode = await fetchIATACode(origin, token);
     const destinationCode = await fetchIATACode(destination, token);
+
+    // Save search data to the database
+    await SearchData.create({
+      userId,
+      searchType: 'flights',
+      origin,
+      destination,
+      departureDate,
+      returnDate,
+      numberOfTravelers: adults,
+    });
 
     // Make the flight search request
     const response = await axios.get('https://test.api.amadeus.com/v2/shopping/flight-offers?max=5', {
@@ -107,17 +119,27 @@ export const searchFlights = async (req, res) => {
 };
 
 export const searchHotels = async (req, res) => {
-  const { destination, checkInDate, checkOutDate, adults, rooms } = req.body;
+  const { userId, destination, checkInDate, checkOutDate, adults, rooms } = req.body;
 
   if (!destination || !checkInDate || !checkOutDate || !adults || !rooms) {
     return res.status(400).json({ error: 'Missing required parameters' });
   }
-
+  
   try {
     const token = await getAmadeusToken();
-
+    
     // Translate city names to IATA codes
     const destinationCode = await fetchIATACode(destination, token);
+    
+    // Save search data to the database
+    await SearchData.create({
+      userId,
+      searchType: 'stays',
+      destination,
+      departureDate: checkInDate,
+      returnDate: checkOutDate,
+      numberOfTravelers: adults,
+    });
 
     const response = await axios.get('https://test.api.amadeus.com/v1/reference-data/locations/hotels/by-city', {
       headers: {
@@ -132,5 +154,38 @@ export const searchHotels = async (req, res) => {
   } catch (error) {
     console.error('Error fetching hotels:', error);
     res.status(500).json({ error: 'Failed to fetch hotels. Please try again.' });
+  }
+};
+
+export const getSearchData = async (req, res) => {
+  const { userId } = req.params;  // Ensure this comes from the authenticated user
+
+  try {
+    const searchData = await SearchData.find({ userId }).sort({ createdAt: -1 });
+
+    if (!searchData) {
+      return res.status(404).json({ error: 'No search data found for this user' });
+    }
+
+    res.status(200).json(searchData);
+  } catch (error) {
+    console.error('Error fetching search data:', error);
+    res.status(500).json({ error: 'Failed to fetch search data' });
+  }
+};
+
+export const deleteSearchData = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedItem = await SearchData.findByIdAndDelete(id);
+
+    if (!deletedItem) {
+      return res.status(404).json({ error: 'Search data not found' });
+    }
+
+    res.status(200).json({ message: 'Search data deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting search data:', error);
+    res.status(500).json({ error: 'Failed to delete search data' });
   }
 };
