@@ -4,7 +4,6 @@ import { FaUserAlt } from 'react-icons/fa';
 const TravelersInput = ({ formData, setFormData }) => {
     const [rooms, setRooms] = useState([{ adults: 1, children: 0 }]);
     const [travelersInput, setTravelersInput] = useState('1 traveler, 1 room');
-    console.log(formData);
     const [travelerModalOpen, setTravelerModalOpen] = useState(false);
     const travelerRef = useRef();
 

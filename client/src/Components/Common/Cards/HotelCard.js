@@ -7,7 +7,7 @@ const HotelCard = ({ hotel }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     const handleSelect = () => {
-        navigate(`/hotel-details/${hotel.hotel.hotelId}`, { state: { hotel } });
+        navigate(`/hotel-details/${hotel?.hotelId}`, { state: { hotel } });
     };
 
     const formatWord = (word) => {

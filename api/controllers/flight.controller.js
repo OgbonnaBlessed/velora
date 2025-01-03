@@ -2,6 +2,9 @@ import axios from 'axios';
 import { getAmadeusToken } from '../helpers/tokenService.js'; // Token helper
 import SearchData from '../models/search.model.js';
 
+// Store images temporarily during the searchHotels call
+let hotelsImageMap = {};
+
 // Helper to fetch IATA code for a city name
 const fetchIATACode = async (query, token) => {
   try {
@@ -191,27 +194,24 @@ export const searchHotels = async (req, res) => {
       "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798089/hotel2_pdbkzv.jpg",
     ];
 
-    // Limit the number of results to 12
-    const limitedHotels = response.data.data.slice(0, 12);
-    
     const getUniqueImages = (count) => {
-      if (allImages.length < count) {
-        throw new Error("Not enough unique images available");
-      }
+      if (allImages.length < count) throw new Error('Not enough unique images available');
       const selectedImages = [];
       for (let i = 0; i < count; i++) {
         const randomIndex = Math.floor(Math.random() * allImages.length);
         selectedImages.push(allImages[randomIndex]);
-        allImages.splice(randomIndex, 1); // Remove the used image
+        allImages.splice(randomIndex, 1);
       }
       return selectedImages;
     };
-    
-    // Add random images to the limited hotel results
-    const hotelsWithImages = limitedHotels.map((hotel) => ({
-      ...hotel,
-      images: getUniqueImages(3), // Get 3 unique images for each hotel
-    }));
+
+    const limitedHotels = response.data.data.slice(0, 12);
+
+    const hotelsWithImages = limitedHotels.map((hotel) => {
+      const images = getUniqueImages(3); // Assign 3 images to each hotel
+      hotelsImageMap[hotel.hotelId] = images; // Save images for later reference
+      return { ...hotel, images };
+    });
 
     res.status(200).json({ data: hotelsWithImages, meta: response.data.meta });
   } catch (error) {
@@ -250,5 +250,38 @@ export const deleteSearchData = async (req, res) => {
   } catch (error) {
     console.error('Error deleting search data:', error);
     res.status(500).json({ error: 'Failed to delete search data' });
+  }
+};
+
+export const hotelDetails = async (req, res) => {
+  const { hotelId } = req.params;
+
+  try {
+    const token = await getAmadeusToken();
+
+    const response = await axios.get(
+      'https://test.api.amadeus.com/v3/shopping/hotel-offers',
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          hotelIds: hotelId,
+        },
+      }
+    );
+
+    // Retrieve images assigned during the searchHotels call
+    const images = hotelsImageMap[hotelId] || [];
+
+    const enrichedHotelDetails = {
+      ...response.data,
+      images, // Add images to the response
+    };
+
+    res.status(200).json(enrichedHotelDetails);
+  } catch (error) {
+    console.error('Error fetching hotel details:', error.response?.data || error.message);
+    res.status(500).json({ error: error.response?.data || 'Failed to fetch hotel details. Please try again.' });
   }
 };

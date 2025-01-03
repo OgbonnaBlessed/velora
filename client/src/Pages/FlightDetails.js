@@ -56,7 +56,7 @@ const FlightDetails = () => {
       </div>
       <div className='flex max-lg:flex-col-reverse w-full max-lg:items-center justify-between items-start lg:gap-20 gap-5'>
         <div className='flex flex-col gap-5 flex-1 max-w-full'>
-          <div className='bg-blue-100 rounded-3xl p-5 flex flex-col gap-1 w-full'>
+          <div className='bg-blue-100 shadow shadow-[#48aadf] rounded-3xl p-5 flex flex-col gap-1 w-full'>
             <div className='font-semibold font-Grotesk text-lg'>
               {`${formatWord(flight.itineraries[0].segments[0].departure.cityName)} to 
               ${formatWord(flight.itineraries[0].segments.slice(-1)[0].arrival.cityName)}`}
@@ -78,7 +78,7 @@ const FlightDetails = () => {
               {flight.itineraries[0].segments[0].carrierCode} Airline • {formatDate(flight.itineraries[0].segments[0].departure.at)}
             </div>
           </div>
-          <div className='flex flex-col gap-2 p-5 bg-blue-100 rounded-3xl w-full'>
+          <div className='flex flex-col gap-2 p-5 bg-blue-100 shadow shadow-[#48aadf] rounded-3xl w-full'>
             <h1 className='font-semibold font-Grotesk text-lg'>
               Your fare: {formatWord(flight.travelerPricings[0].fareDetailsBySegment[0].cabin)}
             </h1>
@@ -99,7 +99,7 @@ const FlightDetails = () => {
           </div>
         </div>
 
-        <div className='bg-blue-100 rounded-3xl p-5 flex flex-col gap-3 w-96 max-w-full'>
+        <div className='bg-blue-100 rounded-3xl p-5 flex flex-col gap-3 w-96 max-w-full shadow shadow-[#48aadf]'>
           <h1 className='text-lg font-semibold font-Grotesk'>Payment summary</h1>
           <div className='flex flex-col gap-2'>
             <div className='flex items-center justify-between'>

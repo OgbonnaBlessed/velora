@@ -23,6 +23,7 @@ import FlightDetails from '../Pages/FlightDetails';
 import CheckOut from '../Pages/CheckOut';
 import BookingCompleted from '../Pages/BookingCompleted';
 import HotelSearch from '../Pages/HotelSearch';
+import HotelDetails from '../Pages/HotelDetails';
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -50,6 +51,7 @@ const AnimatedRoutes = () => {
           <Route path='/flight-search' element={<SearchPage/>} />
           <Route path='/hotel-search' element={<HotelSearch/>} />
           <Route path='/flight-details/:flightId' element={<FlightDetails/>} />
+          <Route path='/hotel-details/:hotelId' element={<HotelDetails/>} />
           <Route path='/check-out' element={<CheckOut/>} />
           <Route path='/booking-completed' element={<BookingCompleted/>} />
         </Route>

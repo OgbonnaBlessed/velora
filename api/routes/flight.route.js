@@ -1,5 +1,5 @@
 import express from 'express';
-import { deleteSearchData, getSearchData, searchFlights, searchHotels } from '../controllers/Flight.controller.js';
+import { deleteSearchData, getSearchData, hotelDetails, searchFlights, searchHotels } from '../controllers/Flight.controller.js';
 
 const router = express.Router();
 
@@ -10,5 +10,6 @@ router.post('/search-hotels', searchHotels);
 // Route for fetching user-specific search data
 router.get('/search-data/:userId', getSearchData);
 router.delete('/search-data/:id', deleteSearchData);
+router.get('/hotel-details/:hotelId', hotelDetails);
 
 export default router;
