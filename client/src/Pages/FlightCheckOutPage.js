@@ -9,7 +9,7 @@ import { countries } from '../Data/Locations'
 import { SyncLoader } from 'react-spinners';
 import { updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice';
 
-const CheckoutPage = () => {
+const FlightCheckOutPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -24,7 +24,6 @@ const CheckoutPage = () => {
   const indicatorRef = useRef(null);
   const tabContainerRef = useRef(null);
   const { flight, tax, total } = location.state;
-  console.log(flight);
 
   useEffect(() => {
     if (currentUser) {
@@ -211,7 +210,6 @@ const CheckoutPage = () => {
       if (!res.ok) {
         dispatch(updateFailure(data.message));
         setUpdateUserError(data.message);
-        console.log(data.message);
         setLoading(false);
   
       } else {
@@ -226,7 +224,6 @@ const CheckoutPage = () => {
     } catch (error) {
       dispatch(updateFailure(error.message));
       setUpdateUserError(error.message);
-      console.log(error);
     }
   }
 
@@ -255,7 +252,7 @@ const CheckoutPage = () => {
       <form 
         onSubmit={handleSubmit}
         className="w-full flex-1 flex flex-col gap-5 lg:w-2/3 relative">
-        <div className="w-full flex-1 p-6 bg-blue-100 rounded-3xl flex flex-col gap-5">
+        <div className="w-full flex-1 p-6 bg-blue-100 shadow shadow-[#48aadf] rounded-3xl flex flex-col gap-5">
           <div className="flex flex-col gap-2">
             <h2 className="sm:text-2xl text-xl font-semibold">Who's traveling?</h2>
             <p className="text-sm">Traveler names must match government-issued photo ID exactly.</p>
@@ -508,7 +505,7 @@ const CheckoutPage = () => {
             </div>
           </div>
         </div>
-        <div className="bg-blue-100 rounded-3xl p-6 flex flex-col gap-4 relative">
+        <div className="bg-blue-100 shadow shadow-[#48aadf] rounded-3xl p-6 flex flex-col gap-4 relative">
           <div className="flex flex-col gap-3">
             <h1 className="font-semibold sm:text-2xl text-xl">Review and book your Trip</h1>
             <div className="flex sm:items-center items-start gap-2">
@@ -588,7 +585,7 @@ const CheckoutPage = () => {
       </form>
 
       {/* Right Section - Price Summary */}
-      <div className="w-full bg-blue-100 p-5 rounded-3xl flex flex-col lg:w-1/3">
+      <div className="w-full bg-blue-100 shadow shadow-[#48aadf] p-5 rounded-3xl flex flex-col lg:w-1/3">
         <div className="py-3 border-b-2 border-white">
           <p className="font-medium">
             {formatWord(flight.itineraries[0].segments[0].departure.cityName)} ({formatWord(flight.itineraries[0].segments[0].departure.iataCode)}) to {formatWord(flight.itineraries[0].segments.slice(-1)[0].arrival.cityName)} ({formatWord(flight.itineraries[0].segments[0].arrival.iataCode)})
@@ -612,4 +609,4 @@ const CheckoutPage = () => {
   );
 };
 
-export default CheckoutPage;
+export default FlightCheckOutPage;

@@ -20,10 +20,11 @@ import TravelDocument from './TravelDocument';
 import Preferences from './Preferences';
 import SearchPage from '../Pages/SearchPage';
 import FlightDetails from '../Pages/FlightDetails';
-import CheckOut from '../Pages/CheckOut';
 import BookingCompleted from '../Pages/BookingCompleted';
 import HotelSearch from '../Pages/HotelSearch';
 import HotelDetails from '../Pages/HotelDetails';
+import FlightCheckOutPage from '../Pages/FlightCheckOutPage';
+import HotelCheckOutPage from '../Pages/HotelCheckOutPage';
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -52,7 +53,8 @@ const AnimatedRoutes = () => {
           <Route path='/hotel-search' element={<HotelSearch/>} />
           <Route path='/flight-details/:flightId' element={<FlightDetails/>} />
           <Route path='/hotel-details/:hotelId' element={<HotelDetails/>} />
-          <Route path='/check-out' element={<CheckOut/>} />
+          <Route path='/flight-check-out' element={<FlightCheckOutPage/>} />
+          <Route path='/hotel-check-out' element={<HotelCheckOutPage />} />
           <Route path='/booking-completed' element={<BookingCompleted/>} />
         </Route>
       </Routes>

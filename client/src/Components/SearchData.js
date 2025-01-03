@@ -8,7 +8,6 @@ import dayjs from 'dayjs';
 const SearchData = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [searchData, setSearchData] = useState([]);
-  console.log(searchData);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -113,7 +112,7 @@ const SearchData = () => {
                 )}
 
                 <div 
-                  className='absolute top-2 right-2 text-red-500 bg-white rounded-full p-2 cursor-pointer'
+                  className='absolute top-2 right-2 text-[#48aadf] bg-white rounded-full p-2 cursor-pointer'
                   onClick={(e) => {
                     e.stopPropagation();
                     handleDelete(item._id);

@@ -85,7 +85,7 @@ const HotelDetails = () => {
     const total = hotelPrice + tax;
 
     const proceedToCheckOut = () => {
-        navigate(`/hotel-check-out`, { state: { hotel, tax, total } });
+        navigate(`/hotel-check-out`, { state: { hotelDetails, tax, total } });
     };
 
   return (
@@ -172,7 +172,7 @@ const HotelDetails = () => {
                         </div>
                         <div className='flex items-center justify-between'>
                             <p>Taxes & fees</p>
-                            <p>{offers?.[0]?.price?.currency} {tax.toFixed(2)} {offers?.[0]?.price?.currency}</p>
+                            <p>{tax.toFixed(2)} {offers?.[0]?.price?.currency}</p>
                         </div>
                         <div className='flex items-center justify-between border-t-2 border-white py-3 mt-3'>
                             <p className='font-semibold font-Grotesk'>Trip total</p>

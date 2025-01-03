@@ -382,9 +382,12 @@ const Navbar = () => {
                         >
                             <div className='flex flex-col py-3 w-full border-b-2 border-gray-400'>
                                 <Link 
-                                    to='/stays'
+                                    to='/'
                                     className='pl-5 py-3 w-full hover:bg-[gray-200] hover:text-black transition-colors duration-300 ease-in-out'
-                                    onClick={toggleSidebar}
+                                    onClick={() => {
+                                        toggleSidebar()
+                                        handleServiceClick('stays')
+                                    }}
                                 >
                                     <div className='flex items-center gap-2'>
                                         <FaHotel className='text-2xl'/>
@@ -392,9 +395,12 @@ const Navbar = () => {
                                     </div>
                                 </Link>
                                 <Link 
-                                    to='/roundtrip'
+                                    to='/'
                                     className='pl-5 py-3 w-full hover:bg-gray-200 hover:text-black transition-colors duration-300 ease-in-out'
-                                    onClick={toggleSidebar}
+                                    onClick={() => {
+                                        toggleSidebar()
+                                        handleServiceClick('flights')
+                                    }}
                                 >
                                     <div className='flex items-center gap-2'>
                                         <FaTelegramPlane className='text-2xl'/>
@@ -402,9 +408,12 @@ const Navbar = () => {
                                     </div>
                                 </Link>
                                 <Link 
-                                    to='/cars'
+                                    to='/'
                                     className='pl-5 py-3 w-full hover:bg-gray-200 hover:text-black transition-colors duration-300 ease-in-out'
-                                    onClick={toggleSidebar}
+                                    onClick={() => {
+                                        toggleSidebar()
+                                        handleServiceClick('cars')
+                                    }}
                                 >
                                     <div className='flex items-center gap-2'>
                                         <FaCar className='text-2xl'/>
@@ -412,9 +421,12 @@ const Navbar = () => {
                                     </div>
                                 </Link>
                                 <Link 
-                                    to='/packages'
+                                    to='/'
                                     className='pl-5 py-3 w-full hover:bg-gray-200 hover:text-black transition-colors duration-300 ease-in-out'
-                                    onClick={toggleSidebar}
+                                    onClick={() => {
+                                        toggleSidebar()
+                                        handleServiceClick('packages')
+                                    }}
                                 >
                                     <div className='flex items-center gap-2'>
                                         <FaBriefcase className='text-2xl'/>
@@ -422,9 +434,12 @@ const Navbar = () => {
                                     </div>
                                 </Link>
                                 <Link 
-                                    to='/things'
+                                    to='/'
                                     className='pl-5 py-3 w-full hover:bg-gray-200 hover:text-black transition-colors duration-300 ease-in-out'
-                                    onClick={toggleSidebar}
+                                    onClick={() => {
+                                        toggleSidebar()
+                                        handleServiceClick('things-to-do')
+                                    }}
                                 >
                                     <div className='flex items-center gap-2'>
                                         <FaClone className='text-2xl'/>
@@ -434,14 +449,14 @@ const Navbar = () => {
                             </div>
                             <div className='flex flex-col py-3 w-full'>
                                 <Link 
-                                    to='/deals'
+                                    to='/'
                                     className='pl-5 py-3 w-full hover:bg-gray-200 hover:text-black transition-colors duration-300 ease-in-out'
                                     onClick={toggleSidebar}
                                 >
                                     Deals
                                 </Link>
                                 <Link 
-                                    to='/meeting'
+                                    to='/'
                                     className='pl-5 py-3 w-full hover:bg-gray-200 hover:text-black transition-colors duration-300 ease-in-out'
                                     onClick={toggleSidebar}
                                 >

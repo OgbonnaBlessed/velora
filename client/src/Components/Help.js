@@ -1,11 +1,23 @@
 /* eslint-disable no-use-before-define */
 import { Send } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Help = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const helpRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (helpRef.current && !helpRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
     const formatTimestamp = (date) => {
         return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -95,6 +107,7 @@ const Help = () => {
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9 }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}
+                        ref={helpRef}
                         className="bg-white w-full h-full rounded-lg shadow shadow-gray-400 flex flex-col"
                     >
                         {/* Header */}
