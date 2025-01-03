@@ -195,7 +195,7 @@ export const getBookmarks = async (req, res, next) => {
     }
 };
 
-// Handle user bookings
+// Handle user flight bookings
 export const bookings = async (req, res, next) => {
     if (req.user.id !== req.params.userId) {
       return next(errorHandler(403, 'You are not allowed to book for this user'));
@@ -329,6 +329,126 @@ export const bookings = async (req, res, next) => {
         const { password, ...rest } = updatedUser._doc;
         res.status(200).json(rest);
     
+    } catch (error) {
+        next(error);
+    }
+};
+
+// Handle user hotel bookings
+export const bookHotel = async (req, res, next) => {
+    if (req.user.id !== req.params.userId) {
+        return next(errorHandler(403, 'You are not allowed to book for this user'));
+    }
+  
+    const { formData, hotelDetails, total } = req.body; // Ensure you are getting flight details and formData
+    
+    try {
+        // Once booking is successful, update the user document with the booking details
+        const updatedUser = await User.findByIdAndUpdate(
+            req.params.userId,
+            {
+                $push: { bookings: hotelDetails }, // Add booking details to the bookings array
+                $set: { ...formData }, // Update the user data (if applicable)
+            },
+            { new: true }
+        );
+  
+        // Helper to format time
+        const formatTime = (date) =>
+            new Intl.DateTimeFormat('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true,
+        }).format(new Date(date));
+  
+        const formatDate = (dateString) => {
+            const options = { month: 'short', day: 'numeric', year: 'numeric' };
+            return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
+        };
+  
+        // Send booking confirmation email
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.mail.yahoo.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
+            },
+            tls: {
+                rejectUnauthorized: false,
+            },
+        });
+  
+        const mailOptions = {
+            from: `"Velora" <${process.env.EMAIL_USER}>`,
+            to: updatedUser.email,
+            subject: 'Booking Confirmation',
+            html: `
+            <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+                <div style="background-color: #f5f5f5; padding: 20px; text-align: center;">
+                    <h2 style="color: #48aadf;">Booking Confirmation</h2>
+                    <p style="font-size: 1.1em;">Thank you for booking with Velora!</p>
+                </div>
+                <div style="padding: 20px; background-color: #ffffff; border: 1px solid #ddd; border-radius: 5px; margin: 20px auto; max-width: 600px;">
+                    <p><strong>Dear ${formData.firstName} ${formData.lastName},</strong></p>
+                    <p>We are pleased to confirm your hotel booking. Here are your hotel details:</p>
+                    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Hotel ID:</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">${hotelDetails?.data[0]?.hotel?.hotelId}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Hotel Name:</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                ${hotelDetails?.data[0]?.hotel?.name}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Check In Date:</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                ${formatDate(hotelDetails?.data[0].offers[0]?.checkInDate)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Check Out Date:</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                ${formatDate(hotelDetails?.data[0].offers[0]?.checkOutDate)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Arrival:</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                ${formatTime(hotelDetails?.data[0].offers[0]?.policies?.cancellations[0]?.deadline)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Guests:</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                ${hotelDetails?.data[0].offers[0]?.guests?.adults} ${hotelDetails?.data[0].offers[0]?.guests?.adults > 1 ? 'Adults' : 'Adult'}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Total Price:</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                ${total.toFixed(2)} ${hotelDetails?.data[0].offers[0]?.price?.currency}
+                            </td>
+                        </tr>
+                    </table>
+                    <p>We wish you a pleasant stay! If you have any questions, please feel free to contact us.</p>
+                </div>
+                <div style="background-color: #48aadf; color: #ffffff; text-align: center; padding: 10px;">
+                    <p style="margin: 0;">&copy; 2024 Velora. All rights reserved.</p>
+                </div>
+            </div>`,
+        };
+
+        await transporter.sendMail(mailOptions);
+    
+        // Exclude password in response
+        const { password, ...rest } = updatedUser._doc;
+        res.status(200).json(rest);
+      
     } catch (error) {
         next(error);
     }

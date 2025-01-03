@@ -141,10 +141,6 @@ const HotelCheckOutPage = () => {
     return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
   };
 
-  const formatWord = (word) => {
-    return word.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setUpdateUserError(null);
@@ -177,12 +173,12 @@ const HotelCheckOutPage = () => {
       dispatch(updateStart());
       setLoading(true);
 
-      const res = await fetch(`/api/user/book/${currentUser._id}`, {
+      const res = await fetch(`/api/user/book-hotel/${currentUser._id}`, {
         method: 'POST',
         headers: {
-        'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ formData, hotelDetails }), // Sending both formData and flight
+        body: JSON.stringify({ formData, hotelDetails, total }), // Sending formData, flight and total price
       });
             
       const data = await res.json();

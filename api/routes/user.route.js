@@ -1,5 +1,5 @@
 import express from 'express'
-import { test, updateUser, deleteUser, signout, getUsers, getUser, getBookmarks, addBookmark, removeBookmark, bookings } from '../controllers/User.controller.js';
+import { test, updateUser, deleteUser, signout, getUsers, getUser, getBookmarks, addBookmark, removeBookmark, bookings, bookHotel } from '../controllers/User.controller.js';
 import { verifyToken } from '../utils/verifyUser.js';
 
 const router = express.Router();
@@ -10,7 +10,8 @@ router.delete('/delete/:userId', verifyToken, deleteUser);
 router.post('/signout', signout);
 router.get('/getusers', verifyToken, getUsers);
 router.get('/:userId', getUser);
-router.post('/book/:userId', verifyToken, bookings)
+router.post('/book/:userId', verifyToken, bookings);
+router.post('/book-hotel/:userId', verifyToken, bookHotel);
 
 // Bookmark routes
 router.post('/:userId/bookmark/:postId', verifyToken, addBookmark);
