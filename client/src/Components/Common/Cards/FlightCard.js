@@ -22,7 +22,7 @@ const FlightCard = ({ flight, formatTime, getFlightDuration }) => {
     };
 
   return (
-    <div className="p-5 rounded-xl bg-blue-100 flex flex-col gap-5">
+    <div className="p-5 rounded-xl bg-blue-100 shadow shadow-white flex flex-col gap-5">
         <div className="flex justify-between items-start">
             <div>
                 <p className="text-lg font-Roboto">{`${departureTime} - ${arrivalTime}`}</p>

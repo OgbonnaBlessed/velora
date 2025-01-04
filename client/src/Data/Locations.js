@@ -398,73 +398,73 @@ export const favorites = [
 export const destinations = [
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination1.jpg`,
-    "blurhash": "LLGI[qm*8^E2N5_1MwkX}@r:S6Ir",
+    "blurhash": "L;GIvFj^NGRk_4a~afWC%hWBjsay",
     "state": "Cyclades Islands",
     "location": "Greece"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination3.jpg`,
-    "blurhash": "LON]h2RpKhW=?^R*nOayogITM{s:",
+    "blurhash": "LOH2[$8_nhtR3?IVnOa|%Maet7aK",
     "state": "Alberta",
     "location": "Canada"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination4.jpg`,
-    "blurhash": "L17,#+%f01rD0okD}mIB=~RQE1NZ",
+    "blurhash": "LZC@{-VqtRV@yGtRofWXZ}t8axof",
     "state": "Queensland",
     "location": "Australia"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination5.jpg`,
-    "blurhash": "LSIO^S9G~qIU%NIpxtV?t7ozadRi",
+    "blurhash": "LkEVmCM|R+WV~pNGfkay-;R*t6ay",
     "state": "Cusco Region",
     "location": "Peru"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination6.jpg`,
-    "blurhash": "LSIEqf?^?vxu?wxv-:Rjgi%M%MRQ",
+    "blurhash": "LdEW2*ISD%%N_4NGR.axtURjRjRj",
     "state": "Western Cape",
     "location": "South Africa"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination7.jpg`,
-    "blurhash": "L*H2pDRkNHoI.Af6WXj?XAWBoIkD",
+    "blurhash": "LgD]r7t7IpWC_4t7WBWV?vt6oej@",
     "state": "Kansai Region",
     "location": "Japan"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination8.jpg`,
-    "blurhash": "LXFsMfIoM{s:?wRjt7WBD%aeozWC",
+    "blurhash": "LABfLp~C0000RPn$t7WqS~ofw{jZ",
     "state": "Ma'an Governorate",
     "location": "Jordan"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination9.jpg`,
-    "blurhash": "L6E3bpDOEOwf00Q-00x^M{~qWBE1",
+    "blurhash": "LCDU3b~fm6Vq4TcGlBt3#gICpd%M",
     "state": "Lika-Senj County",
     "location": "Croatia"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination10.jpg`,
-    "blurhash": "L%EDept7WBjs?wofaej[x^azj]kC",
+    "blurhash": "LNG]p]oJ8^x^_4ozWBozngxutRt7",
     "state": "Capital Region",
     "location": "IceLand"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination11.jpg`,
-    "blurhash": "LCF?Chof9mj]0bR+NNae00obR2t6",
+    "blurhash": "LfI=V,Rj9ZWBtpV?RiWBI:RjxZae",
     "state": "Uttar Pradesh",
     "location": "India"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination2.jpg`,
-    "blurhash": "LaI}w|p0xts:~qVsW=j[tRV@IURj",
+    "blurhash": "LD9cVXZMIBX9-@baTKk=4TKQxun4",
     "state": "Hawaii",
     "location": "United States"
   },
   {
     "img": `${process.env.PUBLIC_URL}/images/destinations/destination12.jpg`,
-    "blurhash": "L78EC[E14Toz~pNaIARQi_o#xaMx",
+    "blurhash": "LFBqF[?v?bxu_N?b-p%M?^-;-pxu",
     "state": "Campania",
     "location": "Italy"
   },
@@ -481,6 +481,7 @@ export const explore = [
     oldPrice: "$682",
     pricePerNight: "$271",
     discount: "21%",
+    blurhash: "LIMjH#Dhb]H;~UVqbwt8Six^RPIU",
     images: [
       `${process.env.PUBLIC_URL}/images/explore/hotel1.jpg`,
       `${process.env.PUBLIC_URL}/images/explore/hotel2.jpg`,
@@ -497,6 +498,7 @@ export const explore = [
     oldPrice: "$446",
     pricePerNight: "$164",
     discount: "8%",
+    blurhash: "LDKw8-^*0Lxt~pxDa0ae4UtRb_t7",
     images: [
       `${process.env.PUBLIC_URL}/images/explore/hotel4.jpg`,
       `${process.env.PUBLIC_URL}/images/explore/hotel5.jpg`,
@@ -513,6 +515,7 @@ export const explore = [
     oldPrice: "$2,160",
     pricePerNight: "$756",
     discount: "8%",
+    blurhash: "L5I4eD=Z9XnM.NKQ_N%28w%LyENf",
     images: [
       `${process.env.PUBLIC_URL}/images/explore/hotel7.jpeg`,
       `${process.env.PUBLIC_URL}/images/explore/hotel8.jpeg`,
@@ -529,6 +532,7 @@ export const explore = [
     oldPrice: "$507",
     pricePerNight: "$206",
     discount: "9%",
+    blurhash: "L7H^kXD*9Z^j0zN{^h5R|L9a?Fj]",
     images: [
       `${process.env.PUBLIC_URL}/images/explore/hotel10.jpeg`,
       `${process.env.PUBLIC_URL}/images/explore/hotel11.jpeg`,
@@ -545,6 +549,7 @@ export const explore = [
     oldPrice: "$1,177",
     pricePerNight: "$449",
     discount: "8%",
+    blurhash: "LOGI+UIpenx^.Tt-jYV?M|R-WqNG",
     images: [
       `${process.env.PUBLIC_URL}/images/explore/hotel13.jpg`,
       `${process.env.PUBLIC_URL}/images/explore/hotel4.jpg`,
@@ -561,6 +566,7 @@ export const explore = [
     oldPrice: "$497",
     pricePerNight: "$170",
     discount: "8%",
+    blurhash: "LaKUl~~qogRj%Mxut7juRjIUWBt7",
     images: [
       `${process.env.PUBLIC_URL}/images/explore/hotel16.jpg`,
       `${process.env.PUBLIC_URL}/images/explore/hotel17.jpg`,
@@ -577,6 +583,7 @@ export const explore = [
     oldPrice: "$499",
     pricePerNight: "$165",
     discount: "7%",
+    blurhash: "LEEy3#-TH=s9~o-5R5%0IAf8%2xa",
     images: [
       `${process.env.PUBLIC_URL}/images/explore/hotel19.jpg`,
       `${process.env.PUBLIC_URL}/images/explore/hotel20.jpg`,
@@ -593,6 +600,7 @@ export const explore = [
     oldPrice: "$1,045",
     pricePerNight: "$395",
     discount: "8%",
+    blurhash: "LOKwqNv{~pIqIA9FxuxZE2%Me-RP",
     images: [
       `${process.env.PUBLIC_URL}/images/explore/hotel22.jpg`,
       `${process.env.PUBLIC_URL}/images/explore/hotel23.jpg`,
@@ -609,6 +617,7 @@ export const explore = [
     oldPrice: "$555",
     pricePerNight: "$181",
     discount: "8%",
+    blurhash: "LAMtEi=]-oDO2{%N%htm}6Ny9Gnh",
     images: [
       `${process.env.PUBLIC_URL}/images/explore/hotel25.jpg`,
       `${process.env.PUBLIC_URL}/images/explore/hotel26.jpg`,
@@ -625,6 +634,7 @@ export const explore = [
     oldPrice: "$662",
     pricePerNight: "$271",
     discount: "9%",
+    blurhash: "LeL;a1_N9EoHx]ofWBj?xtRkjtbc",
     images: [
       `${process.env.PUBLIC_URL}/images/explore/hotel28.jpg`,
       `${process.env.PUBLIC_URL}/images/explore/hotel29.jpg`,
@@ -641,6 +651,7 @@ export const explore = [
     oldPrice: "$832",
     pricePerNight: "$362",
     discount: "21%",
+    blurhash: "LPF5,A9F-:Io~qRja#NGxuozIUoz",
     images: [
       `${process.env.PUBLIC_URL}/images/explore/hotel31.jpg`,
       `${process.env.PUBLIC_URL}/images/explore/hotel32.jpg`,
@@ -657,6 +668,7 @@ export const explore = [
     oldPrice: "$409",
     pricePerNight: "$165",
     discount: "9%",
+    blurhash: "LEC~x1CRE3v#~nKPWCwIIBRktQxs",
     images: [
       `${process.env.PUBLIC_URL}/images/explore/hotel34.jpg`,
       `${process.env.PUBLIC_URL}/images/explore/hotel35.jpg`,

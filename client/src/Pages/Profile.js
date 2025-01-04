@@ -8,6 +8,7 @@ import ProfileSettings from "../Components/ProfileSettings";
 import ProfilePayment from "../Components/ProfilePayment";
 import BasicDetails from "../Components/BasicDetails";
 import ContactDetails from "../Components/ContactDetails";
+import ProfileBookings from "../Components/ProfileBookings";
 
 const UserProfile = () => {
   const location = useLocation();
@@ -36,6 +37,7 @@ const UserProfile = () => {
       {tab === 'settings' && <ProfileSettings/>}
       {tab === 'edit_basic_details' && <BasicDetails/>}
       {tab === 'edit_contact_details' && <ContactDetails/>}
+      {tab === 'bookings' && <ProfileBookings/>}
     </div>
   );
 };

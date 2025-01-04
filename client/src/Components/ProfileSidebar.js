@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import axios from "axios";
-import { Camera, ChevronRight, CreditCardIcon, SettingsIcon, StarIcon } from "lucide-react";
+import { CalendarCog, Camera, ChevronRight, CreditCardIcon, SettingsIcon, StarIcon } from "lucide-react";
 import React, { useRef } from "react";
 import { FaUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -157,11 +157,12 @@ const ProfileSidebar = () => {
     }
 
   return (
-    <div className="relative w-72 max-xl:w-full max-xl:fixed max-xl:h-full pointer-events-none">
+    <div className="w-72">
         <FiMoreHorizontal 
-            className="hidden max-xl:block absolute left-5 top-5 pointer-events-auto bg-white border border-gray-50 rounded-md p-2 text-3xl cursor-pointer"
+            className="xl:hidden fixed left-5 top-36 pointer-events-auto bg-white shadow shadow-gray-300 rounded-md p-2 text-3xl cursor-pointer"
             onClick={() => setSidebar(!sidebar)}
         />
+
         <div className='hidden xl:flex flex-col gap-10 w-full pointer-events-auto'>
             <div className='flex items-start gap-3'>
                 <div className='relative'>
@@ -214,8 +215,10 @@ const ProfileSidebar = () => {
                 </div>
             </div>
 
-            <p className={`text-[0.7rem] -mt-8 text-green-500 transform transition-all duration-700 ease-in-out ${
-                    updateUserSuccess 
+            <p 
+                className={`text-[0.7rem] -mt-8 text-green-500 transform transition-all duration-700 ease-in-out 
+                    ${
+                        updateUserSuccess 
                         ? 'opacity-1 translate-y-0 pointer-events-auto' 
                         : 'opacity-0 -translate-y-5 pointer-events-none'
                     }`
@@ -224,8 +227,10 @@ const ProfileSidebar = () => {
                 {updateUserSuccess}
             </p>
 
-            <p className={`text-[0.7rem] -mt-8 text-red-500 self-start transform transition-all duration-700 ease-in-out ${
-                    updateUserError 
+            <p 
+                className={`text-[0.7rem] -mt-8 text-red-500 self-start transform transition-all duration-700 ease-in-out 
+                    ${
+                        updateUserError 
                         ? 'opacity-1 translate-y-0 pointer-events-auto' 
                         : 'opacity-0 -translate-y-5 pointer-events-none'
                     }`
@@ -270,6 +275,17 @@ const ProfileSidebar = () => {
                     </div>
                     <ChevronRight className='text-3xl absolute right-2'/>
                 </Link>
+                <Link
+                    to='/profile?tab=bookings'
+                    className='relative flex items-center gap-5 shadow shadow-gray-300 rounded-2xl py-3 px-4 h-20'
+                >
+                    <CalendarCog className='text-xl'/>
+                    <div className="w-[70%]">
+                        <h2 className="font-medium">Manage Bookings</h2>
+                        <p className="text-[0.7rem]">Manage your bookings</p>
+                    </div>
+                    <ChevronRight className="text-3xl absolute right-2" />
+                </Link>
                 <Link 
                     to='/profile?tab=settings'
                     className='relative flex items-center gap-5 shadow shadow-gray-300 rounded-2xl py-3 px-4 h-20'
@@ -282,9 +298,9 @@ const ProfileSidebar = () => {
                     <ChevronRight className='text-3xl absolute right-2'/>
                 </Link>
                 <div className='text-lg font-medium h-20 w-72 flex items-center justify-center'>
-                <p 
-                    className='cursor-pointer text-[#4078bc] text-lg font-medium'
-                    onClick={handleSignOut}
+                    <p 
+                        className='cursor-pointer text-[#4078bc] text-lg font-medium'
+                        onClick={handleSignOut}
                     >
                         Sign out
                     </p> 
@@ -302,7 +318,8 @@ const ProfileSidebar = () => {
                         duration: .5,
                         ease: "easeInOut"
                     }}
-                    className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+                    className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[10001]"
+                    // style={{ zIndex: 10000 }}
                 >
                     <motion.div 
                         initial={{ opacity: 0 }}
@@ -313,7 +330,7 @@ const ProfileSidebar = () => {
                             ease: "easeInOut"
                         }}
                         ref={sidebarRef}
-                        className='flex flex-col gap-8 w-[20rem] pointer-events-auto max-w-[90%] bg-white rounded-2xl px-6 py-4 z-10 relative'
+                        className='flex flex-col gap-8 w-[20rem] pointer-events-auto max-w-[90%] bg-white rounded-2xl z-[10002] px-6 py-4'
                     >
                         <div className='flex items-start gap-3'>
                             <div className='relative'>
@@ -366,8 +383,10 @@ const ProfileSidebar = () => {
                             </div>
                         </div>
 
-                        <p className={`text-[0.7rem] -mt-8 text-green-500 transform transition-all duration-700 ease-in-out ${
-                                updateUserSuccess 
+                        <p 
+                            className={`text-[0.7rem] -mt-8 text-green-500 transform transition-all duration-700 ease-in-out
+                                ${
+                                    updateUserSuccess 
                                     ? 'opacity-1 translate-y-0 pointer-events-auto' 
                                     : 'opacity-0 -translate-y-5 pointer-events-none'
                                 }`
@@ -376,8 +395,10 @@ const ProfileSidebar = () => {
                             {updateUserSuccess}
                         </p>
 
-                        <p className={`text-[0.7rem] -mt-8 text-red-500 self-start transform transition-all duration-700 ease-in-out ${
-                                updateUserError 
+                        <p 
+                            className={`text-[0.7rem] -mt-8 text-red-500 self-start transform transition-all duration-700 ease-in-out 
+                                ${
+                                    updateUserError 
                                     ? 'opacity-1 translate-y-0 pointer-events-auto' 
                                     : 'opacity-0 -translate-y-5 pointer-events-none'
                                 }`
@@ -424,6 +445,18 @@ const ProfileSidebar = () => {
                                     <p className='text-[0.7rem]'>Read reviews you've shared</p>
                                 </div>
                                 <ChevronRight className='text-3xl absolute right-2'/>
+                            </Link>
+                            <Link
+                                to='/profile?tab=bookings'
+                                className='relative flex items-center gap-5 shadow shadow-gray-300 rounded-2xl py-3 px-4 h-20'
+                                onClick={toggleSidebar}
+                            >
+                                <CalendarCog className='text-xl'/>
+                                <div className="w-[70%]">
+                                    <h2 className="font-medium">Manage Bookings</h2>
+                                    <p className="text-[0.7rem]">Manage your bookings</p>
+                                </div>
+                                <ChevronRight className="text-3xl absolute right-2" />
                             </Link>
                             <Link 
                                 to='/profile?tab=settings'

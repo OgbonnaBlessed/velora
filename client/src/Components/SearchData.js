@@ -86,7 +86,7 @@ const SearchData = () => {
           <ul className='flex gap-4 overflow-auto remove-scroll-bar'>
             {searchData.map((item) => (
               <li
-                className='rounded-2xl bg-blue-100 p-4 flex items-center gap-5 min-w-80 min-h-32 cursor-pointer relative'
+                className='rounded-2xl bg-blue-100 p-4 flex items-center gap-5 min-w-72 min-h-32 cursor-pointer relative'
                 key={item._id}
                 onClick={() => handleItemClick(item)}
               >

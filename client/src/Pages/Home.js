@@ -12,6 +12,9 @@ import { BlurhashCanvas } from 'react-blurhash';
 import SearchData from '../Components/SearchData';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
+import { throttle } from 'lodash'
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const Home = () => {
   const dispatch = useDispatch()
@@ -19,6 +22,7 @@ const Home = () => {
   const activeTab = useSelector((state) => state.tab.activeTab); // Get the active tab from Redux
   const [favoritesLoadedImages, setFavoritesLoadedImages] = useState({});
   const [destinationsLoadedImages, setDestinationsLoadedImages] = useState({});
+  const [exploreLoadedImages, setExploreLoadedImages] = useState({});
   const indicatorRef = useRef();
   const tabContainerRef = useRef();
 
@@ -55,8 +59,10 @@ const Home = () => {
     setActiveImages((prev) => {
       const updatedImages = [...prev];
       const totalImages = explore[index].images.length;
-      updatedImages[index] =
-        (updatedImages[index] + direction + totalImages) % totalImages;
+  
+      // Move index forward or backward and wrap around using modulo
+      updatedImages[index] = (updatedImages[index] + direction + totalImages) % totalImages;
+  
       return updatedImages;
     });
   };
@@ -97,6 +103,8 @@ const Home = () => {
       setFavoritesLoadedImages((prev) => ({ ...prev, [index]: true }));
     } else if (type === "destinations") {
       setDestinationsLoadedImages((prev) => ({ ...prev, [index]: true }));
+    } else if (type === "explore") {
+      setExploreLoadedImages((prev) => ({ ...prev, [index]: true }));
     }
   };
 
@@ -111,6 +119,20 @@ const Home = () => {
       },
     });
   };
+
+  const handleScrollThrottled = throttle(() => {
+    handleScroll(stayContainerRef, setStayScroll);
+  }, 100); // Adjust delay as needed
+  
+  useEffect(() => {
+    const container = stayContainerRef.current;
+    container.addEventListener('scroll', handleScrollThrottled);
+  
+    return () => {
+      container.removeEventListener('scroll', handleScrollThrottled);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="flex flex-col gap-16 px-4 sm:px-6 lg:px-20 sm:pt-36 pt-28 pb-10">
@@ -208,13 +230,14 @@ const Home = () => {
                 )}
 
                 {/* Full Image */}
-                <img
+                <LazyLoadImage
                   src={favorite.img}
                   alt={favorite.name}
-                  className={`object-cover transition-all duration-500 
-                    ${favoritesLoadedImages[i] ? 'opacity-100' : 'opacity-0'}`
-                  }
-                  onLoad={() => handleImageLoad(i, "favorites")}
+                  effect="blur"
+                  className={`object-cover transition-all duration-500 ${
+                    favoritesLoadedImages[i] ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  style={{ width: 333, height: 320 }}
                 />
                 <p className="absolute font-semibold bottom-5 left-4 text-white text-shadow-md">
                   {favorite.name}
@@ -260,26 +283,30 @@ const Home = () => {
                 className="destination-container"
                 onClick={() => navigateToHotelSearch(destination.state)}
               >
-                {/* Blurhash Placeholder */}
-                {!destinationsLoadedImages[i] && (
-                  <BlurhashCanvas
-                    hash={destination.blurhash}
-                    width={333}
-                    height={320}
-                    punch={1}
-                    className="absolute inset-0 w-full h-[60%] blurhash-fade"
-                  />
-                )}
+                <div className='relative w-full h-[60%] bg-[#dbeafe]'>
+                  {/* Blurhash Placeholder */}
+                  {!destinationsLoadedImages[i] && (
+                    <BlurhashCanvas
+                      hash={destination.blurhash}
+                      width={333}
+                      height={320}
+                      punch={1}
+                      className="absolute inset-0 w-full h-[60%] blurhash-fade"
+                    />
+                  )}
 
-                {/* Full Image */}
-                <img
-                  src={destination.img}
-                  alt={destination.state}
-                  className={`w-full h-[60%] object-cover transition-opacity duration-500 
-                    ${destinationsLoadedImages[i] ? 'opacity-100' : 'opacity-0'}`
-                  }
-                  onLoad={() => handleImageLoad(i, "destinations")}
-                />
+                  {/* Full Image */}
+                  <LazyLoadImage
+                    src={destination.img}
+                    alt={destination.name}
+                    effect="blur"
+                    className={`object-cover transition-all duration-500 ${
+                      destinationsLoadedImages[i] ? 'opacity-100' : 'opacity-0'
+                    }`}
+                    style={{ width: 333, height: 145 }}
+                  />
+                </div>
+
                 <div className='flex flex-col gap-1 px-2 font-Grotesk mt-5'>
                   <p>
                     {destination.state}
@@ -326,22 +353,45 @@ const Home = () => {
             {explore.map((explore, i) => (
               <div
                 key={i}
-                className="explore-container flex flex-col gap-3"
+                className="explore-container flex flex-col gap-5"
               >
+
 
                 {/* Full Image */}
                 <div className='img-box'>
+                  {/* Blurhash Placeholder */}
+                  {!exploreLoadedImages[i] && (
+                    <BlurhashCanvas
+                      hash={explore.blurhash}
+                      width={333}
+                      height={320}
+                      punch={1}
+                      className="absolute inset-0 w-full h-full blurhash-fade"
+                    />
+                  )}
                   <div 
                     className='angle-left'
                     onClick={() => handleImageChange(i, -1)}
                   >
                     <ChevronLeft className='p-0.5'/>
                   </div>
-                  <img
-                    src={explore.images[activeImages[i]]}
-                    alt={explore.name}
-                    className={`w-full h-[60%] object-cover transition-opacity duration-500`}
-                  />
+                  <div
+                    className="sliding-container bg-[#dbeafe]"
+                    style={{ transform: `translateX(-${activeImages[i] * 100}%)` }}
+                  >
+                    {explore.images.map((image, imgIndex) => (
+                      <div 
+                        className='img'
+                        key={imgIndex}
+                      >
+                        <LazyLoadImage
+                          src={image}
+                          alt={`Explore ${imgIndex}`}
+                          effect="blur"
+                        />
+                      </div>
+                    ))}
+                  </div>
                   <div 
                     className='angle-right'
                     onClick={() => handleImageChange(i, 1)}

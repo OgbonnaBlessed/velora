@@ -1,5 +1,6 @@
 import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const BookingCompleted = () => {
   return (
@@ -17,12 +18,12 @@ const BookingCompleted = () => {
         <p className="text-gray-600 text-base md:text-lg">
           Your booking has been successfully completed. We have sent the details to your email.
         </p>
-        <button
+        <Link
+          to="/"
           className="mt-4 px-4 py-2 md:px-6 md:py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow-lg transition duration-200"
-          onClick={() => (window.location.href = "/")}
         >
           Go to Homepage
-        </button>
+        </Link>
       </div>
     </div>
   );

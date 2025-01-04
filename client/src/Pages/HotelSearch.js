@@ -14,7 +14,6 @@ function HotelSearch() {
     const location = useLocation();
     const { currentUser } = useSelector((state) => state.user);
     const [hotels, setHotels] = useState('');
-    // console.log(`hotels: ${hotels}`)
     const [error, setError] = useState(null);
     const [errors, setErrors] = useState({ origin: '', destination: '' });
     const [triggerSearch, setTriggerSearch] = useState(false); // New flag

@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 const ProfileDetails = () => {
     const { currentUser } = useSelector((state) => state.user);
     const navigate = useNavigate();
-    console.log(currentUser)
 
   return (
     <div className='bg-blue-100 rounded-3xl sm:p-14 p-5 flex-1 flex flex-col gap-10 max-w-full'>
