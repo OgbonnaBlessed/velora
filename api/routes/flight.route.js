@@ -1,5 +1,5 @@
 import express from 'express';
-import { deleteSearchData, getSearchData, hotelDetails, searchFlights, searchHotels } from '../controllers/Flight.controller.js';
+import { deleteSearchData, getSearchData, hotelDetails, searchFlights, searchHotels } from '../controllers/flight.controller.js';
 
 const router = express.Router();
 
