@@ -80,5 +80,3 @@
 5. Open a pull request (PR) for review before merging into develo
 
 [Project Documentation](https://docs.google.com/document/d/11Bc6lEjsZJXoskcCT1UDI_clMQnCOw6yaWWTxSkigEk/edit?usp=sharing)
-
-[oject Documentation](https://docs.google.com/document/d/11Bc6lEjsZJXoskcCT1UDI_clMQnCOw6yaWWTxSkigEk/edit?usp=sharing)
