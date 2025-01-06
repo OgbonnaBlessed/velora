@@ -2,6 +2,7 @@ import { ChevronRight, Pen } from 'lucide-react'
 import React from 'react'
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import ScrollToTop from './ScrollToTop';
 
 const ProfileDetails = () => {
     const { currentUser } = useSelector((state) => state.user);
@@ -9,6 +10,7 @@ const ProfileDetails = () => {
 
   return (
     <div className='bg-blue-100 rounded-3xl sm:p-14 p-5 flex-1 flex flex-col gap-10 max-w-full'>
+        <ScrollToTop/>
         <div className='flex items-start justify-between'>
             <div className='flex flex-col gap-5'>
                 <div className='flex flex-col gap-1'>

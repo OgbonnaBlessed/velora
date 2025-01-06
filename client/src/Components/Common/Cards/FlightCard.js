@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const FlightCard = ({ flight, formatTime, getFlightDuration }) => {
+const FlightCard = ({ flight, formatTime, getFlightDuration, cancelBooking }) => {
     const segments = flight.itineraries[0].segments;
     const airline = segments[0]?.carrierCode; // Assuming carrierCode maps to the airline name
     const departureTime = formatTime(segments[0].departure.at);
@@ -45,13 +45,25 @@ const FlightCard = ({ flight, formatTime, getFlightDuration }) => {
                 </div>
             </div>
         </div>
-        <button
-            type="button"
-            onClick={handleSelect}
-            className="border-2 border-white px-5 py-1 bg-blue-100 w-fit self-center rounded-full font-semibold font-Grotesk text-sm"
-        >
-            Select
-        </button>
+        {cancelBooking 
+            ? (
+                <button
+                    type="button"
+                    onClick={() => cancelBooking(flight.id)}
+                    className="border-2 border-white px-5 py-1 bg-blue-100 w-fit self-center rounded-full font-semibold font-Grotesk text-sm"
+                >
+                    Cancel
+                </button>
+            ) : (
+                <button
+                    type="button"
+                    onClick={handleSelect}
+                    className="border-2 border-white px-5 py-1 bg-blue-100 w-fit self-center rounded-full font-semibold font-Grotesk text-sm"
+                >
+                    Select
+                </button>
+            )
+        }
     </div>
   );
 };

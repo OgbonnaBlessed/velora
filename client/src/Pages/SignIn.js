@@ -401,7 +401,7 @@ const SignIn = ({ length = 4}) => {
             ease: 'easeInOut'
           }}
           exit={{ opacity: 0 }}
-          className="fixed left-0 right-0 top-0 bottom-0 z-50 bg-black/25 flex items-center justify-center"
+          className="fixed left-0 right-0 top-0 bottom-0 z-[10001] bg-black/25 flex items-center justify-center"
         >
           <motion.div
             initial={{ opacity: 0 }}
@@ -421,9 +421,8 @@ const SignIn = ({ length = 4}) => {
             <div className="actions">
               <button 
                 type="button" 
-                className={`bg-[#48aadf] py-2 px-5 text-white cursor-pointer rounded-full transition-all duration-300 ease-in-out 
-                  shrink-button`
-                }
+                className="bg-[#48aadf] py-2 px-5 text-white cursor-pointer rounded-full transition-all duration-300 ease-in-out 
+                  shrink-button"
                 onClick={() => setShowModal(false)}
               >
                 OK

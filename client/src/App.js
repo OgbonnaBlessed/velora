@@ -4,6 +4,7 @@ import AnimatedRoutes from './Components/AnimatedRoutes';
 import Navbar from './Components/Navbar';
 import Footer from './Components/Footer';
 import Help from './Components/Help';
+import ScrollToTop from './Components/ScrollToTop';
 
 const App = () => {
   const location = useLocation();
@@ -18,6 +19,8 @@ const App = () => {
     <>
       {/* Render Navbar only on specified routes */}
       {isNavbarVisible && <Navbar />}
+
+      <ScrollToTop/>
 
       <AnimatedRoutes />
 

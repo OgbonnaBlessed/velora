@@ -54,6 +54,12 @@ const userSlice = createSlice({
             state.error = null;
             state.loading = false;
         },
+        // Add updateUserBookings action
+        updateUserBookings: (state, action) => {
+            if (state.currentUser) {
+                state.currentUser.bookings = action.payload;
+            }
+        },
     },
 });
 
@@ -67,6 +73,7 @@ export const {
                 deleteUserFailure,
                 deleteUserStart,
                 deleteUserSuccess,
-                signOutSuccess
+                signOutSuccess,
+                updateUserBookings
             } = userSlice.actions;
 export default userSlice.reducer;

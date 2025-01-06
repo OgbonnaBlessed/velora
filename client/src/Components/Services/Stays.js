@@ -6,8 +6,10 @@ import DateRangePicker from '../Common/Date Picker/DateRangePicker';
 import TravelersInput from '../Common/Inputs/TravelerInput';
 import OriginInput from '../Common/Inputs/OriginInput';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Stays = () => {
+  const { currentUser } = useSelector((state) => state.user);
   const [errors, setErrors] = useState({ origin: '', destination: '' });
   const [addFlight, setAddFight] = useState(false);
   const [addCar, setAddCar] = useState(false);
@@ -36,6 +38,11 @@ const Stays = () => {
   const handleSearch = () => {
     let hasError = false;
     const newErrors = { origin: '', destination: '' };
+
+    if (!currentUser) {
+      newErrors.destination = 'You are not signed in.';
+      hasError = true;
+    }
 
     if (addFlight === true && !formData.origin) {
       newErrors.origin = 'Please select an origin.';

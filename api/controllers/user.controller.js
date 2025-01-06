@@ -2,6 +2,7 @@ import bcryptjs from "bcryptjs"
 import { errorHandler } from "../utils/error.js"
 import User from "../models/user.model.js"
 import nodemailer from 'nodemailer'
+import { v4 as uuidv4 } from 'uuid';
 
 export const test = (req, res) => {
     res.json({ message: "API is working."})
@@ -204,11 +205,14 @@ export const bookings = async (req, res, next) => {
     const { formData, flight } = req.body; // Ensure you are getting flight details and formData
   
     try {
+        // Add a unique ID to the booking
+        const bookingWithId = { ...flight, id: uuidv4() };
+
         // Once booking is successful, update the user document with the booking details
         const updatedUser = await User.findByIdAndUpdate(
             req.params.userId,
             {
-                $push: { bookings: flight }, // Add booking details to the bookings array
+                $push: { bookings: bookingWithId }, // Add booking details to the bookings array
                 $set: { ...formData }, // Update the user data (if applicable)
             },
             { new: true }
@@ -343,11 +347,14 @@ export const bookHotel = async (req, res, next) => {
     const { formData, hotelDetails, total } = req.body; // Ensure you are getting flight details and formData
     
     try {
+        // Add a unique ID to the booking
+        const bookingWithId = { ...hotelDetails, id: uuidv4() };
+
         // Once booking is successful, update the user document with the booking details
         const updatedUser = await User.findByIdAndUpdate(
             req.params.userId,
             {
-                $push: { bookings: hotelDetails }, // Add booking details to the bookings array
+                $push: { bookings: bookingWithId }, // Add booking details to the bookings array
                 $set: { ...formData }, // Update the user data (if applicable)
             },
             { new: true }
@@ -449,6 +456,29 @@ export const bookHotel = async (req, res, next) => {
         const { password, ...rest } = updatedUser._doc;
         res.status(200).json(rest);
       
+    } catch (error) {
+        next(error);
+    }
+};
+
+// Cancel flight booking
+export const cancelBooking = async (req, res, next) => {
+    const { userId, bookingId } = req.params;
+
+    try {
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            {
+                $pull: { bookings: { id: bookingId } }, // Remove the booking with the given ID
+            },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return next(errorHandler(404, 'User or booking not found'));
+        }
+
+        res.status(200).json({ message: 'Booking canceled successfully', updatedUser });
     } catch (error) {
         next(error);
     }

@@ -157,13 +157,13 @@ const ProfileSidebar = () => {
     }
 
   return (
-    <div className="w-72">
+    <>
         <FiMoreHorizontal 
-            className="xl:hidden fixed left-5 top-36 pointer-events-auto bg-white shadow shadow-gray-300 rounded-md p-2 text-3xl cursor-pointer"
+            className="xl:hidden block fixed left-5 top-36 bg-white shadow shadow-gray-300 rounded-md p-2 text-3xl cursor-pointer"
             onClick={() => setSidebar(!sidebar)}
         />
 
-        <div className='hidden xl:flex flex-col gap-10 w-full pointer-events-auto'>
+        <div className='max-xl:hidden xl:w-72 xl:flex flex-col gap-10'>
             <div className='flex items-start gap-3'>
                 <div className='relative'>
                     <input 
@@ -297,7 +297,7 @@ const ProfileSidebar = () => {
                     </div>
                     <ChevronRight className='text-3xl absolute right-2'/>
                 </Link>
-                <div className='text-lg font-medium h-20 w-72 flex items-center justify-center'>
+                <div className='text-lg font-medium h-20 w-full flex items-center justify-center'>
                     <p 
                         className='cursor-pointer text-[#4078bc] text-lg font-medium'
                         onClick={handleSignOut}
@@ -319,7 +319,6 @@ const ProfileSidebar = () => {
                         ease: "easeInOut"
                     }}
                     className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[10001]"
-                    // style={{ zIndex: 10000 }}
                 >
                     <motion.div 
                         initial={{ opacity: 0 }}
@@ -330,7 +329,7 @@ const ProfileSidebar = () => {
                             ease: "easeInOut"
                         }}
                         ref={sidebarRef}
-                        className='flex flex-col gap-8 w-[20rem] pointer-events-auto max-w-[90%] bg-white rounded-2xl z-[10002] px-6 py-4'
+                        className='flex flex-col gap-7 w-[20rem] pointer-events-auto max-w-[90%] bg-white rounded-2xl z-[10002] px-6 py-4'
                     >
                         <div className='flex items-start gap-3'>
                             <div className='relative'>
@@ -407,7 +406,7 @@ const ProfileSidebar = () => {
                             {updateUserError}
                         </p>
 
-                        <div className='flex flex-col gap-5'>
+                        <div className='flex flex-col gap-4'>
                             <Link 
                                 to='/profile?tab=details'
                                 className={`relative flex items-center gap-5 shadow shadow-gray-300 rounded-2xl py-3 px-4 h-20 
@@ -470,13 +469,13 @@ const ProfileSidebar = () => {
                                 </div>
                                 <ChevronRight className='text-3xl absolute right-2'/>
                             </Link>
-                            <div className='text-lg font-medium h-20 w-72 flex items-center justify-center'>
-                            <p 
-                                className='cursor-pointer text-[#4078bc] text-lg font-medium'
-                                onClick={() => {
-                                    handleSignOut()
-                                    toggleSidebar()
-                                }}
+                            <div className='text-lg font-medium w-full flex items-center justify-center'>
+                                <p 
+                                    className='cursor-pointer text-[#4078bc] text-lg font-medium'
+                                    onClick={() => {
+                                        handleSignOut()
+                                        toggleSidebar()
+                                    }}
                                 >
                                     Sign out
                                 </p> 
@@ -486,7 +485,7 @@ const ProfileSidebar = () => {
                 </motion.div>
             }
         </AnimatePresence>
-    </div>
+    </>
   );
 };
 

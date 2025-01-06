@@ -486,7 +486,7 @@ const SignUp = ({ length = 4}) => {
             duration: .5,
             ease: 'easeInOut'
           }}
-          className="fixed left-0 right-0 top-0 bottom-0 z-50 bg-black/25 flex items-center justify-center"
+          className="fixed left-0 right-0 top-0 bottom-0 z-[10001] bg-black/25 flex items-center justify-center"
         >
           <motion.div
             initial={{ opacity: 0 }}

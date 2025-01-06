@@ -70,6 +70,10 @@ const SearchData = () => {
     }
   };
 
+  if (!currentUser) {
+    return <div>You are not signed in</div>
+  }
+
   if (loading) {
     return <div>Loading...</div>;
   }

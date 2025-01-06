@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
-const HotelCard = ({ hotel, hotelName }) => {
+const HotelCard = ({ hotel, hotelName, cancelBooking }) => {
     const navigate = useNavigate();
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -70,14 +70,26 @@ const HotelCard = ({ hotel, hotelName }) => {
                 <p className="text-lg font-semibold text-wrap text-start max-sm:text-[0.78rem] leading-tight">
                     {formatWord(hotelName || hotel.name)}
                 </p>
-                <div className="flex items-center justify-between">
-                    <button
-                        onClick={handleSelect}
-                        className="sm:px-4 px-2 sm:py-2 py-1 bg-blue-500 text-white sm:rounded-md rounded-sm text-nowrap max-sm:text-[0.7rem]"
+                {!cancelBooking 
+                ? (
+                    <div className="flex items-center justify-between">
+                        <button
+                            onClick={handleSelect}
+                            className="sm:px-4 px-2 sm:py-2 py-1 bg-blue-500  text-white sm:rounded-md rounded-sm text-nowrap max-sm:text-[0.7rem]"
+                            type="button"
+                        >
+                            View Details
+                        </button>
+                    </div>
+                ) : (
+                    <button 
+                        onClick={() => cancelBooking(hotel.id)}
+                        className="sm:px-4 px-2 sm:py-2 py-1 bg-blue-500  text-white sm:rounded-md rounded-sm text-nowrap max-sm:text-[0.7rem]"
+                        type="button"
                     >
-                        View Details
+                        Cancel booking
                     </button>
-                </div>
+                )}
             </div>
         </div>
     );

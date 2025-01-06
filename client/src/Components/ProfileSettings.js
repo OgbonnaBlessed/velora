@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import ConnectedDevices from './ConnectedDevices';
 import { deleteUserFailure, deleteUserStart, deleteUserSuccess } from '../redux/user/userSlice';
+import ScrollToTop from './ScrollToTop';
 
 const ProfileSettings = () => {
     const { currentUser } = useSelector((state) => state.user);
@@ -81,6 +82,7 @@ const ProfileSettings = () => {
     
   return (
     <div className='bg-blue-100 rounded-3xl sm:p-14 p-5 sm:flex-1 flex flex-col gap-10 max-w-full'>
+        <ScrollToTop/>
         <div className='flex flex-col gap-5'>
             <div className='flex flex-col gap-1'>
                 <h1 className='font-semibold sm:text-3xl text-2xl'>Sign-in and security</h1>

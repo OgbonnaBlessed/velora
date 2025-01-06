@@ -6,8 +6,10 @@ import DateRangePicker from '../Common/Date Picker/DateRangePicker';
 import TravelersInput from '../Common/Inputs/TravelerInput';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { useSelector } from 'react-redux';
 
 const OneWay = () => {
+  const { currentUser } = useSelector((state) => state.user);
   const [addPlaceToStay, setAddPlaceToStay] = useState(false);
   const [errors, setErrors] = useState({ origin: '', destination: '' });
   const [formData, setFormData] = useState({
@@ -35,6 +37,11 @@ const OneWay = () => {
   const handleSearch = () => {
     let hasError = false;
     const newErrors = { origin: '', destination: '' };
+
+    if (!currentUser) {
+      newErrors.origin = 'You are not signed in.';
+      hasError = true;
+    }
 
     if (!formData.origin) {
       newErrors.origin = 'Please select an origin.';
