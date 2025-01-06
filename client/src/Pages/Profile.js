@@ -9,6 +9,7 @@ import ProfilePayment from "../Components/ProfilePayment";
 import BasicDetails from "../Components/BasicDetails";
 import ContactDetails from "../Components/ContactDetails";
 import ProfileBookings from "../Components/ProfileBookings";
+import { motion } from "framer-motion";
 
 const UserProfile = () => {
   const location = useLocation();
@@ -28,7 +29,16 @@ const UserProfile = () => {
   }, [location.search, location.pathname, navigate]);
 
   return (
-    <div className="flex gap-5 px-4 sm:px-6 lg:px-20 pt-24 pb-10">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{
+        duration: .5,
+        ease: "easeInOut"
+      }}
+      className="flex gap-5 px-4 sm:px-6 lg:px-20 pt-24 pb-10"
+    >
       <ProfileSidebar/>
 
       {tab === 'details' && <ProfileDetails/>}
@@ -38,7 +48,7 @@ const UserProfile = () => {
       {tab === 'edit_basic_details' && <BasicDetails/>}
       {tab === 'edit_contact_details' && <ContactDetails/>}
       {tab === 'bookings' && <ProfileBookings/>}
-    </div>
+    </motion.div>
   );
 };
 

@@ -8,6 +8,7 @@ import { listItems, subListItems } from "../Data/ListItems";
 import { countries } from '../Data/Locations'
 import { SyncLoader } from 'react-spinners';
 import { updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice';
+import { motion } from "framer-motion";
 
 const FlightCheckOutPage = () => {
   const location = useLocation();
@@ -246,7 +247,16 @@ const FlightCheckOutPage = () => {
   }
 
   return (
-    <div className="flex flex-col-reverse lg:flex-row bg-white rounded-lg overflow-hidden items-start gap-5 px-4 sm:px-6 lg:px-20 pt-28 md:pt-36 pb-10">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{
+        duration: .5,
+        ease: "easeInOut"
+      }}
+      className="flex flex-col-reverse lg:flex-row bg-white rounded-lg overflow-hidden items-start gap-5 px-4 sm:px-6 lg:px-20 pt-28 md:pt-36 pb-10"
+    >
 
       {/* Left Section - Checkout Form */}
       <form 
@@ -605,7 +615,7 @@ const FlightCheckOutPage = () => {
           <p className="text-xl font-semibold">${total.toFixed(2)}</p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

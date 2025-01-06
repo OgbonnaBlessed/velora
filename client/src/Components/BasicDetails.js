@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { SyncLoader } from 'react-spinners';
+import ScrollToTop from './ScrollToTop';
+import { motion } from 'framer-motion'
 
 const BasicDetails = () => {
     const { currentUser } = useSelector((state) => state.user);
@@ -136,7 +138,17 @@ const BasicDetails = () => {
     }, [updateUserSuccess, updateUserError]);
 
   return (
-    <div className='bg-blue-100 flex-1 rounded-3xl relative p-14 flex flex-col w-full items-center gap-5'>
+    <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{
+            duration: .5,
+            ease: "easeInOut"
+        }}
+        className='bg-blue-100 flex-1 rounded-3xl relative p-14 flex flex-col w-full items-center gap-5'
+    >
+        <ScrollToTop/>
         <div 
             className='bg-[#48aadf13] absolute left-3 top-3 p-2.5 rounded-full cursor-pointer text-[#48aadf]'
             onClick={() => navigate(-1)}
@@ -399,7 +411,7 @@ const BasicDetails = () => {
         >
             {updateUserError}
         </p>
-    </div>
+    </motion.div>
   )
 }
 

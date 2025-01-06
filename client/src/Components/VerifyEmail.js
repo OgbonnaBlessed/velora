@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { SyncLoader } from 'react-spinners';
+import { motion } from 'framer-motion';
 
 const VerifyEmail = () => {
     const { currentUser } = useSelector((state) => state.user);
@@ -105,7 +106,15 @@ const VerifyEmail = () => {
     }, [modalMessage]);
 
   return (
-    <>
+    <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{
+            duration: .5,
+            ease: "easeInOut"
+        }}
+    >
         <div className='bg-white fixed w-full h-full inset-0 z-[10000] flex justify-center'>
             <div className='pt-16 w-[30rem] max-w-[90%] flex flex-col gap-5'>
                 <div 
@@ -198,7 +207,7 @@ const VerifyEmail = () => {
             </div>
 
         </div>
-    </>
+    </motion.div>
   )
 }
 

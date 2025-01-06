@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { BounceLoader } from 'react-spinners';
+import { motion } from 'framer-motion';
 
 const HotelDetails = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [hotelDetails, setHotelDetails] = useState(null);
-    console.log(hotelDetails?.images)
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const { hotel } = location.state;
@@ -89,7 +89,16 @@ const HotelDetails = () => {
     };
 
   return (
-    <div className="flex flex-col items-center lg:items-start gap-5 px-6 sm:px-8 lg:px-24 pt-28 md:pt-36 pb-12">
+    <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{
+            duration: .5,
+            ease: "easeInOut"
+        }}
+        className="flex flex-col items-center lg:items-start gap-5 px-6 sm:px-8 lg:px-24 pt-28 md:pt-36 pb-12"
+    >
         {/* Hotel Header */}
         <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-start">
             <h1 className="md:text-3xl text-xl font-semibold">
@@ -189,7 +198,7 @@ const HotelDetails = () => {
                 </div>
             </div>
         </div>
-    </div>
+    </motion.div>
   );
 };
 

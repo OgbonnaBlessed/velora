@@ -1,11 +1,21 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowUpRightFromSquare } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 const Policy = () => {
   return (
-    <div className='flex flex-col gap-5 px-4 sm:px-6 lg:px-20 pt-24 pb-10'>
-      <div className='font-semibold text-3xl'>Privacy Policy</div>
+    <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{
+            duration: .5,
+            ease: "easeInOut"
+        }}
+        className='flex flex-col gap-5 px-4 sm:px-6 lg:px-20 pt-24 pb-10'
+    >
+        <div className='font-semibold text-3xl'>Privacy Policy</div>
 
         <div className='font-medium text-xl'>Effective Date: 11th of October 2024</div>
 
@@ -212,7 +222,7 @@ const Policy = () => {
             User Data Deletion
             <ArrowUpRightFromSquare className='cursor-pointer text-[#48aadf] p-1'/>
         </Link>
-    </div>
+    </motion.div>
   )
 }
 

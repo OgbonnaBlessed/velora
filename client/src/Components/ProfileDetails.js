@@ -3,13 +3,23 @@ import React from 'react'
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import ScrollToTop from './ScrollToTop';
+import { motion } from 'framer-motion';
 
 const ProfileDetails = () => {
     const { currentUser } = useSelector((state) => state.user);
     const navigate = useNavigate();
 
   return (
-    <div className='bg-blue-100 rounded-3xl sm:p-14 p-5 flex-1 flex flex-col gap-10 max-w-full'>
+    <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{
+            duration: .5,
+            ease: "easeInOut"
+        }}
+        className='bg-blue-100 rounded-3xl sm:p-14 p-5 flex-1 flex flex-col gap-10 max-w-full'
+    >
         <ScrollToTop/>
         <div className='flex items-start justify-between'>
             <div className='flex flex-col gap-5'>
@@ -174,7 +184,7 @@ const ProfileDetails = () => {
                 </div>
             </div>
         </div>
-    </div>
+    </motion.div>
   )
 }
 

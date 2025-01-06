@@ -81,7 +81,16 @@ const ProfileSettings = () => {
     } 
     
   return (
-    <div className='bg-blue-100 rounded-3xl sm:p-14 p-5 sm:flex-1 flex flex-col gap-10 max-w-full'>
+    <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{
+            duration: .5,
+            ease: "easeInOut"
+        }}
+        className='bg-blue-100 rounded-3xl sm:p-14 p-5 sm:flex-1 flex flex-col gap-10 max-w-full'
+    >
         <ScrollToTop/>
         <div className='flex flex-col gap-5'>
             <div className='flex flex-col gap-1'>
@@ -178,7 +187,7 @@ const ProfileSettings = () => {
                         ease: 'easeInOut'
                     }}
                     exit={{ opacity: 0 }}
-                    className="fixed left-0 right-0 top-0 bottom-0 z-[10000] bg-black/25 flex items-center justify-center"
+                    className="fixed left-0 right-0 top-0 bottom-0 z-[10001] bg-black/25 flex items-center justify-center"
                 >
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -221,7 +230,7 @@ const ProfileSettings = () => {
                         ease: 'easeInOut'
                     }}
                     exit={{ opacity: 0 }}
-                    className="fixed left-0 right-0 top-0 bottom-0 z-[10000] bg-black/25 flex items-center justify-center"
+                    className="fixed left-0 right-0 top-0 bottom-0 z-[10001] bg-black/25 flex items-center justify-center"
                 >
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -265,7 +274,7 @@ const ProfileSettings = () => {
                 </motion.div>
             )}
         </AnimatePresence> 
-    </div>
+    </motion.div>
   )
 }
 

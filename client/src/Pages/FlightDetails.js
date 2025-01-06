@@ -1,6 +1,7 @@
 import { ArrowRight, CheckCheck, ChevronRight } from 'lucide-react';
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const FlightDetails = () => {
   const location = useLocation();
@@ -44,7 +45,16 @@ const FlightDetails = () => {
   };
 
   return (
-    <div className="flex flex-col items-center lg:items-start gap-5 px-4 sm:px-6 lg:px-20 pt-28 md:pt-36 pb-10">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{
+        duration: .5,
+        ease: "easeInOut"
+      }}
+      className="flex flex-col items-center lg:items-start gap-5 px-4 sm:px-6 lg:px-20 pt-28 md:pt-36 pb-10"
+    >
       <div className='flex items-center lg:gap-3 gap-2 flex-wrap max-lg:text-sm'>
         <p>{formatWord(flight.itineraries[0].segments[0].departure.cityName)}</p>
         <ArrowRight className='p-1'/>
@@ -124,7 +134,7 @@ const FlightDetails = () => {
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

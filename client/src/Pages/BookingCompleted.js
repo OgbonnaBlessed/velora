@@ -1,10 +1,20 @@
 import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const BookingCompleted = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-100 to-[#48aadf] text-white px-4">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{
+        duration: .5,
+        ease: "easeInOut"
+      }}
+      className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-100 to-[#48aadf] text-white px-4"
+    >
       <div className="flex flex-col items-center gap-4 bg-white p-6 md:p-8 rounded-lg shadow-lg text-center w-full max-w-md">
         <div className="relative w-20 h-20 flex items-center justify-center rounded-full">
           {/* Circle animation */}
@@ -25,7 +35,7 @@ const BookingCompleted = () => {
           Go to Homepage
         </Link>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

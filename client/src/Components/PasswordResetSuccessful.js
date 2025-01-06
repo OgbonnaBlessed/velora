@@ -1,12 +1,22 @@
 import { ArrowLeft } from 'lucide-react';
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion';
 
 const PasswordResetSuccessful = () => {
     const navigate = useNavigate();
 
   return (
-    <div className='bg-white fixed w-full h-full inset-0 z-[10000] flex justify-center'>
+    <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{
+            duration: .5,
+            ease: "easeInOut"
+        }}
+        className='bg-white fixed w-full h-full inset-0 z-[10000] flex justify-center'
+    >
         <div className='pt-16 w-[30rem] max-w-[90%] flex flex-col gap-5'>
             <div 
                 className='bg-[#48aadf13] absolute left-3 top-3 p-2.5 rounded-full cursor-pointer text-[#48aadf]'
@@ -34,7 +44,7 @@ const PasswordResetSuccessful = () => {
                 OK
             </button>
         </div>
-    </div>
+    </motion.div>
   )
 }
 

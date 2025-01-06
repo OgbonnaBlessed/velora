@@ -1,9 +1,19 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 
 const UserData = () => {
   return (
-    <div className='flex flex-col gap-5 px-4 sm:px-6 lg:px-20 pt-24 pb-10'>
+    <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{
+            duration: .5,
+            ease: "easeInOut"
+        }}
+        className='flex flex-col gap-5 px-4 sm:px-6 lg:px-20 pt-24 pb-10'
+    >
         <div className='font-semibold text-3xl'>User Data Deletion Policy</div>
         <div>
             At <Link to='/' className='text-[#48aadf]'>Velora</Link>, we respect your privacy and are committed to ensuring that your personal data is handled securely. In compliance with global privacy regulations, you have the right to request the deletion of your personal data.
@@ -24,7 +34,7 @@ const UserData = () => {
             </ul>
             For any additional questions or concerns, feel free to contact us at <Link className='text-[#48aadf]'>velora@info.com</Link>.
         </div>
-    </div>
+    </motion.div>
   )
 }
 

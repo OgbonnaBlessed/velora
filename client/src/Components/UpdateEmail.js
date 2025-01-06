@@ -8,6 +8,7 @@ import {
   updateStart, 
   updateSuccess, 
 } from '../redux/user/userSlice';
+import { motion } from 'framer-motion';
 
 const UpdateEmail = () => {
     const { currentUser } = useSelector((state) => state.user);
@@ -77,7 +78,16 @@ const UpdateEmail = () => {
     }, [modalMessage]);
 
   return (
-    <div className='bg-white fixed w-full h-full inset-0 z-[10000] flex justify-center'>
+    <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{
+            duration: .5,
+            ease: "easeInOut"
+        }} 
+        className='bg-white fixed w-full h-full inset-0 z-[10000] flex justify-center'
+    >
         <form onSubmit={handleSubmit} className='pt-16 w-[30rem] max-w-[90%] flex flex-col gap-5'>
             <div 
                 className='bg-[#48aadf13] absolute left-3 top-3 p-2.5 rounded-full cursor-pointer text-[#48aadf]'
@@ -118,11 +128,12 @@ const UpdateEmail = () => {
                 <div className='relative text-black'>
                     <label
                         htmlFor="email"
-                        className={`absolute left-5 transition-all duration-300 ease-in-out cursor-text ${
-                        isFocused3
-                            ? 'top-[0.01rem] scale-75 text-[#48aadf] transform -translate-x-2' // Label moves up and scales down when focused
-                            : 'top-1/2 transform -translate-y-1/2 text-black'
-                        }`}
+                        className={`absolute left-5 transition-all duration-300 ease-in-out cursor-text 
+                            ${isFocused3
+                                ? 'top-[0.01rem] scale-75 text-[#48aadf] transform -translate-x-2' // Label moves up and scales down when focused
+                                : 'top-1/2 transform -translate-y-1/2 text-black'
+                            }`
+                        }
                     >
                         New email
                     </label>
@@ -138,8 +149,10 @@ const UpdateEmail = () => {
                 </div>
             </div>
 
-            <p className={`text-[0.7rem] text-red-500 transform transition-all duration-700 ease-in-out ${
-                    modalMessage 
+            <p 
+                className={`text-[0.7rem] text-red-500 transform transition-all duration-700 ease-in-out 
+                    ${
+                        modalMessage 
                         ? 'opacity-1 translate-y-0 pointer-events-auto' 
                         : 'opacity-0 -translate-y-5 pointer-events-none'
                     }`
@@ -159,17 +172,17 @@ const UpdateEmail = () => {
                 }
             >
                 {loading 
-                    ? <SyncLoader 
-                        color="#fff" // Customize the color
-                        loading={loading} 
-                        size={7} // Customize the size
-                        margin={2} // Customize the margin between circles
+                    ?   <SyncLoader 
+                            color="#fff" // Customize the color
+                            loading={loading} 
+                            size={7} // Customize the size
+                            margin={2} // Customize the margin between circles
                         />
                     : 'Update email'
                 }
             </button>
         </form>
-    </div>
+    </motion.div>
   )
 }
 

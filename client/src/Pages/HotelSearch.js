@@ -9,6 +9,7 @@ import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 import HotelList from '../Components/Common/HotelList';
 import { useSelector } from 'react-redux';
+import { motion } from 'framer-motion';
 
 function HotelSearch() {
     const location = useLocation();
@@ -117,7 +118,16 @@ function HotelSearch() {
     }).format(new Date(date));
 
   return (
-    <div className='flex flex-col gap-5 px-4 sm:px-6 lg:px-20 pt-28 md:pt-36 pb-10'>
+    <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{
+            duration: .5,
+            ease: "easeInOut"
+        }}
+        className='flex flex-col gap-5 px-4 sm:px-6 lg:px-20 pt-28 md:pt-36 pb-10'
+    >
         <form 
             onSubmit={(e) => handleSubmit(e)}
             className="xl:flex xl:gap-3 xl:justify-between grid gap-4 md:gap-6 md:grid-cols-3 items-center"
@@ -167,7 +177,16 @@ function HotelSearch() {
                     />
                 </div>
             : error 
-            ?   <div className='flex flex-col gap-5 items-center font-Poppins font-semibold min-h-64 w-full justify-center'>
+            ?   <motion.div 
+                    initial={{ opacity: 0, y: 0 }}
+                    animate={{ opacity: 1, y: -50 }}
+                    exit={{ opacity: 0, y: 0 }}
+                    transition={{
+                        duration: .5,
+                        ease: "easeInOut"
+                    }}
+                    className='flex flex-col gap-5 items-center font-Poppins font-semibold min-h-64 w-full justify-center'
+                >
                     <div className='flex flex-col gap items-center'>
                         <LucideMessageSquareWarning />
                         <p className='text-lg'>
@@ -175,7 +194,7 @@ function HotelSearch() {
                         </p>
                         <p className='font-normal font-sans'>Please try again later</p>
                     </div>
-                </div>
+                </motion.div>
 
             :   // Hotels Display
                 <HotelList
@@ -184,7 +203,7 @@ function HotelSearch() {
                 />
             }
         </div>
-    </div>
+    </motion.div>
   );
 }
 

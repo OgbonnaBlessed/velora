@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice';
 import { SyncLoader } from 'react-spinners';
 import { countries } from '../Data/Locations';
+import { motion } from 'framer-motion';
 
 const TravelDocument = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -152,8 +153,16 @@ const TravelDocument = () => {
   }, [updateUserSuccess, updateUserError]);
 
   return (
-    <div>
-      <div className='fixed inset-0 bg-white z-[10000] flex justify-center items-center'>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{
+        duration: .5,
+        ease: "easeInOut"
+      }}
+    >
+      <div className='fixed inset-0 bg-white z-[10001] flex justify-center items-center'>
         <form 
           className='flex flex-col gap-5 w-[28rem] max-w-[90%]'
           onSubmit={handleSubmit}
@@ -315,7 +324,7 @@ const TravelDocument = () => {
           </p>
         </form>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

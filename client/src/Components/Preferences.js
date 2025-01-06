@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice';
 import { SyncLoader } from 'react-spinners';
 import { countries } from '../Data/Locations';
+import { motion } from 'framer-motion';
 
 const Preferences = () => {
     const { currentUser } = useSelector((state) => state.user);
@@ -111,7 +112,15 @@ const Preferences = () => {
     }, [updateUserSuccess, updateUserError]);
 
   return (
-    <div>
+    <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{
+            duration: .5,
+            ease: "easeInOut"
+        }}
+    >
         <div className='fixed inset-0 bg-white z-[10000] flex justify-center items-center'>
             <form 
                 className='flex flex-col gap-3 w-[28rem] max-w-[90%]'
@@ -145,7 +154,12 @@ const Preferences = () => {
                         className='w-full shadow shadow-gray-400 pt-6 pb-3 px-3 pr-5 bg-transparent rounded-md text-black appearance-none text-base cursor-pointer'
                     >
                         {countries.map((country, index) => (
-                            <option key={index} value={country.name}>{country.name}</option>
+                            <option 
+                                key={index} 
+                                value={country.name}
+                            >
+                                {country.name}
+                            </option>
                         ))}
                     </select>
                 </div>
@@ -244,7 +258,7 @@ const Preferences = () => {
                 </div>
             </form>
         </div>
-    </div>
+    </motion.div>
   )
 }
 

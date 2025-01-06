@@ -278,7 +278,16 @@ const SignIn = ({ length = 4}) => {
   };
 
   return (
-    <div className='w-full py-10 flex items-center justify-between relative'>
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{
+        duration: .5,
+        ease: "easeInOut"
+      }}
+      className='w-full py-10 flex items-center justify-between relative'
+    >
       <div 
         className='absolute sm:left-5 sm:top-5 top-2 left-1 hover:bg-[#48aadf13] sm:p-3 p-2 rounded-full cursor-pointer text-[#48aadf] transition-colors duration-300 ease-in-out'
         onClick={return_to_previous_page}
@@ -710,7 +719,7 @@ const SignIn = ({ length = 4}) => {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   )
 }
 

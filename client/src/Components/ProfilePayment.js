@@ -2,6 +2,7 @@ import { ChevronDown } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ScrollToTop from "./ScrollToTop";
+import { motion } from "framer-motion";
 
 const ProfilePayment = () => {
     const [openAccordion, setOpenAccordion] = useState("paymentMethods");
@@ -31,7 +32,16 @@ const ProfilePayment = () => {
     }, []);
 
   return (
-    <div className="bg-blue-100 rounded-3xl sm:p-14 p-5 flex-1 flex flex-col gap-10">
+    <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{
+            duration: .5,
+            ease: "easeInOut"
+        }}
+        className="bg-blue-100 rounded-3xl sm:p-14 p-5 flex-1 flex flex-col gap-10"
+    >
         <ScrollToTop/>
         <div className="bg-white flex flex-col">
             <h1 className="font-bold text-xl py-2 px-5">My Account Info</h1>
@@ -132,7 +142,7 @@ const ProfilePayment = () => {
             </div>
             </div>
         </div>
-    </div>
+    </motion.div>
   );
 };
 

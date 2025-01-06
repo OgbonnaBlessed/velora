@@ -504,15 +504,9 @@ const Navbar = () => {
         <AnimatePresence>
             {languageModal &&
                 <motion.div
-                    initial={{
-                        opacity: 0
-                    }}
-                    animate={{
-                        opacity: 1
-                    }}
-                    exit={{
-                        opacity: 0
-                    }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                     transition={{
                         duration: .5,
                         ease: "easeInOut"
@@ -560,10 +554,15 @@ const Navbar = () => {
                             </label>
                             <select 
                                 id="travelDocument.country"
-                                className='w-full shadow shadow-gray-300 pt-6 pb-3 px-3 pr-5 bg-transparent rounded-md text-black appearance-none text-base cursor-pointer'
+                                className='w-full shadow shadow-gray-400 pt-6 pb-3 px-3 pr-5 bg-transparent rounded-md text-black appearance-none text-base cursor-pointer'
                             >
                                 {countries.map((country, i) => (
-                                    <option key={i} value={country.name}>{country.name}</option>
+                                    <option 
+                                        key={i} 
+                                        value={country.name}
+                                    >
+                                        {country.name}
+                                    </option>
                                 ))}
                             </select>
                         </div>
@@ -577,10 +576,15 @@ const Navbar = () => {
                             </label>
                             <select 
                                 id="travelDocument.country"
-                                className='w-full shadow shadow-gray-300 pt-6 pb-3 px-3 pr-5 bg-transparent rounded-md text-black appearance-none text-base cursor-pointer'
+                                className='w-full shadow shadow-gray-400 pt-6 pb-3 px-3 pr-5 bg-transparent rounded-md text-black appearance-none text-base cursor-pointer'
                             >
                                 {countries.map((country, i) => (
-                                    <option key={i} value={country.language}>{country.language}</option>
+                                    <option 
+                                        key={i} 
+                                        value={country.language}
+                                    >
+                                        {country.language}
+                                    </option>
                                 ))}
                             </select>
                         </div>
@@ -595,7 +599,7 @@ const Navbar = () => {
                             <select 
                                 id="currency"
                                 disabled
-                                className='w-full shadow shadow-gray-300 pt-6 pb-3 px-3 pr-5 bg-transparent rounded-md text-black appearance-none text-base cursor-pointer'
+                                className='w-full shadow shadow-gray-400 pt-6 pb-3 px-3 pr-5 bg-transparent rounded-md text-black appearance-none text-base cursor-pointer'
                             >
                                 <option value="$ USD">$ USD</option>
                                 <option value="€ EURO">€ EURO</option>

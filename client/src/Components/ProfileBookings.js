@@ -71,7 +71,16 @@ const ProfileBookings = () => {
     };
 
     return (
-        <div className="bg-blue-100 rounded-3xl sm:p-14 p-5 flex-1 flex flex-col gap-10">
+        <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{
+                duration: .5,
+                ease: "easeInOut"
+            }}
+            className="bg-blue-100 rounded-3xl sm:p-14 p-5 flex-1 flex flex-col gap-10"
+        >
             <ScrollToTop/>
             <h2 className="font-medium sm:text-3xl text-2xl">Your Bookings</h2>
 
@@ -199,7 +208,7 @@ const ProfileBookings = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </div>
+        </motion.div>
     );
 };
 
