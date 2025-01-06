@@ -21,9 +21,9 @@ const Home = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate();
   const activeTab = useSelector((state) => state.tab.activeTab); // Get the active tab from Redux
-  const [favoritesLoadedImages, setFavoritesLoadedImages] = useState({});
-  const [destinationsLoadedImages, setDestinationsLoadedImages] = useState({});
-  const [exploreLoadedImages, setExploreLoadedImages] = useState({});
+  const [favoritesLoadedImages] = useState({});
+  const [destinationsLoadedImages] = useState({});
+  const [exploreLoadedImages] = useState({});
   const indicatorRef = useRef();
   const tabContainerRef = useRef();
   const favoriteRef = useRef(null);
@@ -99,16 +99,6 @@ const Home = () => {
       window.removeEventListener("resize", handleResizeAndScroll);
     };
   }, []);
-
-  const handleImageLoad = (index, type) => {
-    if (type === "favorites") {
-      setFavoritesLoadedImages((prev) => ({ ...prev, [index]: true }));
-    } else if (type === "destinations") {
-      setDestinationsLoadedImages((prev) => ({ ...prev, [index]: true }));
-    } else if (type === "explore") {
-      setExploreLoadedImages((prev) => ({ ...prev, [index]: true }));
-    }
-  };
 
   const navigateToHotelSearch = (location) => {
     navigate('/hotel-search', {

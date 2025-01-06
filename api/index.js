@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.route.js'
 import uploadRoutes from './routes/upload.routes.js'; // Import upload routes
 import cookieParser from 'cookie-parser';
 import flightSearchRoutes from './routes/flight.route.js';
+import path from 'path';
 
 dotenv.config();
 
@@ -16,6 +17,8 @@ mongoose.connect(process.env.MONGODB)
 .catch((err) => {
     console.log(err)
 });
+
+const __dirname = path.resolve();
 
 const app = express();
 
@@ -29,6 +32,12 @@ app.use('/api/flight', flightSearchRoutes);
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
+});
+
+app.use(express.static(path.join(__dirname, '/client/build')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 
 app.use((err, req, res, next) => {
