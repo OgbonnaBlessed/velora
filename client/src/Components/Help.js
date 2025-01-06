@@ -2,6 +2,8 @@ import { Send } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
+import {  } from "react-icons/ai";
+import { MdOutlineComment } from "react-icons/md";
 
 const Help = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -100,7 +102,7 @@ const Help = () => {
                 } bg-[#48aadf] text-white w-12 h-12 rounded-full items-center justify-center cursor-pointer shadow-lg pointer-events-auto`}
                 onClick={handleToggle}
             >
-                💬
+                <MdOutlineComment/>
             </div>
 
             {/* Chat Interface */}

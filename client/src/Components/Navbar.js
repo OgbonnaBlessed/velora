@@ -317,7 +317,7 @@ const Navbar = () => {
         {/* Sidebar */}
         <aside 
             ref={sidebarServicesRef} 
-            className={`z-20 fixed overflow-auto top-[5rem] font-Grotesk left-0 w-96 max-w-full h-[100vh] bg-gradient-to-b bg-[#ffffff] text-black lg:hidden transition-all duration-700 ease-in-out transform 
+            className={`z-20 fixed overflow-auto top-[4.8rem] font-Grotesk left-0 w-96 max-w-full h-[100vh] bg-gradient-to-b bg-[#ffffff] text-black lg:hidden transition-all duration-700 ease-in-out transform 
                 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`
             }
         >
