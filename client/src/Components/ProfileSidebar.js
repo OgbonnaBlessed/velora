@@ -159,7 +159,7 @@ const ProfileSidebar = () => {
   return (
     <>
         <FiMoreHorizontal 
-            className="xl:hidden block fixed left-5 top-36 bg-white shadow shadow-gray-300 rounded-md p-2 text-3xl cursor-pointer"
+            className="xl:hidden block fixed left-5 top-36 bg-white shadow shadow-gray-300 rounded-md p-2 text-3xl cursor-pointer z-10"
             onClick={() => setSidebar(!sidebar)}
         />
 

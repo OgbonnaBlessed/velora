@@ -177,7 +177,7 @@ const CarRoundTrip = () => {
                             onFocus={toggleOriginList}
                             onBlur={(e) => !e.target.value && setFocused2(false)} // Reset if input is empty
                             onChange={handleOriginChange}
-                            className="px-3 pt-2 w-full"
+                            className="px-3 pt-2 w-full bg-transparent"
                             autoComplete="off"
                         />
                     </div>
@@ -236,7 +236,7 @@ const CarRoundTrip = () => {
                             onFocus={toggleDestinationList}
                             onBlur={(e) => !e.target.value && setFocused1(false)} // Reset if input is empty
                             onChange={handleDestinationChange}
-                            className="px-3 pt-2 w-full"
+                            className="px-3 pt-2 w-full bg-transparent"
                             autoComplete="off"
                         />
                     </div>
@@ -289,7 +289,7 @@ const CarRoundTrip = () => {
                         id="travelers"
                         value={travelersInput}
                         onFocus={() => setTravelerModalOpen(true)}
-                        className="px-3 pt-2 w-full"
+                        className="px-3 pt-2 w-full bg-transparent"
                         autoComplete="off"
                         readOnly
                     />
@@ -303,72 +303,81 @@ const CarRoundTrip = () => {
                     }
                 >
                     {rooms.map((room, index) => (
-                    <div key={index} className="flex flex-col gap-3">
-                        <h4 className="font-bold">Room {index + 1}</h4>
-                        <div className='flex flex-col gap-2'>
-                            <div className="flex justify-between items-center">
-                                <span>Adults</span>
-                                <div className='flex gap-3 items-center'>
-                                <button
-                                    className={`border border-gray-50 font-semibold text-2xl px-3 pb-1 rounded-full 
-                                        ${rooms[index].adults === 1 ? 'bg-gray-50 text-gray-300 cursor-no-drop' : 'bg-white text-black'}`
-                                    }
-                                    onClick={() => handleRoomChange(index, 'adults', Math.max(1, rooms[index].adults - 1))}
-                                >
-                                    -
-                                </button>
-                                <span>{rooms[index].adults}</span>
-                                <button
-                                    className={`border border-gray-50 font-semibold text- px-3 py-1.5 rounded-full 
-                                        ${rooms[index].adults === 14 ? 'bg-gray-50 text-gray-300 cursor-no-drop' : 'bg-white text-black'}`
-                                    }
-                                    onClick={() => handleRoomChange(index, 'adults', Math.min(14, rooms[index].adults + 1))}
-                                >
-                                    +
-                                </button>
+                        <div key={index} className="flex flex-col gap-3">
+                            <h4 className="font-bold">Room {index + 1}</h4>
+                            <div className='flex flex-col gap-2'>
+                                <div className="flex justify-between items-center">
+                                    <span>Adults</span>
+                                    <div className='flex gap-3 items-center'>
+                                    <button
+                                        className={`border border-gray-50 font-semibold text-2xl w-8 h-8 flex items-center justify-center rounded-full 
+                                            ${rooms[index].adults === 1 
+                                                ? 'bg-gray-50 text-gray-300 cursor-no-drop' 
+                                                : 'bg-white text-black'
+                                            }`
+                                        }
+                                        onClick={() => handleRoomChange(index, 'adults', Math.max(1, rooms[index].adults - 1))}
+                                    >
+                                        -
+                                    </button>
+                                    <span>{rooms[index].adults}</span>
+                                    <button
+                                        className={`border border-gray-50 font-semibold text-lg w-8 h-8 flex items-center justify-center rounded-full 
+                                            ${rooms[index].adults === 14 
+                                                ? 'bg-gray-50 text-gray-300 cursor-no-drop' 
+                                                : 'bg-white text-black'
+                                            }`
+                                        }
+                                        onClick={() => handleRoomChange(index, 'adults', Math.min(14, rooms[index].adults + 1))}
+                                    >
+                                        +
+                                    </button>
+                                    </div>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span>Children</span>
+                                    <button
+                                        className={`border border-gray-50 font-semibold text-2xl w-8 h-8 flex items-center justify-center rounded-full 
+                                            ${rooms[index].children === 0 
+                                                ? 'bg-gray-50 text-gray-300 cursor-no-drop' 
+                                                : 'bg-white text-black'
+                                            }`
+                                        }
+                                        onClick={() => handleRoomChange(index, 'children', Math.max(0, rooms[index].children - 1))}
+                                    >
+                                        -
+                                    </button>
+                                    <span>{rooms[index].children}</span>
+                                    <button
+                                        className={`border border-gray-50 font-semibold text- px-3 py-1.5 rounded-full 
+                                            ${rooms[index].children === 6 
+                                                ? 'bg-gray-50 text-gray-300 cursor-no-drop' 
+                                                : 'bg-white text-black'
+                                            }`
+                                        }
+                                        onClick={() => handleRoomChange(index, 'children', Math.min(6, rooms[index].children + 1))}
+                                    >
+                                        +
+                                    </button>
                                 </div>
                             </div>
-                            <div className="flex justify-between items-center">
-                                <span>Children</span>
+                            {index > 0 && (
                                 <button
-                                    className={`border border-gray-50 font-semibold text-2xl px-3 pb-1 rounded-full 
-                                        ${rooms[index].children === 0 ? 'bg-gray-50 text-gray-300 cursor-no-drop' : 'bg-white text-black'}`
-                                    }
-                                    onClick={() => handleRoomChange(index, 'children', Math.max(0, rooms[index].children - 1))}
+                                    className="text-[#48aadf] text-sm py-2 self-end"
+                                    onClick={() => removeRoom(index)}
                                 >
-                                    -
+                                    Remove Room
                                 </button>
-                                <span>{rooms[index].children}</span>
-                                <button
-                                    className={`border border-gray-50 font-semibold text- px-3 py-1.5 rounded-full 
-                                        ${rooms[index].children === 6 
-                                        ? 'bg-gray-50 text-gray-300 cursor-no-drop' 
-                                        : 'bg-white text-black'
-                                        }`
-                                    }
-                                    onClick={() => handleRoomChange(index, 'children', Math.min(6, rooms[index].children + 1))}
-                                >
-                                    +
-                                </button>
-                            </div>
+                            )}
                         </div>
-                        {index > 0 && (
-                        <button
-                            className="text-[#48aadf] text-sm py-2 self-end"
-                            onClick={() => removeRoom(index)}
-                        >
-                            Remove Room
-                        </button>
-                        )}
-                    </div>
                     ))}
                     {rooms.length < 3 && (
-                    <p 
-                        className="text-[#48aadf] cursor-pointer" 
-                        onClick={addRoom}
-                    >
-                        Add another room
-                    </p>
+                        <p 
+                            className="text-[#48aadf] cursor-pointer" 
+                            onClick={addRoom}
+                        >
+                            Add another room
+                        </p>
                     )}
                     <button 
                         onClick={submitTravelers} 

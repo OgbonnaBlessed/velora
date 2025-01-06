@@ -37,7 +37,7 @@ const UserProfile = () => {
         duration: .5,
         ease: "easeInOut"
       }}
-      className="flex gap-5 px-4 sm:px-6 lg:px-20 pt-24 pb-10"
+      className="flex gap-5 px-4 sm:px-6 lg:px-20 pt-24 pb-10 bg-white"
     >
       <ProfileSidebar/>
 

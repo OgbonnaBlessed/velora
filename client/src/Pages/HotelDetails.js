@@ -97,7 +97,7 @@ const HotelDetails = () => {
             duration: .5,
             ease: "easeInOut"
         }}
-        className="flex flex-col items-center lg:items-start gap-5 px-6 sm:px-8 lg:px-24 pt-28 md:pt-36 pb-12"
+        className="flex flex-col items-center lg:items-start gap-5 px-6 sm:px-8 lg:px-24 pt-28 md:pt-36 pb-12 bg-white"
     >
         {/* Hotel Header */}
         <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-start">

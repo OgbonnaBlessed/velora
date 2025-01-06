@@ -143,7 +143,7 @@ const RentalCars = () => {
                             onFocus={toggleOriginList}
                             onBlur={(e) => !e.target.value && setFocused2(false)} // Reset if input is empty
                             onChange={handleOriginChange}
-                            className="px-3 pt-2 w-full"
+                            className="px-3 pt-2 w-full bg-transparent"
                             autoComplete="off"
                         />
                         </div>
@@ -200,7 +200,7 @@ const RentalCars = () => {
                                 onFocus={toggleDestinationList}
                                 onBlur={(e) => !e.target.value && setFocused1(false)} // Reset if input is empty
                                 onChange={handleDestinationChange}
-                                className="px-3 pt-2 w-full"
+                                className="px-3 pt-2 w-full bg-transparent"
                                 autoComplete="off"
                             />
                         </div>

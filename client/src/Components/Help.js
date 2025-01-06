@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import { Send } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
@@ -7,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const Help = () => {
     const [isOpen, setIsOpen] = useState(false);
     const helpRef = useRef(null);
+    const lastMessageRef = useRef(null); // Ref for the last message
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -36,7 +36,7 @@ const Help = () => {
         thanks: "You're welcome! Let me know if there's anything else I can help you with.",
         okay: "Alright! Let me know if you need further assistance.",
         default: "I'm afraid I can only answer travel-related questions. Is there anything else I can help you with?",
-    };    
+    };
 
     const handleToggle = () => setIsOpen(!isOpen);
 
@@ -45,31 +45,31 @@ const Help = () => {
             const timestamp = formatTimestamp(new Date());
             const userMessage = { sender: "user", text: input, timestamp };
             setMessages((prev) => [...prev, userMessage]);
-    
+
             let botResponse = predefinedResponses.default;
             const lowerCaseInput = input.toLowerCase();
-    
+
             if (lowerCaseInput.includes("hello") || lowerCaseInput.includes("hi")) {
                 botResponse = predefinedResponses.greeting;
             } else if (lowerCaseInput.includes("book") || lowerCaseInput.includes("flight")) {
                 botResponse = predefinedResponses.booking;
             } else if (lowerCaseInput.includes("pay") || lowerCaseInput.includes("payment")) {
                 botResponse = predefinedResponses.payment;
-            } else if (lowerCaseInput.includes("cancel")) {
+            } else if (lowerCaseInput.includes("cancel") || lowerCaseInput.includes("cancelling") || lowerCaseInput.includes("cancellation")) {
                 botResponse = predefinedResponses.cancel;
             } else if (lowerCaseInput.includes("thank") || lowerCaseInput.includes("thanks")) {
                 botResponse = predefinedResponses.thanks;
             } else if (lowerCaseInput.includes("okay") || lowerCaseInput.includes("ok")) {
                 botResponse = predefinedResponses.okay;
             }
-    
+
             setTimeout(() => {
                 setMessages((prev) => [
                     ...prev,
                     { sender: "bot", text: botResponse, timestamp: formatTimestamp(new Date()) },
                 ]);
             }, 1000);
-    
+
             setInput("");
         }
     };
@@ -80,13 +80,17 @@ const Help = () => {
         }
     };
 
+    useEffect(() => {
+        // Scroll the last message into view whenever messages are updated
+        if (lastMessageRef.current) {
+            lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [messages]);
+
     return (
-        <div 
+        <div
             className={`fixed sm:bottom-4 sm:right-4 bottom-2 right-2 z-[10000] w-96 h-[30rem] max-w-[95%] max-h-full 
-                ${isOpen
-                    ? "pointer-events-auto"
-                    : "pointer-events-none"
-                }
+                ${isOpen ? "pointer-events-auto" : "pointer-events-none"}
             `}
         >
             {/* Floating Help Icon */}
@@ -126,6 +130,7 @@ const Help = () => {
                             {messages.map((msg, index) => (
                                 <div
                                     key={index}
+                                    ref={index === messages.length - 1 ? lastMessageRef : null} // Attach ref to the last message
                                     className={`flex ${
                                         msg.sender === "bot" ? "justify-start" : "justify-end"
                                     }`}

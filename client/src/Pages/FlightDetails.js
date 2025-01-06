@@ -53,7 +53,7 @@ const FlightDetails = () => {
         duration: .5,
         ease: "easeInOut"
       }}
-      className="flex flex-col items-center lg:items-start gap-5 px-4 sm:px-6 lg:px-20 pt-28 md:pt-36 pb-10"
+      className="flex flex-col items-center lg:items-start gap-5 px-4 sm:px-6 lg:px-20 pt-28 md:pt-36 pb-10 bg-white"
     >
       <div className='flex items-center lg:gap-3 gap-2 flex-wrap max-lg:text-sm'>
         <p>{formatWord(flight.itineraries[0].segments[0].departure.cityName)}</p>

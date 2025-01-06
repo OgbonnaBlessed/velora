@@ -30,9 +30,9 @@ const FlightsList = ({ flights, formatTime, getFlightDuration }) => {
 
     return (
         <motion.div 
-            initial={{ opacity: 0, y: 0 }}
-            animate={{ opacity: 1, y: -50 }}
-            exit={{ opacity: 0, y: 0 }}
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
             transition={{
                 duration: .5,
                 ease: "easeInOut"

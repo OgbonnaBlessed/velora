@@ -254,7 +254,7 @@ const SignUp = ({ length = 4}) => {
         duration: .5,
         ease: "easeInOut"
       }}
-      className='w-full py-10 flex items-center justify-between relative'
+      className='w-full py-10 flex items-center justify-between relative bg-white'
     >
       <div 
         className='absolute sm:left-5 sm:top-5 top-2 left-1 hover:bg-[#48aadf13] sm:p-3 p-2 rounded-full cursor-pointer text-[#48aadf] transition-colors duration-300 ease-in-out'

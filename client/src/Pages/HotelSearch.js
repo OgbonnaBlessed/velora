@@ -126,7 +126,7 @@ function HotelSearch() {
             duration: .5,
             ease: "easeInOut"
         }}
-        className='flex flex-col gap-5 px-4 sm:px-6 lg:px-20 pt-28 md:pt-36 pb-10'
+        className='flex flex-col gap-5 px-4 sm:px-6 lg:px-20 pt-28 md:pt-36 pb-10 bg-white'
     >
         <form 
             onSubmit={(e) => handleSubmit(e)}
@@ -178,9 +178,9 @@ function HotelSearch() {
                 </div>
             : error 
             ?   <motion.div 
-                    initial={{ opacity: 0, y: 0 }}
-                    animate={{ opacity: 1, y: -50 }}
-                    exit={{ opacity: 0, y: 0 }}
+                    initial={{ opacity: 0, y: -50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -50 }}
                     transition={{
                         duration: .5,
                         ease: "easeInOut"

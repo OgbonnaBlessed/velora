@@ -12,7 +12,7 @@ const UserData = () => {
             duration: .5,
             ease: "easeInOut"
         }}
-        className='flex flex-col gap-5 px-4 sm:px-6 lg:px-20 pt-24 pb-10'
+        className='flex flex-col gap-5 px-4 sm:px-6 lg:px-20 pt-24 pb-10 bg-white'
     >
         <div className='font-semibold text-3xl'>User Data Deletion Policy</div>
         <div>

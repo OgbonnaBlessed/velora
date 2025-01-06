@@ -83,7 +83,7 @@ const OriginInput = ({ formData, setFormData, locations }) => {
                     onFocus={toggleOriginList}
                     onBlur={(e) => !e.target.value && setFocused(false)} // Reset if input is empty
                     onChange={handleOriginChange}
-                    className="px-3 pt-2 w-full"
+                    className="px-3 pt-2 w-full bg-transparent"
                     autoComplete="off"
                 />
             </div>

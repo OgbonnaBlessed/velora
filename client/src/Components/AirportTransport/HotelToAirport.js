@@ -176,7 +176,7 @@ const HotelToAirport = () => {
                             onFocus={toggleOriginList}
                             onBlur={(e) => !e.target.value && setFocused2(false)} // Reset if input is empty
                             onChange={handleOriginChange}
-                            className="px-3 pt-2 w-full"
+                            className="px-3 pt-2 w-full bg-transparent"
                             autoComplete="off"
                         />
                     </div>
@@ -235,7 +235,7 @@ const HotelToAirport = () => {
                             onFocus={toggleDestinationList}
                             onBlur={(e) => !e.target.value && setFocused1(false)} // Reset if input is empty
                             onChange={handleDestinationChange}
-                            className="px-3 pt-2 w-full"
+                            className="px-3 pt-2 w-full bg-transparent"
                             autoComplete="off"
                         />
                     </div>
@@ -288,7 +288,7 @@ const HotelToAirport = () => {
                         id="travelers"
                         value={travelersInput}
                         onFocus={() => setTravelerModalOpen(true)}
-                        className="px-3 pt-2 w-full"
+                        className="px-3 pt-2 w-full bg-transparent"
                         autoComplete="off"
                         readOnly
                     />
@@ -309,8 +309,11 @@ const HotelToAirport = () => {
                                     <span>Adults</span>
                                     <div className='flex gap-3 items-center'>
                                     <button
-                                        className={`border border-gray-50 font-semibold text-2xl px-3 pb-1 rounded-full 
-                                            ${rooms[index].adults === 1 ? 'bg-gray-50 text-gray-300 cursor-no-drop' : 'bg-white text-black'}`
+                                        className={`border border-gray-50 font-semibold text-2xl w-8 h-8 flex items-center justify-center rounded-full 
+                                            ${rooms[index].adults === 1 
+                                                ? 'bg-gray-50 text-gray-300 cursor-no-drop' 
+                                                : 'bg-white text-black'
+                                            }`
                                         }
                                         onClick={() => handleRoomChange(index, 'adults', Math.max(1, rooms[index].adults - 1))}
                                     >
@@ -318,8 +321,11 @@ const HotelToAirport = () => {
                                     </button>
                                     <span>{rooms[index].adults}</span>
                                     <button
-                                        className={`border border-gray-50 font-semibold text- px-3 py-1.5 rounded-full 
-                                            ${rooms[index].adults === 14 ? 'bg-gray-50 text-gray-300 cursor-no-drop' : 'bg-white text-black'}`
+                                        className={`border border-gray-50 font-semibold text-lg w-8 h-8 flex items-center justify-center rounded-full 
+                                            ${rooms[index].adults === 14 
+                                                ? 'bg-gray-50 text-gray-300 cursor-no-drop' 
+                                                : 'bg-white text-black'
+                                            }`
                                         }
                                         onClick={() => handleRoomChange(index, 'adults', Math.min(14, rooms[index].adults + 1))}
                                     >
@@ -330,8 +336,11 @@ const HotelToAirport = () => {
                                 <div className="flex justify-between items-center">
                                     <span>Children</span>
                                     <button
-                                        className={`border border-gray-50 font-semibold text-2xl px-3 pb-1 rounded-full 
-                                            ${rooms[index].children === 0 ? 'bg-gray-50 text-gray-300 cursor-no-drop' : 'bg-white text-black'}`
+                                        className={`border border-gray-50 font-semibold text-2xl w-8 h-8 flex items-center justify-center rounded-full 
+                                            ${rooms[index].children === 0 
+                                                ? 'bg-gray-50 text-gray-300 cursor-no-drop' 
+                                                : 'bg-white text-black'
+                                            }`
                                         }
                                         onClick={() => handleRoomChange(index, 'children', Math.max(0, rooms[index].children - 1))}
                                     >
@@ -339,7 +348,7 @@ const HotelToAirport = () => {
                                     </button>
                                     <span>{rooms[index].children}</span>
                                     <button
-                                        className={`border border-gray-50 font-semibold text- px-3 py-1.5 rounded-full 
+                                        className={`border border-gray-50 font-semibold text-lg w-8 h-8 flex items-center justify-center rounded-full 
                                             ${rooms[index].children === 6 
                                             ? 'bg-gray-50 text-gray-300 cursor-no-drop' 
                                             : 'bg-white text-black'

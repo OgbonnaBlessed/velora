@@ -135,7 +135,7 @@ const Home = () => {
         duration: .5,
         ease: "easeInOut"
       }}
-      className="flex flex-col gap-16 px-4 sm:px-6 lg:px-20 sm:pt-36 pt-28 pb-10"
+      className="flex flex-col gap-16 px-4 sm:px-6 lg:px-20 sm:pt-36 pt-28 pb-10 bg-white"
     >
 
       {/* Home Navigation Component */}

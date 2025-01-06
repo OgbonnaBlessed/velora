@@ -82,7 +82,7 @@ const TravelersInput = ({ formData, setFormData }) => {
                     id="travelers"
                     value={travelersInput}
                     onFocus={() => setTravelerModalOpen(true)}
-                    className="px-3 pt-2 w-full"
+                    className="px-3 pt-2 w-full bg-transparent"
                     autoComplete="off"
                     readOnly
                 />
@@ -103,7 +103,7 @@ const TravelersInput = ({ formData, setFormData }) => {
                                 <span>Adults</span>
                                 <div className="flex gap-3 items-center">
                                     <button
-                                        className={`border border-gray-50 font-semibold text-xl px-3 pb-1 rounded-full
+                                        className={`border border-gray-50 w-8 h-8 flex items-center justify-center font-semibold text-xl rounded-full
                                             ${rooms[index].adults === 1 
                                                 ? 'bg-gray-50 text-gray-300 cursor-no-drop' 
                                                 : 'bg-white text-black'
@@ -118,7 +118,7 @@ const TravelersInput = ({ formData, setFormData }) => {
                                     </button>
                                     <span>{rooms[index].adults}</span>
                                     <button
-                                        className={`border border-gray-50 font-semibold text-lg px-2.5 pb-1 rounded-full
+                                        className={`border border-gray-50 font-semibold text-lg w-8 h-8 flex items-center justify-center rounded-full
                                             ${rooms[index].adults === 14 
                                                 ? 'bg-gray-50 text-gray-300 cursor-no-drop' 
                                                 : 'bg-white text-black'
@@ -137,7 +137,7 @@ const TravelersInput = ({ formData, setFormData }) => {
                                 <span>Children</span>
                                 <div className="flex gap-3 items-center">
                                     <button
-                                        className={`border border-gray-50 font-semibold text-xl px-3 pb-1 rounded-full
+                                        className={`border border-gray-50 w-8 h-8 flex items-center justify-center font-semibold text-xl rounded-full
                                             ${rooms[index].children === 0 
                                                 ? 'bg-gray-50 text-gray-300 cursor-no-drop' 
                                                 : 'bg-white text-black'
@@ -152,7 +152,7 @@ const TravelersInput = ({ formData, setFormData }) => {
                                     </button>
                                     <span>{rooms[index].children}</span>
                                     <button
-                                        className={`border border-gray-50 font-semibold text-lg px-3 pb-1 rounded-full
+                                        className={`border border-gray-50 font-semibold text-lg w-8 h-8 flex items-center justify-center rounded-full
                                             ${rooms[index].children === 6 
                                                 ? 'bg-gray-50 text-gray-300 cursor-no-drop' 
                                                 : 'bg-white text-black'
