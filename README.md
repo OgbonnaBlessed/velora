@@ -39,7 +39,8 @@
 
 ### Third-Party Integrations:
 - **Amadeus API**: Real-time flight, hotel, and car rental data.
-- **Firebase**: User authentication and media storage
+- **Firebase**: Google User authentication.
+- **Cloudinary & Multer**: For image or media storage.
 
 ## Website Pages
 - **Home Page**: Introduction to the platform with quick search functionality.
@@ -78,3 +79,5 @@
    ```bash
    git push origin feature/branch-name
 5. Open a pull request (PR) for review before merging into develop
+
+[Project Documentation](https://docs.google.com/document/d/1O82YTVqZ-_SUhHJcMBG5jeNwFkb9wCF6QOkoGKuQyy4/edit?usp=sharing)
