@@ -1,491 +1,531 @@
+/* Importing Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:ital,wght@0,400..700;1,400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
-/* slick-carousel styles */
-@import "~slick-carousel/slick/slick.css";
-@import "~slick-carousel/slick/slick-theme.css";
+/* Importing Slick Carousel styles */
+@import "~slick-carousel/slick/slick.css"; /* Base Slick Carousel styles */
+@import "~slick-carousel/slick/slick-theme.css"; /* Slick Carousel theme styles */
 
+/* Universal reset for all elements to ensure consistent styling across the site */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  outline: none !important;
-  -webkit-tap-highlight-color: transparent;
+  margin: 0; /* Reset all margins */
+  padding: 0; /* Reset all paddings */
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
+  outline: none !important; /* Remove the default focus outline */
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile browsers */
 }
 
+/* Tailwind imports for utility-first CSS */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Define the shrinking animation */
+/* Define the shrinking animation for interactive elements */
 @keyframes shrinkEffect {
   0% {
-    transform: scale(1);
+    transform: scale(1); /* Normal size at start */
   }
   50% {
-    transform: scale(0.9);
+    transform: scale(0.9); /* Shrinks slightly at the middle */
   }
   100% {
-    transform: scale(1);
+    transform: scale(1); /* Resets back to original size */
   }
 }
 
-/* Apply animation when clicked */
+/* Apply shrinking animation when button is clicked */
 .shrink-button {
-  transition: transform 0.15s ease-in-out; /* Smooth transition */
+  transition: transform 0.15s ease-in-out; /* Smooth transition when interacting */
 }
 
 .shrink-button:active {
-  animation: shrinkEffect 0.3s forwards;
+  animation: shrinkEffect 0.3s forwards; /* Shrink effect on click */
 }
 
-/* Add this in your global CSS or Tailwind configuration */
+/* Remove number input spin buttons in webkit browsers (Chrome/Safari) */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+  -webkit-appearance: none; /* Remove the inner spin button */
+  margin: 0; /* Remove margin */
 }
 
+/* Ensure number input field in Firefox looks like a normal textfield */
 input[type="number"] {
-  -moz-appearance: textfield;
-  /* For Firefox */
+  -moz-appearance: textfield; /* Remove Firefox's default number input styling */
+  appearance: textfield; /* Ensure consistent styling across modern browsers */
+  -webkit-appearance: textfield; /* Support for Chrome, Safari, and Opera */
 }
 
-/* General radio container styling */
+/* Custom radio button container styling */
 .radio-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
+  display: flex; /* Align items in a row */
+  align-items: center; /* Center items vertically */
+  gap: 10px; /* Add space between items */
+  cursor: pointer; /* Indicate interactivity */
 }
 
+/* Hide the default radio button, allowing custom design */
 .radio-container input[type="radio"] {
-  display: none; /* Hide the default radio */
+  display: none;
 }
 
-/* Custom radio styling */
+/* Styling for the custom radio button label */
 .radio-container .radio-label {
   position: relative;
-  padding-left: 35px;
+  padding-left: 35px; /* Space for custom radio button */
   cursor: pointer;
   font-weight: 400;
   line-height: 20px;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease; /* Smooth transition for text color */
 }
 
+/* Custom radio button circle styling */
 .radio-container .radio-label::before {
   content: '';
   position: absolute;
   left: 0;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%); /* Vertically center the circle */
   width: 20px;
   height: 20px;
-  border: 2px solid #0000008e;
-  border-radius: 50%;
-  background-color: transparent;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  border: 2px solid #0000008e; /* Border color */
+  border-radius: 50%; /* Round shape */
+  background-color: transparent; /* Transparent background */
+  transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition for background and border */
 }
 
+/* Inner circle for checked state */
 .radio-container .radio-label::after {
   content: '';
   position: absolute;
-  left: 4.5px;
+  left: 4.5px; /* Position the inner circle */
   top: 50%;
-  transform: translateY(-50%) scale(0);
+  transform: translateY(-50%) scale(0); /* Initially hide it */
   width: 12px;
   height: 12px;
-  border: 2px solid #fff;
-  background-color: #48aadf;
-  border-radius: 50%;
-  transition: transform 0.3s ease;
+  border: 2px solid #fff; /* Border color for inner circle */
+  background-color: #48aadf; /* Inner circle color */
+  border-radius: 50%; /* Round shape */
+  transition: transform 0.3s ease; /* Smooth transition for scaling */
 }
 
-/* Checked state */
+/* When the radio button is checked, change the appearance */
 .radio-container input[type="radio"]:checked + .radio-label::before {
-  border-color: #48aadf;
-  background-color: #48aadf;
+  border-color: #48aadf; /* Change border color */
+  background-color: #48aadf; /* Change background color */
 }
 
 .radio-container input[type="radio"]:checked + .radio-label::after {
-  transform: translateY(-50%) scale(1);
+  transform: translateY(-50%) scale(1); /* Scale up the inner circle */
 }
 
-/* Hover effect */
+/* Hover effect for the radio button */
 .radio-container .radio-label:hover::before {
-  border-color: #007bbd;
+  border-color: #007bbd; /* Change border color on hover */
 }
 
-/* Custom Flatpickr styles */
+/* Custom Flatpickr calendar styles */
 .flatpickr-calendar {
-  margin-top: 1rem; /* Moves the calendar down */
+  margin-top: 1rem; /* Add space above the calendar */
 }
 
+/* Remove scrollbar for elements with specific class */
 .remove-scroll-bar {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer */
 }
 
 .remove-scroll-bar::-webkit-scrollbar {
-  display: none;
+  display: none; /* Webkit browsers */
 }
 
-/* Ensure the dropdown calendar does not overflow on small devices */
+/* Make the calendar responsive and prevent overflow on small devices */
 .responsive-calendar {
-  max-width: 90%; /* Adjust to fit smaller devices */
-  width: auto !important;
+  max-width: 90%; /* Limit width to 90% */
+  width: auto !important; /* Make the calendar width auto for better responsiveness */
 }
 
-/* Add a max height for very small screens */
+/* Limit calendar height for small devices */
 .responsive-calendar .ant-picker-calendar {
-  max-height: 400px !important; /* Limits calendar height for smaller viewports */
+  max-height: 400px !important; /* Set max height for better fit */
 }
 
+/* Remove borders and background for the picker input */
 .ant-picker-outlined {
-  background: transparent;
+  background: transparent; /* Transparent background */
 }
 
-/* Ensure the input always has a transparent background and no border/outline */
+/* Style for the date picker input */
 .ant-picker {
-  background-color: transparent !important; /* Always transparent */
+  background-color: transparent !important; /* Ensure transparency */
   border: none !important; /* Remove borders */
   box-shadow: none !important; /* Remove shadow */
-  outline: none !important; /* Remove focus outline */
-  width: 100%;
-  margin-top: 0.3rem;
+  outline: none !important; /* Remove outline */
+  width: 100%; /* Ensure full width */
+  margin-top: 0.3rem; /* Add a little space above */
 }
 
 /* Ensure the hover state does not change the background or border */
 .ant-picker:hover {
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
+  background-color: transparent !important; /* Transparent on hover */
+  border: none !important; /* No border */
+  box-shadow: none !important; /* No shadow */
 }
 
-/* Remove styles applied on focus */
+/* Remove the focus state styles */
 .ant-picker-focused {
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
+  background-color: transparent !important; /* Transparent on focus */
+  border: none !important; /* No border */
+  box-shadow: none !important; /* No shadow */
 }
 
-/* Ensure the active state doesn't modify styles */
+/* Remove the focus state on focus */
 .ant-picker:focus {
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
+  background-color: transparent !important; /* Transparent on focus */
+  border: none !important; /* No border */
+  box-shadow: none !important; /* No shadow */
 }
 
-/* Ensure the dropdown panel styles are also consistent */
+/* Ensure the dropdown panel is transparent */
 .ant-picker-dropdown {
   background-color: transparent !important;
 }
 
+/* Hide the clear button inside the date picker */
 .ant-picker .ant-picker-clear {
   display: none !important;
 }
 
-.remove-scroll-bar {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
+/* Ensure that specific containers for stays and explore sections are flexible */
 .stay-outer-container,
 .explore-outer-container {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  position: relative;
-  overflow: hidden;
+  width: 100%; /* Full width */
+  display: flex; /* Flexbox layout */
+  flex-direction: column; /* Stack items vertically */
+  gap: 1rem; /* Add space between items */
+  position: relative; /* Enable absolute positioning within */
+  overflow: hidden; /* Hide overflow content */
 }
 
+/* Grid layout for inner containers */
 .stay-inner-container,
 .explore-inner-container {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 1rem;
-  padding: 5px 0;
-  outline: none;
+  display: grid; /* Grid layout */
+  grid-template-columns: repeat(12, 1fr); /* 12 equal columns */
+  gap: 1rem; /* Add space between items */
+  padding: 5px 0; /* Vertical padding */
+  outline: none; /* Remove outline */
 }
 
+/* Enable horizontal scrolling on inner containers */
 .stay-outer-container .stay-inner-container,
 .destination-outer-container .destination-inner-container,
 .explore-outer-container .explore-inner-container {
-  overflow-x: auto;
-  scrollbar-width: none;
+  overflow-x: auto; /* Enable horizontal scroll */
+  scrollbar-width: none; /* Firefox scrollbar removal */
 }
 
+/* Hide the default webkit scrollbar */
 .stay-outer-container .stay-inner-container::-webkit-scrollbar,
 .destination-outer-container .destination-inner-container::-webkit-scrollbar,
 .explore-outer-container .explore-inner-container::-webkit-scrollbar {
   display: none;
 }
 
+/* Styling for the stay container */
 .stay-container {
   position: relative;
-  width: 15rem;
-  height: 20rem;
-  background-color: #dbeafe;
-  border-radius: 20px;
-  cursor: pointer;
-  overflow: hidden;
+  width: 15rem; /* Set fixed width */
+  height: 20rem; /* Set fixed height */
+  background-color: #dbeafe; /* Light blue background */
+  border-radius: 20px; /* Rounded corners */
+  cursor: pointer; /* Indicate interactivity */
+  overflow: hidden; /* Hide content that overflows */
 }
 
+/* Ensure the image fills the container */
 .stay-container img {
-  width: 100%;
-  height: 100%;
-  border-radius: 20px;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  border-radius: 20px; /* Match container rounding */
 }
 
+/* Define the layout for the outer destination container */
 .destination-outer-container {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  position: relative;
-  overflow: hidden;
+  width: 100%; /* Take up the full width of the parent container */
+  display: flex; /* Use Flexbox layout */
+  flex-direction: column; /* Arrange items in a vertical column */
+  gap: 0.5rem; /* Add spacing between child elements */
+  position: relative; /* Allow for absolute positioning of elements within */
+  overflow: hidden; /* Prevent overflow of child elements */
 }
 
+/* Define the layout for the inner destination container */
 .destination-inner-container {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 1.5rem;
-  padding: 1rem 5px;
+  display: grid; /* Use Grid layout */
+  grid-template-columns: repeat(12, 1fr); /* Create 12 equal columns */
+  gap: 1.5rem; /* Add spacing between child elements */
+  padding: 1rem 5px; /* Add padding inside the container */
 }
 
+/* Define the styling for each individual destination container */
 .destination-container {
-  position: relative;
-  cursor: pointer;
-  box-shadow: 0 0 .3rem gray;
-  border-radius: 20px;
-  width: 18rem;
-  height: 15rem;
-  overflow: hidden;
+  position: relative; /* Allow for positioning of inner elements */
+  cursor: pointer; /* Change cursor to pointer to indicate interactivity */
+  box-shadow: 0 0 .3rem gray; /* Add shadow effect around the container */
+  border-radius: 20px; /* Round the corners */
+  width: 18rem; /* Set width */
+  height: 15rem; /* Set height */
+  overflow: hidden; /* Prevent overflow of content */
 }
 
+/* Define the styling for the images inside destination containers */
 .destination-container img {
-  width: 100%;
-  height: 60%;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  width: 100%; /* Make the image take up the full width of the container */
+  height: 60%; /* Set the height to 60% of the container's height */
+  border-top-left-radius: 20px; /* Round the top left corner */
+  border-top-right-radius: 20px; /* Round the top right corner */
 }
 
+/* Define the container for the explore section */
 .explore-container {
-  width: 17rem;
-  height: 25rem;
-  border-radius: 20px;
-  position: relative;
+  width: 17rem; /* Set width */
+  height: 25rem; /* Set height */
+  border-radius: 20px; /* Round the corners */
+  position: relative; /* Allow for inner elements to be positioned absolutely */
 }
 
+/* Define the image box within the explore section */
 .explore-container .img-box {
-  width: 100%;
-  height: 50%;
-  display: flex;
-  align-items: center;
-  border-radius: 20px;
-  overflow: hidden;
-  outline: none;
-  position: relative;
+  width: 100%; /* Make the image box take up full width */
+  height: 50%; /* Set height to 50% */
+  display: flex; /* Use Flexbox to align content inside */
+  align-items: center; /* Vertically center the image */
+  border-radius: 20px; /* Round the corners */
+  overflow: hidden; /* Hide any overflowing content */
+  outline: none; /* Remove outline on focus */
+  position: relative; /* Allow for positioning of child elements */
 }
 
-
+/* Define the sliding container for images */
 .sliding-container {
-  display: flex;
-  transition: transform 0.5s ease-in-out;
-  width: 100%;
-  height: 100%;
+  display: flex; /* Use Flexbox to layout items in a horizontal line */
+  transition: transform 0.5s ease-in-out; /* Smooth transition when images slide */
+  width: 100%; /* Take up the full width */
+  height: 100%; /* Take up the full height */
 }
 
+/* Define the style for each image in the sliding container */
 .sliding-container .img {
-  flex-shrink: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  overflow: hidden;
+  flex-shrink: 0; /* Prevent images from shrinking */
+  width: 100%; /* Take up full width */
+  height: 100%; /* Take up full height */
+  object-fit: cover; /* Ensure the image covers the container without distortion */
+  overflow: hidden; /* Hide any overflowed content */
 }
 
+/* Define the left navigation button for sliding images */
 .explore-container .angle-left {
-  position: absolute;
-  font-size: 2rem;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 6px;
-  color: white;
-  border-radius: 50%;
-  z-index: 2;
-  cursor: pointer;
-  top: 50%;
-  left: 10px;
-  transform: translateY(-50%);
+  position: absolute; /* Position it absolutely inside the container */
+  font-size: 2rem; /* Set font size */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  padding: 6px; /* Add padding around the button */
+  color: white; /* White text */
+  border-radius: 50%; /* Round the button into a circle */
+  z-index: 2; /* Ensure it appears above other elements */
+  cursor: pointer; /* Change cursor to pointer */
+  top: 50%; /* Vertically center it */
+  left: 10px; /* Position it 10px from the left */
+  transform: translateY(-50%); /* Adjust to exactly center vertically */
 }
 
+/* Define the right navigation button for sliding images */
 .explore-container .angle-right {
-  position: absolute;
-  font-size: 2rem;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 6px;
-  color: white;
-  border-radius: 50%;
-  z-index: 2;
-  cursor: pointer;
-  right: 0;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
+  position: absolute; /* Position it absolutely inside the container */
+  font-size: 2rem; /* Set font size */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  padding: 6px; /* Add padding around the button */
+  color: white; /* White text */
+  border-radius: 50%; /* Round the button into a circle */
+  z-index: 2; /* Ensure it appears above other elements */
+  cursor: pointer; /* Change cursor to pointer */
+  right: 0; /* Position it on the right edge */
+  top: 50%; /* Vertically center it */
+  right: 10px; /* Position it 10px from the right */
+  transform: translateY(-50%); /* Adjust to exactly center vertically */
 }
 
+/* Hide the icons for sliding images by default */
 .icon_button#former_slide,
 .slide_button#prev_slide,
 .change_button#before_slide {
-  display: none;
-  transition: .5s ease-in-out;
+  display: none; /* Hide these elements */
+  transition: .5s ease-in-out; /* Smooth transition when they appear */
 }
 
-.before,.former, .back {
-  position: absolute;
-  font-size: 2.5rem;
-  background-color: white;
-  box-shadow: 0 0 .3rem gray;
-  transition: all .5s ease;
-  color: #007bbd;
-  padding: 10px;
-  border-radius: 50%;
-  left: 10px;
-  top: 50%;
-  cursor: pointer;
-  z-index: 2;
+/* Define styling for previous and next buttons (for sliding) */
+.before, .former, .back {
+  position: absolute; /* Position them absolutely */
+  font-size: 2.5rem; /* Set font size */
+  background-color: white; /* White background */
+  box-shadow: 0 0 .3rem gray; /* Add shadow effect */
+  transition: all .5s ease; /* Smooth transition for changes */
+  color: #007bbd; /* Set color */
+  padding: 10px; /* Add padding around the button */
+  border-radius: 50%; /* Make them round */
+  left: 10px; /* Position them on the left */
+  top: 50%; /* Vertically center them */
+  cursor: pointer; /* Change cursor to pointer */
+  z-index: 2; /* Ensure they are above other elements */
 }
 
+/* Define styling for next and later buttons (for sliding) */
 .after, .later, .next {
-  position: absolute;
-  font-size: 2.5rem;
-  background-color: white;
-  box-shadow: 0 0 .3rem gray;
-  transition: all .5s ease;
-  color: #007bbd;
-  padding: 10px;
-  border-radius: 50%;
-  right: 8px;
-  top: 50%;
-  cursor: pointer;
-  z-index: 2;
+  position: absolute; /* Position them absolutely */
+  font-size: 2.5rem; /* Set font size */
+  background-color: white; /* White background */
+  box-shadow: 0 0 .3rem gray; /* Add shadow effect */
+  transition: all .5s ease; /* Smooth transition for changes */
+  color: #007bbd; /* Set color */
+  padding: 10px; /* Add padding around the button */
+  border-radius: 50%; /* Make them round */
+  right: 8px; /* Position them on the right */
+  top: 50%; /* Vertically center them */
+  cursor: pointer; /* Change cursor to pointer */
+  z-index: 2; /* Ensure they are above other elements */
 }
 
-/* For Smooth Transition */
+/* Fade animation for smooth transitions */
 .blurhash-fade {
-  animation: fadeOut 0.7s ease-in-out forwards;
+  animation: fadeOut 0.7s ease-in-out forwards; /* Apply fade-out animation */
 }
 
+/* Keyframes for fade-out animation */
 @keyframes fadeOut {
   from {
-    opacity: 1;
+    opacity: 1; /* Start fully visible */
   }
   to {
-    opacity: 0;
+    opacity: 0; /* Fade out to transparent */
   }
 }
 
-/* Optional: Text Shadow for Better Readability */
+/* Optional text shadow for better readability */
 .text-shadow-md {
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Adds shadow around text for contrast */
 }
 
-/* Ensure Smooth Transition on Full Image */
+/* Ensure smooth transitions on images */
 img {
-  transition: opacity 0.7s ease-in-out;
+  transition: opacity 0.7s ease-in-out; /* Smooth transition for opacity changes */
 }
 
-/* Add this to your CSS file if needed */
+/* Hotel images layout with smooth transition */
 .hotel-images {
-  display: flex;
-  transition: transform 0.5s ease-in-out;
+  display: flex; /* Use Flexbox to arrange images horizontally */
+  transition: transform 0.5s ease-in-out; /* Smooth transition when sliding */
 }
 
+/* Keyframes for "tick" animation (used for scaling and opacity changes) */
 @keyframes tick {
   0% {
-    transform: scale(0);
-    opacity: 0;
+    transform: scale(0); /* Start from a scale of 0 */
+    opacity: 0; /* Start fully transparent */
   }
   50% {
-    transform: scale(1.1);
-    opacity: 0.8;
+    transform: scale(1.1); /* Scale up to 1.1 */
+    opacity: 0.8; /* Slightly opaque */
   }
   100% {
-    transform: scale(1);
-    opacity: 1;
+    transform: scale(1); /* Final scale is 1 */
+    opacity: 1; /* Fully visible */
   }
 }
 
+/* Keyframes for "scale-circle" animation (for a pulsating effect) */
 @keyframes scale-circle {
   0% {
-    transform: scale(0.8);
-    opacity: 0.4;
+    transform: scale(0.8); /* Start from scale 0.8 */
+    opacity: 0.4; /* Start semi-transparent */
   }
   50% {
-    transform: scale(1.3);
-    opacity: 0.2;
+    transform: scale(1.3); /* Scale to 1.3 */
+    opacity: 0.2; /* More transparent */
   }
   100% {
-    transform: scale(1);
-    opacity: 0;
+    transform: scale(1); /* Return to original scale */
+    opacity: 0; /* Fully transparent */
   }
 }
 
-/* Assign animations to the respective classes */
+/* Assign tick animation to elements */
 .animate-tick {
-  animation: tick 1.2s ease-out;
+  animation: tick 1.2s ease-out; /* Apply the tick animation */
 }
 
+/* Assign scale-circle animation to elements */
 .animate-scale-circle {
-  animation: scale-circle 1.8s infinite ease-out;
+  animation: scale-circle 1.8s infinite ease-out; /* Apply the pulsating scale-circle animation */
 }
 
+/* Class for smooth transformation */
 .transition-transform {
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.5s ease-in-out; /* Smooth transition on transform changes */
 }
 
-/* Allow the calendar to adjust on various screen sizes */
+/* Media query for screens with a maximum width of 768px */
 @media (max-width: 768px) {
+
+  /* Ensure the calendar panel fits within the available screen width on small devices */
   .responsive-calendar .ant-picker-panel {
-    max-width: 100%;
-    display: flex;
-    flex-direction: column;
+    max-width: 100%; /* Set the panel's maximum width to 100% of its parent */
+    display: flex; /* Use flexbox to align children elements */
+    flex-direction: column; /* Stack the children vertically */
   }
 
+  /* Adjust dropdown styling for a vertical layout on smaller screens */
   .ant-picker-dropdown {
-    display: flex;
-    flex-direction: column;
+    display: flex; /* Use flexbox for positioning */
+    flex-direction: column; /* Stack dropdown items vertically */
   }
 
+  /* Make sure the date range wrapper is displayed vertically */
   .ant-picker-dropdown .ant-picker-range-wrapper {
-    display: flex;
-    flex-direction: column;
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack date ranges vertically */
   }
 
+  /* Adjust the date range container to be in a column format */
   .ant-picker-dropdown-range {
-    display: flex;
-    flex-direction: column;
+    display: flex; /* Use flexbox layout */
+    flex-direction: column; /* Stack date ranges vertically */
   }
 
+  /* Ensure the date range wrapper behaves vertically within its parent */
   .ant-picker-range-wrapper .ant-picker-date-range-wrapper {
-    display: flex;
-    flex-direction: column;
+    display: flex; /* Flexbox layout for inner elements */
+    flex-direction: column; /* Stack date range elements vertically */
   }
 
+  /* Adjust the layout of the picker panels for better alignment and wrapping */
   .ant-picker-dropdown .ant-picker-panel-container .ant-picker-panel-layout {
-    display: flex;
-    flex-wrap: wrap !important;
-    align-items: center !important;
+    display: flex; /* Flexbox layout to organize the children */
+    flex-wrap: wrap !important; /* Allow the items to wrap on smaller screens */
+    align-items: center !important; /* Center align the items */
   }
 
+  /* Adjust layout for multiple panels in the picker */
   .ant-picker-dropdown .ant-picker-panel-container .ant-picker-panels {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
+    display: flex; /* Flexbox layout for panels */
+    flex-wrap: wrap; /* Allow the panels to wrap if they overflow */
+    flex-direction: column; /* Stack the panels vertically */
   }
 }
 
+/* Media query for very small screens with a maximum width of 400px */
 @media (max-width: 400px) {
+
+  /* Adjust the margin of the date range wrapper for extra small screens */
   .ant-picker-date-range-wrapper {
-    margin-left: 2.8rem;
+    margin-left: 2.8rem; /* Add left margin to prevent elements from being too close to the edge */
   }
 }

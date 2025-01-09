@@ -1,20 +1,25 @@
-import { CheckCheck, ChevronDown } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
-import DebitCard from "../Components/DebitCard";
-import ClickToPay from "../Components/ClickToPay";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux';
-import { listItems, subListItems } from "../Data/ListItems";
-import { countries } from '../Data/Locations'
-import { SyncLoader } from 'react-spinners';
-import { updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice';
-import { motion } from "framer-motion";
+import { CheckCheck, ChevronDown } from "lucide-react"; // Importing icons from lucide-react library
+import React, { useEffect, useRef, useState } from "react"; // Importing hooks and components from React
+import DebitCard from "../Components/DebitCard"; // Importing DebitCard component
+import ClickToPay from "../Components/ClickToPay"; // Importing ClickToPay component
+import { Link, useLocation, useNavigate } from "react-router-dom"; // Importing routing hooks from react-router-dom
+import { useDispatch, useSelector } from 'react-redux'; // Importing Redux hooks for state management
+import { listItems, subListItems } from "../Data/ListItems"; // Importing data for list items
+import { countries } from '../Data/Locations' // Importing country data
+import { SyncLoader } from 'react-spinners'; // Importing SyncLoader spinner for loading state
+import { updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice'; // Redux actions for user updates
+import { motion } from "framer-motion"; // Importing motion for animation from framer-motion library
 
 const FlightCheckOutPage = () => {
+  // React router hooks to access location and navigation properties
   const location = useLocation();
   const navigate = useNavigate();
+  
+  // Redux hooks to access the dispatch function and user state
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
+  
+  // State variables to manage form data, loading state, errors, etc.
   const [receiveSMS, setRecieveSMS] = useState(false);
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -22,10 +27,15 @@ const FlightCheckOutPage = () => {
   const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
   const [visible, setVisible] = useState('debit-card');
   const [validationError, setValidationError] = useState(false);
+
+  // References to DOM elements for tabs
   const indicatorRef = useRef(null);
   const tabContainerRef = useRef(null);
+  
+  // Extract flight, tax, and total values from the location state
   const { flight, tax, total } = location.state;
 
+  // Side effect to populate the formData state with currentUser's data
   useEffect(() => {
     if (currentUser) {
       const userData = {
@@ -39,35 +49,38 @@ const FlightCheckOutPage = () => {
           country: currentUser.travelDocument?.country || '',
         },
       };
-      setFormData(userData);
+      setFormData(userData); // Update form data state
     }
-  }, [currentUser]);
+  }, [currentUser]); // Re-run the effect when currentUser changes
 
+  // Function to handle changes in the debit card form
   const handleDebitCardChange = (updatedData) => {
     setFormData((prev) => ({
       ...prev,
-      ...updatedData,
+      ...updatedData, // Update formData with the new debit card data
     }));
   };
 
+  // Function to handle validation error changes
   const handleValidateError = (hasError) => {
     setValidationError(hasError);
   }
 
+  // Generic handler for form input changes (handles nested objects like formData.location.city)
   const handleChange = (e) => {
     const { id, value } = e.target;
-
+    
+    // Split nested keys (e.g., "location.city") into an array
     setFormData((prev) => {
-      const keys = id.split('.'); // Split nested keys like "location.city"
-      let updatedData = { ...prev };
+      const keys = id.split('.'); // Split nested keys
+      let updatedData = { ...prev }; // Make a copy of formData
 
-      // Traverse and update nested keys
       let currentLevel = updatedData;
       keys.forEach((key, index) => {
         if (index === keys.length - 1) {
-          currentLevel[key] = value;
+          currentLevel[key] = value; // Set the final value for the nested key
         } else {
-          currentLevel[key] = { ...currentLevel[key] };
+          currentLevel[key] = { ...currentLevel[key] }; // Create new object for each nested level
           currentLevel = currentLevel[key];
         }
       });
@@ -76,45 +89,49 @@ const FlightCheckOutPage = () => {
     });
   };
 
+  // Handler for phone number input to only allow digits
   const handleNumberChange = (e) => {
     const { value } = e.target;
   
-    // Allow only digits or an empty field
+    // Check if the input is a valid phone number (only digits)
     const isValid = /^\d*$/.test(value);
     if (isValid) {
       setFormData((prev) => ({
         ...prev,
-        number: value,
+        number: value, // Update the phone number in formData
       }));
     }
   };
 
+  // Function to validate the date of birth
   const isValidDOB = (month, day, year) => {
     if (!month || !day || !year) return false;
 
-    // Convert to numbers
     const m = parseInt(month, 10);
     const d = parseInt(day, 10);
     const y = parseInt(year, 10);
 
-    // Check for valid ranges
+    // Validate month, day, year ranges
     if (isNaN(m) || isNaN(d) || isNaN(y) || m < 1 || m > 12 || d < 1 || d > 31 || y < 1900 || y > new Date().getFullYear() - 16) {
       return false;
     }
 
-    // Check for valid dates
+    // Check for valid date
     const date = new Date(y, m - 1, d); // JS months are 0-indexed
     return date.getMonth() + 1 === m && date.getDate() === d && date.getFullYear() === y;
   };
 
+  // Handle checkbox change for receiving SMS
   const handleCheckboxChange = () => {
-    setRecieveSMS(!receiveSMS);
+    setRecieveSMS(!receiveSMS); // Toggle receiveSMS state
   }
 
+  // Function to handle tab switching
   const OpenTab = (tabname) => {
-    setVisible(tabname);
+    setVisible(tabname); // Update visible tab
   }
 
+  // Side effect to update the active tab indicator
   useEffect(() => {
     const tabs = tabContainerRef.current?.querySelectorAll('p');
     const activeTab = Array.from(tabs).find(
@@ -123,33 +140,32 @@ const FlightCheckOutPage = () => {
 
     if (activeTab && indicatorRef.current) {
       const { offsetLeft, offsetWidth } = activeTab;
-      indicatorRef.current.style.width = `${offsetWidth}px`;
-      indicatorRef.current.style.left = `${offsetLeft}px`;
+      indicatorRef.current.style.width = `${offsetWidth}px`; // Set indicator width
+      indicatorRef.current.style.left = `${offsetLeft}px`; // Set indicator position
     }
-  }, [visible]);
+  }, [visible]); // Re-run effect when visible tab changes
 
-  // Helper to calculate total duration in minutes
+  // Helper function to calculate flight duration in minutes
   const getFlightDuration = (flight) => {
     const segments = flight.itineraries[0]?.segments;
     const departureTime = new Date(segments[0].departure.at).getTime();
     const arrivalTime = new Date(segments[segments.length - 1].arrival.at).getTime();
-    return (arrivalTime - departureTime) / (1000 * 60); // Convert to minutes
+    return (arrivalTime - departureTime) / (1000 * 60); // Duration in minutes
   };
   
-  // Helper to calculate the arrival time by adding the flight duration to the departure time
+  // Helper function to calculate arrival date from departure date and flight duration
   const getArrivalDate = (flight) => {
     const segments = flight.itineraries[0]?.segments;
     const departureTime = new Date(segments[0].departure.at).getTime();
     const flightDurationInMinutes = getFlightDuration(flight);
     
-    // Adding flight duration to the departure time (in milliseconds)
-    const arrivalTime = departureTime + (flightDurationInMinutes * 60 * 1000); 
+    const arrivalTime = departureTime + (flightDurationInMinutes * 60 * 1000); // Calculate arrival time
     return new Date(arrivalTime);
   };
 
   const arrivalDate = getArrivalDate(flight);
 
-  // Helper to format time
+  // Helper function to format time as 'hour:minute AM/PM'
   const formatTime = (date) =>
     new Intl.DateTimeFormat('en-US', {
       hour: 'numeric',
@@ -157,38 +173,43 @@ const FlightCheckOutPage = () => {
       hour12: true,
   }).format(new Date(date));
 
+  // Helper function to format date as 'Month Day, Year'
   const formatDate = (dateString) => {
     const options = { month: 'short', day: 'numeric', year: 'numeric' };
     return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
   };
 
+  // Helper function to format words (e.g., title case)
   const formatWord = (word) => {
     return word.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
   };
 
+  // Handle form submission for booking
   const handleSubmit = async (e) => {
     e.preventDefault();
     setUpdateUserError(null);
     setUpdateUserSuccess(null);
 
+    // Validate required fields
     if (!formData.firstName || !formData.lastName) {
       setUpdateUserError('Please fill in all required fields.');
       return;
     }
 
-    // Validate phone number specifically
+    // Validate phone number format
     if (!/^\d{10,15}$/.test(formData.number)) {
       setUpdateUserError('Please enter a valid phone number.');
       return;
     }
 
-    // Validate DOB
+    // Validate date of birth format
     const [month, day, year] = formData.DOB?.split('/') || [];
     if (!isValidDOB(month, day, year)) {
       setUpdateUserError('Please provide a valid Date of Birth.');
       return;
     }
 
+    // If validation errors exist, stop submission
     if (validationError) {
       setUpdateUserError('Please fix the highlighted errors before submitting.');
       return;
@@ -198,12 +219,13 @@ const FlightCheckOutPage = () => {
       dispatch(updateStart());
       setLoading(true);
 
+      // Send form data and flight data to backend for booking
       const res = await fetch(`/api/user/book/${currentUser._id}`, {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ formData, flight }), // Sending both formData and flight
+        body: JSON.stringify({ formData, flight }),
       });
             
       const data = await res.json();
@@ -218,6 +240,7 @@ const FlightCheckOutPage = () => {
         setUpdateUserSuccess("Update successful");
         setLoading(false);
 
+        // Redirect to booking confirmation page
         setTimeout(() => {
           navigate('/booking-completed');
         }, 3000);
@@ -228,21 +251,21 @@ const FlightCheckOutPage = () => {
     }
   }
 
+  // Auto-clear success and error messages after a delay
   useEffect(() => {
     if (updateUserSuccess || updateUserError) {
       const timer = setTimeout(() => {
         setUpdateUserSuccess(null);
         setUpdateUserError(null);
-      }, 3000); // 3 seconds
+      }, 3000);
   
-      // Cleanup the timer if the component unmounts or the state changes before 5 seconds
-      return () => clearTimeout(timer);
+      return () => clearTimeout(timer); // Clean up the timer when the component unmounts
     }
   }, [updateUserSuccess, updateUserError]);
 
-  // If state is missing (e.g., direct access), navigate back
+  // If flight, tax, or total data is missing, navigate back
   if (!flight || !tax || !total) {
-    navigate(-1); // Redirect to the previous page
+    navigate(-1); // Redirect to previous page
     return null;
   }
 
@@ -261,14 +284,26 @@ const FlightCheckOutPage = () => {
       {/* Left Section - Checkout Form */}
       <form 
         onSubmit={handleSubmit}
-        className="w-full flex-1 flex flex-col gap-5 lg:w-2/3 relative">
+        className="w-full flex-1 flex flex-col gap-5 lg:w-2/3 relative"
+      >
         <div className="w-full flex-1 p-6 bg-blue-100 shadow shadow-[#48aadf] rounded-3xl flex flex-col gap-5">
+          {/* Container for the whole form with padding, background color, shadow, and rounded corners */}
+
           <div className="flex flex-col gap-2">
+            {/* Section for the title and description */}
             <h2 className="sm:text-2xl text-xl font-semibold">Who's traveling?</h2>
+            {/* Heading for the form section */}
             <p className="text-sm">Traveler names must match government-issued photo ID exactly.</p>
+            {/* Instructional text below the title */}
           </div>
+
           <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-center ">
+            {/* Container for the input fields for names and phone number */}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-center">
+              {/* A responsive grid layout for First name, Middle name, and Last name */}
+
+              {/* First name input */}
               <div className="flex flex-col gap-1">
                 <h2 className="font-semibold text-sm">First name</h2>
                 <input 
@@ -281,6 +316,8 @@ const FlightCheckOutPage = () => {
                   className="rounded-md bg-white p-3 border-b-2 border-[#48aadf]"
                 />
               </div>
+
+              {/* Middle name input */}
               <div className="flex flex-col gap-1">
                 <h2 className="font-semibold text-sm">Middle name</h2>
                 <input 
@@ -293,6 +330,8 @@ const FlightCheckOutPage = () => {
                   className="rounded-md bg-white p-3 border-b-2 border-[#48aadf]"
                 />
               </div>
+
+              {/* Last name input */}
               <div className="flex flex-col gap-1">
                 <h2 className="font-semibold text-sm">Last name</h2>
                 <input 
@@ -308,10 +347,13 @@ const FlightCheckOutPage = () => {
             </div>
 
             <div className="flex flex-col gap-3">
+              {/* Container for Country code and Phone number inputs */}
               <div className="flex flex-col lg:flex-row gap-5 fl">
+                {/* Country code input */}
                 <div className="flex flex-col gap-1">
                   <h2 className="font-semibold text-sm">Country/Territory Code</h2>
                   <div className='relative w-fit'>
+                    {/* Chevron Down Icon for the dropdown */}
                     <ChevronDown className='absolute right-3 p-1 top-1/2 transform -translate-y-1/2 pointer-events-none'/>
                     <select 
                       id="countryCode"
@@ -330,6 +372,8 @@ const FlightCheckOutPage = () => {
                     </select>
                   </div>
                 </div>
+
+                {/* Phone number input */}
                 <div className="flex flex-col gap-1">
                   <h2 className="font-semibold text-sm">Phone number</h2>
                   <input 
@@ -343,6 +387,8 @@ const FlightCheckOutPage = () => {
                   />
                 </div>
               </div>
+
+              {/* Checkbox for receiving SMS alerts */}
               <div className="flex items-center">
                 <input 
                   type="checkbox" 
@@ -356,6 +402,7 @@ const FlightCheckOutPage = () => {
                   htmlFor="receiveSMS" 
                   className="flex items-center cursor-pointer"
                 >
+                  {/* Custom checkbox design */}
                   <div 
                     className={`relative w-4 h-4 flex items-center justify-center flex-wrap rounded border-2 transition-all duration-300
                       ${receiveSMS 
@@ -364,6 +411,7 @@ const FlightCheckOutPage = () => {
                       }`
                     }
                   >
+                    {/* Checkmark SVG when checkbox is checked */}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className={`absolute w-3.5 h-3.5 text-white transition-opacity duration-300 
@@ -388,10 +436,12 @@ const FlightCheckOutPage = () => {
             </div>
 
             <div className="flex flex-col gap-1">
+              {/* Passport input */}
               <h2 className="font-medium text-sm">
                 Passport
               </h2>
               <div className='relative w-fit'>
+                {/* Chevron Down Icon for the dropdown */}
                 <ChevronDown className='absolute right-3 p-1 top-1/2 transform -translate-y-1/2 pointer-events-none'/>
                 <select 
                   id="travelDocument.country"
@@ -411,12 +461,13 @@ const FlightCheckOutPage = () => {
               </div>
             </div>
 
-            {/* Date of Birth */}
+            {/* Date of Birth section */}
             <div className="flex flex-col gap-1">
               <h2 className="text-sm font-medium">
                 Date of Birth
               </h2>
               <div className="flex items-center gap-4">
+                {/* Month input */}
                 <div className="flex flex-col gap-1">
                   <p className="text-sm">Month</p>
                   <input 
@@ -435,6 +486,8 @@ const FlightCheckOutPage = () => {
                     className="rounded-md p-3 sm:w-20 w-16 border-b-2 border-[#48aadf] inset-0"
                   />
                 </div>
+
+                {/* Day input */}
                 <div className="flex flex-col gap-1">
                   <p className="text-sm">Day</p>
                   <input 
@@ -454,6 +507,8 @@ const FlightCheckOutPage = () => {
                     className="rounded-md p-3 sm:w-20 w-16 border-b-2 border-[#48aadf] inset-0"
                   />
                 </div>
+
+                {/* Year input */}
                 <div className="flex flex-col gap-1">
                   <p className="text-sm">Year</p>
                   <input 
@@ -480,16 +535,19 @@ const FlightCheckOutPage = () => {
             <div className="flex flex-col gap-1 mt-5">
               <h2 className="font-semibold sm:text-xl text-lg">How would you like to pay?</h2>
               <div className="flex flex-col gap-2 relative">
+                {/* Container for payment method options */}
                 <div
                   className='relative flex items-center text-[0.915rem] text-nowrap w-fit text-sm font-semibold text-[#000000e3] font-Grotesk'
                   ref={tabContainerRef}
                 >
+                  {/* Debit card option */}
                   <p
                     className="py-2 px-4 cursor-pointer transition-all duration-500 ease-in-out"
                     onClick={() => OpenTab('debit-card')}
                   >
                     Debit card
                   </p>
+                  {/* Click to pay option */}
                   <p
                     className="py-2 px-4 cursor-pointer transition-all duration-500 ease-in-out"
                     onClick={() => OpenTab('click-to-pay')}
@@ -504,6 +562,7 @@ const FlightCheckOutPage = () => {
                   />
                 </div>
 
+                {/* Conditional rendering for payment methods */}
                 {visible === 'debit-card' && 
                   <DebitCard 
                     onDataChange={handleDebitCardChange} 
@@ -516,25 +575,42 @@ const FlightCheckOutPage = () => {
           </div>
         </div>
         <div className="bg-blue-100 shadow shadow-[#48aadf] rounded-3xl p-6 flex flex-col gap-4 relative">
+          {/* Wrapper div for the card-like component, styled with blue background, shadows, rounded corners, padding, and flexible layout */}
+          
           <div className="flex flex-col gap-3">
+            {/* Section displaying the header and cancellation information */}
             <h1 className="font-semibold sm:text-2xl text-xl">Review and book your Trip</h1>
+            {/* Main heading for the section, styled with a medium font weight and responsive size */}
+            
             <div className="flex sm:items-center items-start gap-2">
+              {/* Container for the "Free cancellation" text and icon */}
               <CheckCheck className="rounded-full bg-white p-1 text-gray-500"/>
+              {/* CheckCheck icon styled with a rounded border, white background, padding, and gray color */}
               <p className="text-sm">Free cancellation within 24 hours of booking!</p>
+              {/* Text explaining the cancellation policy */}
             </div>
           </div>
+
           <div className="flex flex-col gap-3">
+            {/* Section containing the ordered list of trip details */}
             <ol className="flex flex-col gap-2 text-sm">
+              {/* Ordered list of items (such as trip details) */}
               {listItems.map((item, index) => (
                 <>
+                  {/* Iterating over the listItems array and displaying each item */}
                   <li key={index} className="flex gap-2">
                     <span>{index + 1}.</span> {item}
+                    {/* List item with numbering and the actual content */}
                   </li>
+                  
+                  {/* Check if it's the third item (index === 2) and show a sublist if true */}
                   {index === 2 &&
                     <ul className="list-disc -mt-1 ml-10">
+                      {/* Sublist displayed under the third item */}
                       {subListItems.map((subItem, i) => (
                         <li key={i}>
                           {subItem}
+                          {/* Iterating over the subListItems array to show each sub-item */}
                         </li>
                       ))}
                     </ul>
@@ -542,7 +618,9 @@ const FlightCheckOutPage = () => {
                 </>
               ))}
             </ol>
+
             <p className="text-sm">
+              {/* Text explaining the acknowledgment of privacy statements */}
               By clicking on the button below, I acknowledge that I have reviewed the {" "}
               <Link 
                 to='/policy'
@@ -557,29 +635,33 @@ const FlightCheckOutPage = () => {
                 User data policy
               </Link>.
             </p>
+
             <button
               type="submit"
               className={`w-52 max-w-full py-3 text-white font-semibold outline-none mt-5 self-center text-sm rounded-full shrink-button 
-                  transition-all duration-300 ease-in-out
-                ${loading 
-                  ? 'bg-[#48aadf96] cursor-not-allowed' 
-                  : 'bg-[#48aadf] cursor-pointer'
-                }`
+                          transition-all duration-300 ease-in-out
+                        ${loading 
+                          ? 'bg-[#48aadf96] cursor-not-allowed' 
+                          : 'bg-[#48aadf] cursor-pointer'
+                        }`
               }
             >
+              {/* Button to complete booking, with dynamic styling based on loading state */}
               <p>
                 {loading 
                   ? <SyncLoader 
-                      color="#fff" // Customize the color
+                      color="#fff" // Customize the color of the loader
                       loading={loading} 
-                      size={7} // Customize the size
-                      margin={2} // Customize the margin between circles
+                      size={7} // Customize the size of the loader
+                      margin={2} // Customize the margin between loader circles
                     />
                   : 'Complete Booking'
                 }
+                {/* Displaying either a loader or the button text based on the loading state */}
               </p>
             </button>
           </div>
+
           <p 
             className={`text-[0.7rem] absolute bottom-1 left-1/2 -translate-x-1/2 text-center text-red-500 transform transition-all duration-700 ease-in-out 
               ${
@@ -589,30 +671,52 @@ const FlightCheckOutPage = () => {
               }`
             }
           >
+            {/* Error message if there is an updateUserError */}
             {updateUserError}
+            {/* Conditionally rendering the error message, showing or hiding it based on updateUserError */}
           </p>
         </div>
       </form>
 
       {/* Right Section - Price Summary */}
       <div className="w-full bg-blue-100 shadow shadow-[#48aadf] p-5 rounded-3xl flex flex-col lg:w-1/3">
+        {/* This is the container for the Price Summary section, styled with blue background, shadow, padding, and rounded corners.
+            On larger screens, the width is set to 1/3 using Tailwind's lg:w-1/3 class, and it takes up full width on smaller screens. */}
+
         <div className="py-3 border-b-2 border-white">
+          {/* Header section for flight details, with top and bottom padding and a white border separating it from the rest of the content */}
+          
           <p className="font-medium">
-            {formatWord(flight.itineraries[0].segments[0].departure.cityName)} ({formatWord(flight.itineraries[0].segments[0].departure.iataCode)}) to {formatWord(flight.itineraries[0].segments.slice(-1)[0].arrival.cityName)} ({formatWord(flight.itineraries[0].segments[0].arrival.iataCode)})
+            {/* Main text displaying the departure and arrival flight cities along with their IATA codes */}
+            {formatWord(flight.itineraries[0].segments[0].departure.cityName)} ({formatWord(flight.itineraries[0].segments[0].departure.iataCode)}) to 
+            {formatWord(flight.itineraries[0].segments.slice(-1)[0].arrival.cityName)} ({formatWord(flight.itineraries[0].segments[0].arrival.iataCode)})
+            {/* The departure and arrival cities and IATA codes are formatted using the formatWord function */}
           </p>
+          
           <p className="text-sm">
+            {/* Text displaying the departure and arrival times, formatted with the formatDate and formatTime helper functions */}
             {formatDate(flight.itineraries[0].segments[0].departure.at)} |{" "} 
             {`${formatTime(flight.itineraries[0].segments[0].departure.at)} - 
                 ${formatTime(flight.itineraries[0].segments.slice(-1)[0].arrival.at)}`}
+            {/* The departure date and time are formatted and then the arrival time is displayed in the same format */}
           </p>
+          
           <p className="text-sm">Arrives {formatDate(arrivalDate)}</p>
+          {/* Displays the formatted arrival date of the flight */}
         </div>
+
         <div className="flex flex-col gap-2 pt-3">
+          {/* Container for the price summary section, with flex column layout and some spacing between items */}
+          
           <div>
             <p className="font-semibold">Your Price Summary</p>
+            {/* Header text indicating that this section shows the price summary */}
             <p>Traveler 1: Adult</p>
+            {/* Text indicating that this price is for the first adult traveler */}
           </div>
+
           <p className="text-xl font-semibold">${total.toFixed(2)}</p>
+          {/* The total price is displayed here with a fixed number of decimal points, ensuring two decimals with .toFixed(2) */}
         </div>
       </div>
     </motion.div>

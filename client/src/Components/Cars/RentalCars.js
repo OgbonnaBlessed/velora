@@ -1,3 +1,5 @@
+// This file isn't completed yet, hence, there isn't detailed comments for it.
+
 import React, { useEffect, useRef, useState } from 'react';
 import { FaMapMarkerAlt, FaRegCalendarAlt } from 'react-icons/fa';
 import dayjs from 'dayjs'

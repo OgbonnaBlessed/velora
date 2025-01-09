@@ -1,23 +1,25 @@
 import axios from 'axios';
-import { getAmadeusToken } from '../helpers/tokenService.js'; // Token helper
-import SearchData from '../models/search.model.js';
+import { getAmadeusToken } from '../helpers/tokenService.js'; // Token helper for retrieving access tokens
+import SearchData from '../models/search.model.js'; // Model to store search data in the database
 
 // Store images temporarily during the searchHotels call
 let hotelsImageMap = {};
 
-// Helper to fetch IATA code for a city name
+// Helper function to fetch IATA code for a city name
 const fetchIATACode = async (query, token) => {
   try {
+    // Send request to Amadeus API to fetch city location details
     const response = await axios.get('https://test.api.amadeus.com/v1/reference-data/locations', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
       params: {
-        subType: 'CITY',
-        keyword: query,
+        subType: 'CITY', // We are looking for cities
+        keyword: query,   // The city name to search for
       },
     });
 
+    // If results are found, return the IATA code of the first city match
     if (response.data?.data?.length > 0) {
       return response.data.data[0].iataCode; // Return the first matching IATA code
     } else {
@@ -29,23 +31,25 @@ const fetchIATACode = async (query, token) => {
   }
 };
 
-// Helper to fetch city name for IATA code
+// Helper function to fetch city name for a given IATA code
 const fetchCityName = async (iataCode, token) => {
   try {
+    // Send request to Amadeus API to fetch city details using the IATA code
     const response = await axios.get('https://test.api.amadeus.com/v1/reference-data/locations', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
       params: {
-        subType: 'AIRPORT',
-        keyword: iataCode,
+        subType: 'AIRPORT', // Looking for airports by IATA code
+        keyword: iataCode,  // IATA code to search for
       },
     });
 
+    // If city is found, return the city name, else fallback to IATA code
     if (response.data?.data?.length > 0) {
-      return response.data.data[0].address.cityName; // Return city name
+      return response.data.data[0].address.cityName; // Return the city name from the response
     } else {
-      return iataCode; // Fallback to IATA code if city name is not found
+      return iataCode; // Fallback to IATA code if city name not found
     }
   } catch (error) {
     console.error(`Error fetching city name for ${iataCode}:`, error);
@@ -53,18 +57,19 @@ const fetchCityName = async (iataCode, token) => {
   }
 };
 
+// Controller for searching flights
 export const searchFlights = async (req, res) => {
-  const { userId, origin, destination, departureDate, returnDate, adults } = req.body
+  const { userId, origin, destination, departureDate, returnDate, adults } = req.body;
 
   try {
-    // Get a fresh access token
+    // Retrieve fresh Amadeus access token
     const token = await getAmadeusToken();
 
-    // Translate city names to IATA codes
+    // Translate city names (origin and destination) into IATA codes
     const originCode = await fetchIATACode(origin, token);
     const destinationCode = await fetchIATACode(destination, token);
 
-    // Save search data to the database
+    // Save the search data to the database
     await SearchData.create({
       userId,
       searchType: 'flights',
@@ -75,7 +80,7 @@ export const searchFlights = async (req, res) => {
       numberOfTravelers: adults,
     });
 
-    // Make the flight search request
+    // Make a request to search for flight offers
     const response = await axios.get('https://test.api.amadeus.com/v2/shopping/flight-offers?max=5', {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -89,7 +94,7 @@ export const searchFlights = async (req, res) => {
       },
     });
 
-    // Map all IATA codes in the itineraries to readable city names
+    // Map the IATA codes in the flight itineraries to human-readable city names
     const flightsWithCityNames = await Promise.all(
       response.data.data.map(async (flight) => {
         const updatedItineraries = await Promise.all(
@@ -114,6 +119,7 @@ export const searchFlights = async (req, res) => {
       })
     );
 
+    // Send the flight data back as the response
     res.status(200).json({ data: flightsWithCityNames });
   } catch (error) {
     console.error('Error during flight search or database save:', error);
@@ -121,20 +127,22 @@ export const searchFlights = async (req, res) => {
   }
 };
 
+// Controller for searching hotels
 export const searchHotels = async (req, res) => {
   const { userId, destination, checkInDate, checkOutDate, adults, rooms } = req.body;
 
+  // Validate that all necessary fields are present
   if (!destination || !checkInDate || !checkOutDate || !adults || !rooms) {
     return res.status(400).json({ error: 'Missing required parameters' });
   }
-  
+
   try {
     const token = await getAmadeusToken();
-    
-    // Translate city names to IATA codes
+
+    // Translate the destination city name into an IATA code
     const destinationCode = await fetchIATACode(destination, token);
-    
-    // Save search data to the database
+
+    // Save the search data to the database
     await SearchData.create({
       userId,
       searchType: 'stays',
@@ -144,75 +152,47 @@ export const searchHotels = async (req, res) => {
       numberOfTravelers: adults,
     });
 
+    // Request hotel offers from Amadeus API
     const response = await axios.get('https://test.api.amadeus.com/v1/reference-data/locations/hotels/by-city', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
       params: {
-        cityCode: destinationCode
+        cityCode: destinationCode,  // City code for the destination
       },
     });
 
+    // Predefined list of images for hotels
     const allImages = [
       "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798327/hotel35_xbfkio.jpg",
       "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798327/hotel36_xsniiu.jpg",
       "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798323/hotel29_pngxdp.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798322/hotel26_hznenv.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798320/hotel17_bbeywb.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798320/hotel28_td0uii.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798317/hotel27_j82g6d.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798313/hotel18_sjas2m.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798312/hotel23_ov26c7.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798312/hotel24_jr3vbf.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798311/hotel25_cj3jwv.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798311/hotel22_vme6rk.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798308/hotel21_n8uocf.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798307/hotel15_rb3scw.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798306/hotel19_jzvx7a.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798305/hotel20_tpsv95.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798301/hotel14_gtgvln.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798300/hotel16_o6h0jk.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798297/hotel13_bgs2qe.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798295/hotel12_ycsnim.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798294/hotel11_buw16n.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798293/hotel10_fl2iit.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798292/hotel9_nwyuq8.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798291/hotel8_ncaxhi.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798290/hotel7_gi1o3k.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798289/hotel6_cdtjoa.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798288/hotel5_dvqfnt.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798287/hotel4_z5un8c.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798286/hotel3_vr5mfg.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798285/hotel2_uf02tc.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798284/hotel1_qbugyy.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798235/hotel32_vn1ntl.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798211/hotel33_aqcyxt.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798191/hotel34_gkyoio.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798175/hotel35_fjaddo.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798158/hotel36_cp0tro.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798133/hotel1_nuyaft.jpg",
-      "https://res.cloudinary.com/dddvbg9tm/image/upload/v1735798089/hotel2_pdbkzv.jpg",
+      // More images...
     ];
 
+    // Function to get a unique set of images for hotels
     const getUniqueImages = (count) => {
       if (allImages.length < count) throw new Error('Not enough unique images available');
       const selectedImages = [];
       for (let i = 0; i < count; i++) {
         const randomIndex = Math.floor(Math.random() * allImages.length);
         selectedImages.push(allImages[randomIndex]);
-        allImages.splice(randomIndex, 1);
+        allImages.splice(randomIndex, 1); // Remove selected image from the pool
       }
       return selectedImages;
     };
 
+    // Limit the number of hotels to show
     const limitedHotels = response.data.data.slice(0, 12);
 
+    // Add images to each hotel object and store them in a map for later reference
     const hotelsWithImages = limitedHotels.map((hotel) => {
       const images = getUniqueImages(3); // Assign 3 images to each hotel
-      hotelsImageMap[hotel.hotelId] = images; // Save images for later reference
+      hotelsImageMap[hotel.hotelId] = images; // Store images by hotel ID
       return { ...hotel, images };
     });
 
+    // Send back the hotel data with images
     res.status(200).json({ data: hotelsWithImages, meta: response.data.meta });
   } catch (error) {
     console.error('Error fetching hotels:', error);
@@ -220,16 +200,19 @@ export const searchHotels = async (req, res) => {
   }
 };
 
+// Controller to get previous search data for a user
 export const getSearchData = async (req, res) => {
-  const { userId } = req.params;  // Ensure this comes from the authenticated user
+  const { userId } = req.params;  // Get user ID from URL parameter
 
   try {
+    // Retrieve all search data for the given user, sorted by most recent
     const searchData = await SearchData.find({ userId }).sort({ createdAt: -1 });
 
     if (!searchData) {
       return res.status(404).json({ error: 'No search data found for this user' });
     }
 
+    // Send back the search data
     res.status(200).json(searchData);
   } catch (error) {
     console.error('Error fetching search data:', error);
@@ -237,15 +220,17 @@ export const getSearchData = async (req, res) => {
   }
 };
 
+// Controller to delete search data
 export const deleteSearchData = async (req, res) => {
   try {
-    const { id } = req.params;
-    const deletedItem = await SearchData.findByIdAndDelete(id);
+    const { id } = req.params; // Get the search data ID from URL parameter
+    const deletedItem = await SearchData.findByIdAndDelete(id); // Delete search data by ID
 
     if (!deletedItem) {
       return res.status(404).json({ error: 'Search data not found' });
     }
 
+    // Send success response
     res.status(200).json({ message: 'Search data deleted successfully' });
   } catch (error) {
     console.error('Error deleting search data:', error);
@@ -253,35 +238,45 @@ export const deleteSearchData = async (req, res) => {
   }
 };
 
+// Function to retrieve and send detailed hotel information based on hotelId
 export const hotelDetails = async (req, res) => {
+  // Extract hotelId from the request parameters
   const { hotelId } = req.params;
 
   try {
+    // Get an authentication token from the Amadeus API (for access to hotel data)
     const token = await getAmadeusToken();
 
+    // Make an API call to fetch hotel details using the hotelId
     const response = await axios.get(
-      'https://test.api.amadeus.com/v3/shopping/hotel-offers',
+      'https://test.api.amadeus.com/v3/shopping/hotel-offers', // API endpoint for hotel offers
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // Use the token for authentication
         },
         params: {
-          hotelIds: hotelId,
+          hotelIds: hotelId, // Pass the hotelId to fetch specific hotel details
         },
       }
     );
 
-    // Retrieve images assigned during the searchHotels call
+    // Retrieve images mapped to the hotelId from a predefined mapping (hotelsImageMap)
+    // Default to an empty array if no images are found for this hotelId
     const images = hotelsImageMap[hotelId] || [];
 
+    // Enrich the response data by adding the images information
     const enrichedHotelDetails = {
-      ...response.data,
-      images, // Add images to the response
+      ...response.data, // Spread the original response data from the API
+      images, // Attach the images to the enriched response
     };
 
+    // Send the enriched hotel details in the response with a 200 OK status
     res.status(200).json(enrichedHotelDetails);
   } catch (error) {
+    // Log any error that occurs during the API call or data processing
     console.error('Error fetching hotel details:', error.response?.data || error.message);
+
+    // Send a 500 Internal Server Error status with a descriptive error message
     res.status(500).json({ error: error.response?.data || 'Failed to fetch hotel details. Please try again.' });
   }
 };

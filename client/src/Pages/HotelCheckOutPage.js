@@ -5,29 +5,30 @@ import ClickToPay from "../Components/ClickToPay";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { listItems, subListItems } from "../Data/ListItems";
-import { countries } from '../Data/Locations'
+import { countries } from '../Data/Locations';
 import { SyncLoader } from 'react-spinners';
 import { updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice';
 import { motion } from "framer-motion";
 
 const HotelCheckOutPage = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { currentUser } = useSelector((state) => state.user);
-  const [receiveSMS, setRecieveSMS] = useState(false);
-  const [formData, setFormData] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [updateUserError, setUpdateUserError] = useState(null);
-  const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
-  const [visible, setVisible] = useState('debit-card');
-  const [validationError, setValidationError] = useState(false);
-  const indicatorRef = useRef(null);
-  const tabContainerRef = useRef(null);
-  const { hotelDetails, total } = location.state;
-  console.log(hotelDetails);
+  const location = useLocation(); // Get current location/state
+  const navigate = useNavigate(); // For navigation after form submission
+  const dispatch = useDispatch(); // To dispatch Redux actions
+  const { currentUser } = useSelector((state) => state.user); // Retrieve current user from Redux state
+  const [receiveSMS, setRecieveSMS] = useState(false); // State to handle SMS subscription
+  const [formData, setFormData] = useState({}); // State to manage form data
+  const [loading, setLoading] = useState(false); // State to handle loading indicator
+  const [updateUserError, setUpdateUserError] = useState(null); // State for storing error messages
+  const [updateUserSuccess, setUpdateUserSuccess] = useState(null); // State for storing success messages
+  const [visible, setVisible] = useState('debit-card'); // Manage visible tab (e.g., 'debit-card')
+  const [validationError, setValidationError] = useState(false); // State for validation errors
+  const indicatorRef = useRef(null); // Reference for the tab indicator
+  const tabContainerRef = useRef(null); // Reference for the tab container
+  const { hotelDetails, total } = location.state; // Extract hotel details and total price from location state
+  console.log(hotelDetails); // Log hotel details for debugging
 
   useEffect(() => {
+    // Prepopulate form data if currentUser is available
     if (currentUser) {
       const userData = {
         firstName: currentUser.firstName || '',
@@ -40,10 +41,11 @@ const HotelCheckOutPage = () => {
           country: currentUser.travelDocument?.country || '',
         },
       };
-      setFormData(userData);
+      setFormData(userData); // Set user data to formData state
     }
   }, [currentUser]);
 
+  // Handle updating form data when debit card changes
   const handleDebitCardChange = (updatedData) => {
     setFormData((prev) => ({
       ...prev,
@@ -51,36 +53,39 @@ const HotelCheckOutPage = () => {
     }));
   };
 
+  // Handle validation error flag
   const handleValidateError = (hasError) => {
     setValidationError(hasError);
-  }
+  };
 
+  // Handle changes to input fields (e.g., text fields, dropdowns)
   const handleChange = (e) => {
-    const { id, value } = e.target;
+    const { id, value } = e.target; // Get input field ID and value
 
     setFormData((prev) => {
-      const keys = id.split('.'); // Split nested keys like "location.city"
+      const keys = id.split('.'); // Split nested keys (e.g., "location.city")
       let updatedData = { ...prev };
 
-      // Traverse and update nested keys
+      // Traverse and update nested fields
       let currentLevel = updatedData;
       keys.forEach((key, index) => {
         if (index === keys.length - 1) {
-          currentLevel[key] = value;
+          currentLevel[key] = value; // Set final value
         } else {
-          currentLevel[key] = { ...currentLevel[key] };
+          currentLevel[key] = { ...currentLevel[key] }; // Create nested object if not exist
           currentLevel = currentLevel[key];
         }
       });
 
-      return updatedData;
+      return updatedData; // Return updated form data
     });
   };
 
+  // Handle changes to phone number input
   const handleNumberChange = (e) => {
     const { value } = e.target;
   
-    // Allow only digits or an empty field
+    // Only allow numeric input or empty value
     const isValid = /^\d*$/.test(value);
     if (isValid) {
       setFormData((prev) => ({
@@ -90,33 +95,35 @@ const HotelCheckOutPage = () => {
     }
   };
 
+  // Validate Date of Birth
   const isValidDOB = (month, day, year) => {
     if (!month || !day || !year) return false;
 
-    // Convert to numbers
+    // Convert to integers and validate
     const m = parseInt(month, 10);
     const d = parseInt(day, 10);
     const y = parseInt(year, 10);
 
-    // Check for valid ranges
     if (isNaN(m) || isNaN(d) || isNaN(y) || m < 1 || m > 12 || d < 1 || d > 31 || y < 1900 || y > new Date().getFullYear() - 16) {
       return false;
     }
 
-    // Check for valid dates
-    const date = new Date(y, m - 1, d); // JS months are 0-indexed
-    return date.getMonth() + 1 === m && date.getDate() === d && date.getFullYear() === y;
+    const date = new Date(y, m - 1, d); // JavaScript months are 0-indexed
+    return date.getMonth() + 1 === m && date.getDate() === d && date.getFullYear() === y; // Validate the date
   };
 
+  // Handle checkbox change for receiving SMS updates
   const handleCheckboxChange = () => {
     setRecieveSMS(!receiveSMS);
-  }
+  };
 
+  // Handle tab switching
   const OpenTab = (tabname) => {
-    setVisible(tabname);
-  }
+    setVisible(tabname); // Update visible tab
+  };
 
   useEffect(() => {
+    // Adjust the indicator position whenever the active tab changes
     const tabs = tabContainerRef.current?.querySelectorAll('p');
     const activeTab = Array.from(tabs).find(
       (tab) => tab.textContent.toLowerCase().replace(/\s+/g, '-') === visible
@@ -124,35 +131,38 @@ const HotelCheckOutPage = () => {
 
     if (activeTab && indicatorRef.current) {
       const { offsetLeft, offsetWidth } = activeTab;
-      indicatorRef.current.style.width = `${offsetWidth}px`;
-      indicatorRef.current.style.left = `${offsetLeft}px`;
+      indicatorRef.current.style.width = `${offsetWidth}px`; // Set indicator width
+      indicatorRef.current.style.left = `${offsetLeft}px`; // Set indicator position
     }
   }, [visible]);
 
-  // Helper to format time
+  // Helper function to format time
   const formatTime = (date) =>
     new Intl.DateTimeFormat('en-US', {
       hour: 'numeric',
       minute: 'numeric',
       hour12: true,
-  }).format(new Date(date));
+  }).format(new Date(date)); // Convert date to time format
 
+  // Helper function to format date
   const formatDate = (dateString) => {
     const options = { month: 'short', day: 'numeric', year: 'numeric' };
-    return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
+    return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString)); // Convert to date format
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setUpdateUserError(null);
     setUpdateUserSuccess(null);
 
+    // Validate required fields
     if (!formData.firstName || !formData.lastName) {
       setUpdateUserError('Please fill in all required fields.');
       return;
     }
 
-    // Validate phone number specifically
+    // Validate phone number format
     if (!/^\d{10,15}$/.test(formData.number)) {
       setUpdateUserError('Please enter a valid phone number.');
       return;
@@ -165,12 +175,14 @@ const HotelCheckOutPage = () => {
       return;
     }
 
+    // Check if any validation error exists
     if (validationError) {
       setUpdateUserError('Please fix the highlighted errors before submitting.');
       return;
     }
 
     try {
+      // Start loading and dispatch update start action
       dispatch(updateStart());
       setLoading(true);
 
@@ -179,45 +191,45 @@ const HotelCheckOutPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ formData, hotelDetails, total }), // Sending formData, flight and total price
+        body: JSON.stringify({ formData, hotelDetails, total }), // Send formData, hotel details, and total price
       });
-            
-      const data = await res.json();
-            
+
+      const data = await res.json(); // Parse server response
+
       if (!res.ok) {
-        dispatch(updateFailure(data.message));
+        dispatch(updateFailure(data.message)); // Dispatch failure if request failed
         setUpdateUserError(data.message);
-        console.log(data.message);
         setLoading(false);
-  
       } else {
-        dispatch(updateSuccess(data));
+        dispatch(updateSuccess(data)); // Dispatch success if request was successful
         setUpdateUserSuccess("Update successful");
         setLoading(false);
 
+        // Navigate to 'booking-completed' page after 3 seconds
         setTimeout(() => {
           navigate('/booking-completed');
         }, 3000);
       }
     } catch (error) {
-      dispatch(updateFailure(error.message));
+      dispatch(updateFailure(error.message)); // Handle request failure
       setUpdateUserError(error.message);
       console.log(error);
     }
-  }
+  };
 
+  // Reset success/error message after 3 seconds
   useEffect(() => {
     if (updateUserSuccess || updateUserError) {
       const timer = setTimeout(() => {
         setUpdateUserSuccess(null);
         setUpdateUserError(null);
       }, 3000); // 3 seconds
-  
-      // Cleanup the timer if the component unmounts or the state changes before 5 seconds
-      return () => clearTimeout(timer);
+
+      return () => clearTimeout(timer); // Cleanup timer if the component unmounts or state changes
     }
   }, [updateUserSuccess, updateUserError]);
 
+  // Redirect to hotel search page if state is null
   useEffect(() => {
     if (location.state === null) {
       navigate('/hotel-search');
@@ -239,14 +251,26 @@ const HotelCheckOutPage = () => {
       {/* Left Section - Checkout Form */}
       <form 
         onSubmit={handleSubmit}
-        className="w-full flex-1 flex flex-col gap-5 lg:w-2/3 relative">
+        className="w-full flex-1 flex flex-col gap-5 lg:w-2/3 relative"
+      >
         <div className="w-full flex-1 p-6 bg-blue-100 shadow shadow-[#48aadf] rounded-3xl flex flex-col gap-5">
+          {/* Container for the whole form with padding, background color, shadow, and rounded corners */}
+
           <div className="flex flex-col gap-2">
+            {/* Section for the title and description */}
             <h2 className="sm:text-2xl text-xl font-semibold">Who's traveling?</h2>
+            {/* Heading for the form section */}
             <p className="text-sm">Traveler names must match government-issued photo ID exactly.</p>
+            {/* Instructional text below the title */}
           </div>
+
           <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-center ">
+            {/* Container for the input fields for names and phone number */}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-center">
+              {/* A responsive grid layout for First name, Middle name, and Last name */}
+
+              {/* First name input */}
               <div className="flex flex-col gap-1">
                 <h2 className="font-semibold text-sm">First name</h2>
                 <input 
@@ -259,6 +283,8 @@ const HotelCheckOutPage = () => {
                   className="rounded-md bg-white p-3 border-b-2 border-[#48aadf]"
                 />
               </div>
+
+              {/* Middle name input */}
               <div className="flex flex-col gap-1">
                 <h2 className="font-semibold text-sm">Middle name</h2>
                 <input 
@@ -271,6 +297,8 @@ const HotelCheckOutPage = () => {
                   className="rounded-md bg-white p-3 border-b-2 border-[#48aadf]"
                 />
               </div>
+
+              {/* Last name input */}
               <div className="flex flex-col gap-1">
                 <h2 className="font-semibold text-sm">Last name</h2>
                 <input 
@@ -286,10 +314,13 @@ const HotelCheckOutPage = () => {
             </div>
 
             <div className="flex flex-col gap-3">
+              {/* Container for Country code and Phone number inputs */}
               <div className="flex flex-col lg:flex-row gap-5 fl">
+                {/* Country code input */}
                 <div className="flex flex-col gap-1">
                   <h2 className="font-semibold text-sm">Country/Territory Code</h2>
                   <div className='relative w-fit'>
+                    {/* Chevron Down Icon for the dropdown */}
                     <ChevronDown className='absolute right-3 p-1 top-1/2 transform -translate-y-1/2 pointer-events-none'/>
                     <select 
                       id="countryCode"
@@ -308,6 +339,8 @@ const HotelCheckOutPage = () => {
                     </select>
                   </div>
                 </div>
+
+                {/* Phone number input */}
                 <div className="flex flex-col gap-1">
                   <h2 className="font-semibold text-sm">Phone number</h2>
                   <input 
@@ -321,6 +354,8 @@ const HotelCheckOutPage = () => {
                   />
                 </div>
               </div>
+
+              {/* Checkbox for receiving SMS alerts */}
               <div className="flex items-center">
                 <input 
                   type="checkbox" 
@@ -334,6 +369,7 @@ const HotelCheckOutPage = () => {
                   htmlFor="receiveSMS" 
                   className="flex items-center cursor-pointer"
                 >
+                  {/* Custom checkbox design */}
                   <div 
                     className={`relative w-4 h-4 flex items-center justify-center flex-wrap rounded border-2 transition-all duration-300
                       ${receiveSMS 
@@ -342,6 +378,7 @@ const HotelCheckOutPage = () => {
                       }`
                     }
                   >
+                    {/* Checkmark SVG when checkbox is checked */}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className={`absolute w-3.5 h-3.5 text-white transition-opacity duration-300 
@@ -366,10 +403,12 @@ const HotelCheckOutPage = () => {
             </div>
 
             <div className="flex flex-col gap-1">
+              {/* Passport input */}
               <h2 className="font-medium text-sm">
                 Passport
               </h2>
               <div className='relative w-fit'>
+                {/* Chevron Down Icon for the dropdown */}
                 <ChevronDown className='absolute right-3 p-1 top-1/2 transform -translate-y-1/2 pointer-events-none'/>
                 <select 
                   id="travelDocument.country"
@@ -389,12 +428,13 @@ const HotelCheckOutPage = () => {
               </div>
             </div>
 
-            {/* Date of Birth */}
+            {/* Date of Birth section */}
             <div className="flex flex-col gap-1">
               <h2 className="text-sm font-medium">
                 Date of Birth
               </h2>
               <div className="flex items-center gap-4">
+                {/* Month input */}
                 <div className="flex flex-col gap-1">
                   <p className="text-sm">Month</p>
                   <input 
@@ -413,6 +453,8 @@ const HotelCheckOutPage = () => {
                     className="rounded-md p-3 sm:w-20 w-16 border-b-2 border-[#48aadf] inset-0"
                   />
                 </div>
+
+                {/* Day input */}
                 <div className="flex flex-col gap-1">
                   <p className="text-sm">Day</p>
                   <input 
@@ -432,6 +474,8 @@ const HotelCheckOutPage = () => {
                     className="rounded-md p-3 sm:w-20 w-16 border-b-2 border-[#48aadf] inset-0"
                   />
                 </div>
+
+                {/* Year input */}
                 <div className="flex flex-col gap-1">
                   <p className="text-sm">Year</p>
                   <input 
@@ -458,16 +502,19 @@ const HotelCheckOutPage = () => {
             <div className="flex flex-col gap-1 mt-5">
               <h2 className="font-semibold sm:text-xl text-lg">How would you like to pay?</h2>
               <div className="flex flex-col gap-2 relative">
+                {/* Container for payment method options */}
                 <div
                   className='relative flex items-center text-[0.915rem] text-nowrap w-fit text-sm font-semibold text-[#000000e3] font-Grotesk'
                   ref={tabContainerRef}
                 >
+                  {/* Debit card option */}
                   <p
                     className="py-2 px-4 cursor-pointer transition-all duration-500 ease-in-out"
                     onClick={() => OpenTab('debit-card')}
                   >
                     Debit card
                   </p>
+                  {/* Click to pay option */}
                   <p
                     className="py-2 px-4 cursor-pointer transition-all duration-500 ease-in-out"
                     onClick={() => OpenTab('click-to-pay')}
@@ -482,6 +529,7 @@ const HotelCheckOutPage = () => {
                   />
                 </div>
 
+                {/* Conditional rendering for payment methods */}
                 {visible === 'debit-card' && 
                   <DebitCard 
                     onDataChange={handleDebitCardChange} 
@@ -494,25 +542,42 @@ const HotelCheckOutPage = () => {
           </div>
         </div>
         <div className="bg-blue-100 shadow shadow-[#48aadf] rounded-3xl p-6 flex flex-col gap-4 relative">
+          {/* Wrapper div for the card-like component, styled with blue background, shadows, rounded corners, padding, and flexible layout */}
+          
           <div className="flex flex-col gap-3">
+            {/* Section displaying the header and cancellation information */}
             <h1 className="font-semibold sm:text-2xl text-xl">Review and book your Trip</h1>
+            {/* Main heading for the section, styled with a medium font weight and responsive size */}
+            
             <div className="flex sm:items-center items-start gap-2">
+              {/* Container for the "Free cancellation" text and icon */}
               <CheckCheck className="rounded-full bg-white p-1 text-gray-500"/>
+              {/* CheckCheck icon styled with a rounded border, white background, padding, and gray color */}
               <p className="text-sm">Free cancellation within 24 hours of booking!</p>
+              {/* Text explaining the cancellation policy */}
             </div>
           </div>
+
           <div className="flex flex-col gap-3">
+            {/* Section containing the ordered list of trip details */}
             <ol className="flex flex-col gap-2 text-sm">
+              {/* Ordered list of items (such as trip details) */}
               {listItems.map((item, index) => (
                 <>
+                  {/* Iterating over the listItems array and displaying each item */}
                   <li key={index} className="flex gap-2">
                     <span>{index + 1}.</span> {item}
+                    {/* List item with numbering and the actual content */}
                   </li>
+                  
+                  {/* Check if it's the third item (index === 2) and show a sublist if true */}
                   {index === 2 &&
                     <ul className="list-disc -mt-1 ml-10">
+                      {/* Sublist displayed under the third item */}
                       {subListItems.map((subItem, i) => (
                         <li key={i}>
                           {subItem}
+                          {/* Iterating over the subListItems array to show each sub-item */}
                         </li>
                       ))}
                     </ul>
@@ -520,7 +585,9 @@ const HotelCheckOutPage = () => {
                 </>
               ))}
             </ol>
+
             <p className="text-sm">
+              {/* Text explaining the acknowledgment of privacy statements */}
               By clicking on the button below, I acknowledge that I have reviewed the {" "}
               <Link 
                 to='/policy'
@@ -535,29 +602,33 @@ const HotelCheckOutPage = () => {
                 User data policy
               </Link>.
             </p>
+
             <button
               type="submit"
               className={`w-52 max-w-full py-3 text-white font-semibold outline-none mt-5 self-center text-sm rounded-full shrink-button 
-                  transition-all duration-300 ease-in-out
-                ${loading 
-                  ? 'bg-[#48aadf96] cursor-not-allowed' 
-                  : 'bg-[#48aadf] cursor-pointer'
-                }`
+                          transition-all duration-300 ease-in-out
+                        ${loading 
+                          ? 'bg-[#48aadf96] cursor-not-allowed' 
+                          : 'bg-[#48aadf] cursor-pointer'
+                        }`
               }
             >
+              {/* Button to complete booking, with dynamic styling based on loading state */}
               <p>
                 {loading 
                   ? <SyncLoader 
-                      color="#fff" // Customize the color
+                      color="#fff" // Customize the color of the loader
                       loading={loading} 
-                      size={7} // Customize the size
-                      margin={2} // Customize the margin between circles
+                      size={7} // Customize the size of the loader
+                      margin={2} // Customize the margin between loader circles
                     />
                   : 'Complete Booking'
                 }
+                {/* Displaying either a loader or the button text based on the loading state */}
               </p>
             </button>
           </div>
+
           <p 
             className={`text-[0.7rem] absolute bottom-1 left-1/2 -translate-x-1/2 text-center text-red-500 transform transition-all duration-700 ease-in-out 
               ${
@@ -567,30 +638,49 @@ const HotelCheckOutPage = () => {
               }`
             }
           >
+            {/* Error message if there is an updateUserError */}
             {updateUserError}
+            {/* Conditionally rendering the error message, showing or hiding it based on updateUserError */}
           </p>
         </div>
       </form>
 
       {/* Right Section - Price Summary */}
       <div className="w-full bg-blue-100 shadow shadow-[#48aadf] p-5 rounded-3xl flex flex-col lg:w-1/3">
+        {/* Container for the price summary section, with responsive design */}
+        
         <div className="py-3 border-b-2 border-white">
+          {/* Header section with hotel details */}
           <p className="font-medium">
+            {/* Display the hotel name and city code */}
             {hotelDetails?.data[0]?.hotel?.name} • {hotelDetails?.data[0]?.hotel?.cityCode}
           </p>
+          
           <p className="text-sm">
+            {/* Display the formatted check-in and check-out date */}
             {formatDate(hotelDetails?.data[0].offers[0]?.checkInDate)} | {formatDate(hotelDetails?.data[0].offers[0]?.checkOutDate)}
           </p>
+          
           <p className="text-sm">
+            {/* Display the formatted cancellation deadline time */}
             Arrives at {formatTime(hotelDetails?.data[0].offers[0]?.policies?.cancellations[0]?.deadline)}
           </p>
         </div>
+        
         <div className="flex flex-col gap-2 pt-3">
+          {/* Section for displaying price summary and number of guests */}
           <div>
             <p className="font-semibold">Your Price Summary</p>
-            <span className='font-semibold'>Guests: </span> {hotelDetails?.data[0].offers[0]?.guests?.adults} {hotelDetails?.data[0].offers[0]?.guests?.adults > 1 ? 'Adults' : 'Adult'}
+            {/* Display the number of guests and whether they are adults (handling singular/plural for 'adult') */}
+            <span className='font-semibold'>Guests: </span> 
+            {hotelDetails?.data[0].offers[0]?.guests?.adults} 
+            {hotelDetails?.data[0].offers[0]?.guests?.adults > 1 ? 'Adults' : 'Adult'}
           </div>
-          <p className="text-xl font-semibold">{total.toFixed(2)} {hotelDetails?.data[0].offers[0]?.price?.currency}</p>
+          
+          {/* Display the total price with currency formatting */}
+          <p className="text-xl font-semibold">
+            {total.toFixed(2)} {hotelDetails?.data[0].offers[0]?.price?.currency}
+          </p>
         </div>
       </div>
     </motion.div>

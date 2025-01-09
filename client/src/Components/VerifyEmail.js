@@ -1,26 +1,30 @@
-import { ArrowLeft } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { SyncLoader } from 'react-spinners';
-import { motion } from 'framer-motion';
+import { ArrowLeft } from 'lucide-react'; // Importing an arrow icon from the lucide-react library
+import React, { useEffect, useState } from 'react'; // Importing React and necessary hooks
+import { useSelector } from 'react-redux'; // To access the Redux store state
+import { useNavigate } from 'react-router-dom'; // To programmatically navigate between pages
+import { SyncLoader } from 'react-spinners'; // Loading spinner component to show while verifying
+import { motion } from 'framer-motion'; // For smooth animations
 
 const VerifyEmail = () => {
+    // Accessing the current user from the Redux store
     const { currentUser } = useSelector((state) => state.user);
+
+    // Managing state for modal messages, timer countdown, loading, OTP input, and button behavior
     const [modalMessage, setModalMessage] = useState(null);
-    const [timer, setTimer] = useState(30); // Countdown timer in seconds
-    const [canResend, setCanResend] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [otp, setOtp] = useState('');
-    const [isFocused2, setIsFocused2] = useState(false);
-    const navigate = useNavigate();
+    const [timer, setTimer] = useState(30); // Initializing the countdown timer to 30 seconds
+    const [canResend, setCanResend] = useState(false); // To enable or disable the resend button
+    const [loading, setLoading] = useState(false); // To manage the loading state during the verification process
+    const [otp, setOtp] = useState(''); // State to store the OTP entered by the user
+    const [isFocused2, setIsFocused2] = useState(false); // To handle input focus state for the OTP field
 
+    const navigate = useNavigate(); // Hook for navigation
+
+    // Function to handle the resend of the OTP code
     const handleResendCode = async () => {
-
         try {
             const response = await fetch('/api/auth/resend-code', {
                 method: 'POST',
-                body: JSON.stringify({ email: currentUser.email }),
+                body: JSON.stringify({ email: currentUser.email }), // Sending the current user's email to request a new code
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -28,91 +32,88 @@ const VerifyEmail = () => {
 
             const result = await response.json();
 
+            // If the resend is successful, reset the timer and disable the resend button for the next interval
             if (result.success === true) {
-                setTimer(30); // Reset the timer to 30s after successful resend
-                setCanResend(false); // Disable the resend button until the next timer
-
+                setTimer(30); // Reset the timer to 30 seconds
+                setCanResend(false); // Disable the resend button
             } else {
-                setModalMessage(result.message);
+                setModalMessage(result.message); // Display the error message if resend fails
             }
-
         } catch (error) {
-            console.error('Error resending OTP:', error);
-            setModalMessage(error.message);
+            console.error('Error resending OTP:', error); // Log any errors during the resend process
+            setModalMessage(error.message); // Show the error message to the user
         }
     };
 
+    // Function to handle OTP verification
     const handleVerifyCode = async () => {
-        if (otp.length !== 4) {
-            setModalMessage('Kindly enter a valid code');
+        if (otp.length !== 4) { // Check if the entered OTP is valid (must be 4 digits)
+            setModalMessage('Kindly enter a valid code'); // Show an error message if the OTP is invalid
             return;
         }
     
         try {
-            setLoading(true);
+            setLoading(true); // Set loading state to true while verifying the code
 
             const res = await fetch('/api/auth/verify-code', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: currentUser.email, code: otp }),
+                body: JSON.stringify({ email: currentUser.email, code: otp }), // Sending email and OTP to the backend for verification
             });
         
             const data = await res.json();
         
-            if (res.ok) {
-                navigate('/password-reset')
-        
+            if (res.ok) { // If the response is successful, navigate to the password reset page
+                navigate('/password-reset');
             } else {
-                console.error('Verification failed:', data.message);
-                setModalMessage(data.message);
+                console.error('Verification failed:', data.message); // Log any verification errors
+                setModalMessage(data.message); // Show the verification failure message
             }
     
-            setLoading(false);
-
+            setLoading(false); // Reset loading state after the process
         } catch (error) {
-          console.error('Error verifying code:', error);
+            console.error('Error verifying code:', error); // Log any errors during the verification process
         }
     };
 
+    // Function to update OTP state when the user types in the input field
     const handleOtpChange = (e) => {
-        setOtp(e.target.value);
+        setOtp(e.target.value); // Update the OTP state with the user's input
     };
 
+    // useEffect hook to manage the countdown timer for the resend functionality
     useEffect(() => {
-        if (timer === 0) {
-            setCanResend(true); // Enable the resend button when timer reaches zero
+        if (timer === 0) { // When the timer reaches zero, enable the resend button
+            setCanResend(true);
             return;
         }
 
         const interval = setInterval(() => {
-            setTimer((prevTimer) => prevTimer - 1);
+            setTimer((prevTimer) => prevTimer - 1); // Decrease the timer by 1 every second
         }, 1000);
 
-        return () => clearInterval(interval); // Cleanup interval on component unmount
-    }, [timer]);
+        return () => clearInterval(interval); // Cleanup the interval on component unmount or state change
+    }, [timer]); // Dependency array to rerun the effect when the timer changes
 
-    // Automatically hide modal after 3 seconds
+    // Automatically hide the modal message after 3 seconds
     useEffect(() => {
-        if (modalMessage) {
+        if (modalMessage) { // If there's a modal message, set a timeout to clear it
+            const timer = setTimeout(() => {
+                setModalMessage(null); // Clear the message after 3 seconds
+            }, 3000); // 3 seconds
 
-        const timer = setTimeout(() => {
-            setModalMessage(null);
-        }, 3000); // 3 seconds
-    
-        // Cleanup the timer if the component unmounts or the state changes before 5 seconds
-        return () => clearTimeout(timer);
+            return () => clearTimeout(timer); // Cleanup the timeout if the component unmounts or the message changes
         }
-
-    }, [modalMessage]);
+    }, [modalMessage]); // Dependency array to rerun the effect when the modalMessage changes
 
   return (
     <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+        initial={{ opacity: 0 }} // Set initial opacity for the animation
+        animate={{ opacity: 1 }} // Set final opacity for the animation
+        exit={{ opacity: 0 }} // Set exit opacity for the animation
         transition={{
-            duration: .5,
-            ease: "easeInOut"
+            duration: .5, // Animation duration
+            ease: "easeInOut" // Animation easing function
         }}
     >
         <div className='bg-white fixed w-full h-full inset-0 z-[10000] flex justify-center'>
@@ -120,7 +121,7 @@ const VerifyEmail = () => {
                 <div 
                     className='bg-[#48aadf13] absolute left-3 top-3 p-2.5 rounded-full cursor-pointer text-[#48aadf]'
                     onClick={() => {
-                        navigate(-1);
+                        navigate(-1); // Go back to the previous page
                     }}
                 >
                     <ArrowLeft />
@@ -156,10 +157,10 @@ const VerifyEmail = () => {
                             id="token"
                             value={otp}
                             className="w-full shadow shadow-gray-400 rounded-xl h-14 pl-5 pt-3 pb-1 text-base"
-                            onFocus={() => setIsFocused2(true)}
-                            onChange={handleOtpChange}
+                            onFocus={() => setIsFocused2(true)} // Handle focus event
+                            onChange={handleOtpChange} // Handle change event for OTP input
                             autoComplete='off'
-                            onBlur={(e) => !e.target.value && setIsFocused2(false)} // Reset if input is empty
+                            onBlur={(e) => !e.target.value && setIsFocused2(false)} // Reset focus if input is empty
                         />
                     </div>
                     <p 
@@ -170,24 +171,25 @@ const VerifyEmail = () => {
                             }`
                         }
                     >
-                        {modalMessage}
+                        {/* Display modal message if present */}
+                        {modalMessage} 
                     </p>
                     <button
-                        disabled={loading}
+                        disabled={loading} // Disable the button while loading
                         className={`w-full h-12 text-white rounded-full border-none outline-none flex items-center justify-center gap-2 transition-all duration-300 ease-in-out font-semibold
                             ${loading 
                                 ? 'bg-[#48aadf96] cursor-not-allowed' 
                                 : 'bg-[#48aadf] cursor-pointer'
                             }`
                         }
-                        onClick={handleVerifyCode}
+                        onClick={handleVerifyCode} // Trigger OTP verification
                     >
                     {loading 
                         ?   <SyncLoader 
-                                color="#fff" // Customize the color
+                                color="#fff" // Customize the color of the loader
                                 loading={loading} 
-                                size={7} // Customize the size
-                                margin={2} // Customize the margin between circles
+                                size={7} // Set loader size
+                                margin={2} // Set margin between loader circles
                             />
                         : 'Continue'
                     }
@@ -195,7 +197,7 @@ const VerifyEmail = () => {
                     {canResend 
                     ?  <button
                             className='w-full rounded-full py-3 cursor-pointer font-semibold hover:bg-blue-100 text-[#48aadf] transition-all duration-300 ease-in-out'
-                            onClick={handleResendCode}
+                            onClick={handleResendCode} // Resend OTP when clicked
                         >
                             Resend another secured code
                         </button>
@@ -205,10 +207,9 @@ const VerifyEmail = () => {
                     }
                 </>
             </div>
-
         </div>
     </motion.div>
-  )
+  );
 }
 
-export default VerifyEmail
+export default VerifyEmail; // Export the component

@@ -1,25 +1,30 @@
-import { LucideMessageSquareWarning } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
-import { BounceLoader } from 'react-spinners'
-import { locations } from '../Data/Locations'
-import OriginInput from '../Components/Common/Inputs/OriginInput';
-import DestinationInput from '../Components/Common/Inputs/DestinationInput';
-import TravelersInput from '../Components/Common/Inputs/TravelerInput';
-import DateRangePicker from '../Components/Common/Date Picker/DateRangePicker';
-import FlightsList from '../Components/Common/FlightsList';
-import { useLocation } from 'react-router-dom';
-import dayjs from 'dayjs';
-import { useSelector } from 'react-redux';
-import { motion } from 'framer-motion';
+import { LucideMessageSquareWarning } from 'lucide-react'; // Importing an icon for warning messages
+import React, { useEffect, useState } from 'react'; // Importing React and hooks
+import { BounceLoader } from 'react-spinners'; // Importing a loading spinner component
+import { locations } from '../Data/Locations'; // Importing the locations data (presumably a list of places)
+import OriginInput from '../Components/Common/Inputs/OriginInput'; // Importing the Origin Input Component
+import DestinationInput from '../Components/Common/Inputs/DestinationInput'; // Importing the Destination Input Component
+import TravelersInput from '../Components/Common/Inputs/TravelerInput'; // Importing the Travelers Input Component
+import DateRangePicker from '../Components/Common/Date Picker/DateRangePicker'; // Importing the Date Range Picker Component
+import FlightsList from '../Components/Common/FlightsList'; // Importing the Flights List Component
+import { useLocation } from 'react-router-dom'; // Hook to get the location from the router
+import dayjs from 'dayjs'; // Dayjs for date manipulation
+import { useSelector } from 'react-redux'; // Hook to access the Redux store
+import { motion } from 'framer-motion'; // Framer Motion for animations
 
 function SearchPage() {
+  // Get the location object from the router
   const location = useLocation();
+  
+  // Accessing the current user from the Redux store
   const { currentUser } = useSelector((state) => state.user);
-  const [flights, setFlights] = useState('');
-  const [error, setError] = useState(null);
-  const [errors, setErrors] = useState({ origin: '', destination: '' });
-  const [loading, setLoading] = useState(false);
-  const [triggerSearch, setTriggerSearch] = useState(false); // New flag
+
+  // Setting state variables
+  const [flights, setFlights] = useState(''); // To store flight data
+  const [error, setError] = useState(null); // To handle general error
+  const [errors, setErrors] = useState({ origin: '', destination: '' }); // To handle field-specific errors
+  const [loading, setLoading] = useState(false); // To control loading state
+  const [triggerSearch, setTriggerSearch] = useState(false); // To trigger search based on props or initial state
   const [formData, setFormData] = useState({
     origin: '',
     destination: '',
@@ -29,6 +34,7 @@ function SearchPage() {
     rooms: 1,
   });
 
+  // useEffect hook to update formData based on location state (if provided)
   useEffect(() => {
     if (location.state) {
       setFormData({
@@ -39,18 +45,20 @@ function SearchPage() {
         adults: location.state.adults,
         rooms: location.state.rooms,
       });
-      setTriggerSearch(true); // Trigger search on mount when data is passed
+      setTriggerSearch(true); // Trigger the search if location state exists
     }
   }, [location.state]);
-  
+
+  // useEffect hook to trigger search when required
   useEffect(() => {
     if (triggerSearch && formData.origin && formData.destination) {
-      handleSubmit();
-      setTriggerSearch(false); // Reset the flag after submission
+      handleSubmit(); // Call submit when required fields are set
+      setTriggerSearch(false); // Reset the trigger after search
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [triggerSearch]);
 
+  // Handle changes in date range picker (departure and return dates)
   const handleDateChange = ([startDate, endDate]) => {
     setFormData((prev) => ({
       ...prev,
@@ -59,14 +67,16 @@ function SearchPage() {
     }));
   };
 
+  // Handle form submission for flight search
   const handleSubmit = async (e) => {
-    if (e) e.preventDefault();
-    setLoading(true); // Show loading indicator
-    setError(null); // Clear previous errors
+    if (e) e.preventDefault(); // Prevent default form submission behavior
+    setLoading(true); // Show the loading indicator
+    setError(null); // Reset any previous errors
 
-    let hasError = false;
+    let hasError = false; // Flag to track form validation errors
     const newErrors = { origin: '', destination: '' };
 
+    // Validate origin and destination inputs
     if (!formData.origin) {
       newErrors.origin = 'Please select an origin.';
       hasError = true;
@@ -77,59 +87,63 @@ function SearchPage() {
       hasError = true;
     }
 
+    // Ensure origin and destination are not the same
     if (formData.destination && formData.origin && formData.origin === formData.destination) {
       newErrors.destination = 'Origin and destination cannot be the same.';
       hasError = true;
     }
 
+    // If there are errors, display them and stop the form submission
     if (hasError) {
       setErrors(newErrors);
       setTimeout(() => {
-        setErrors({ origin: '', destination: '' });
+        setErrors({ origin: '', destination: '' }); // Clear errors after 3 seconds
       }, 3000);
       return;
     }
-  
+
+    // Proceed with API request to fetch flight data
     try {
       const payload = {
-        userId: currentUser._id,
+        userId: currentUser._id, // User ID from the Redux store
         origin: formData.origin,
         destination: formData.destination,
         departureDate: formData.departureDate,
         returnDate: formData.returnDate,
         adults: parseInt(formData.adults, 10),
       };
-  
+
+      // Sending POST request to fetch flight data
       const response = await fetch('/api/flight/search-flights', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-  
-      const data = await response.json();
+
+      const data = await response.json(); // Parsing the response data
       if (!response.ok) {
         throw new Error('Failed to fetch flights. Please try again.');
       }
-  
-      setFlights(data);
-      console.log(data);
+
+      setFlights(data); // Set flight data in state
+      console.log(data); // Log the fetched data for debugging
     } catch (error) {
       console.error('Error fetching flights:', error);
-      setError(error.message);
+      setError(error.message); // Set error message in state
     } finally {
-      setLoading(false);
+      setLoading(false); // Hide the loading indicator once done
     }
   };
 
-  // Helper to calculate total duration in minutes
+  // Helper function to calculate the flight duration in minutes
   const getFlightDuration = (flight) => {
     const segments = flight.itineraries[0]?.segments;
     const departureTime = new Date(segments[0].departure.at).getTime();
     const arrivalTime = new Date(segments[segments.length - 1].arrival.at).getTime();
-    return (arrivalTime - departureTime) / (1000 * 60); // Convert to minutes
+    return (arrivalTime - departureTime) / (1000 * 60); // Duration in minutes
   };
 
-  // Helper to format time
+  // Helper function to format flight times into a readable format
   const formatTime = (date) =>
     new Intl.DateTimeFormat('en-US', {
       hour: 'numeric',
@@ -148,39 +162,42 @@ function SearchPage() {
       }}
       className='flex flex-col gap-5 px-4 sm:px-6 lg:px-20 pt-28 md:pt-36 pb-10 bg-white'
     >
+      {/* Search form for flights */}
       <form 
         onSubmit={(e) => handleSubmit(e)}
         className="xl:flex xl:gap-3 xl:justify-between grid gap-4 md:gap-6 md:grid-cols-3 items-center"
       >
+        {/* Origin Input */}
         <div className="relative flex-1">
           <OriginInput
             formData={formData}
             setFormData={setFormData}
-            locations={locations}
+            locations={locations} // Pass available locations to the OriginInput component
           />
           {errors.origin && (
             <p className="text-red-500 text-[0.7rem] absolute mt-1">
-              {errors.origin}
+              {errors.origin} {/* Display validation error if any */}
             </p>
           )}
         </div>
 
+        {/* Destination Input */}
         <div className="relative flex-1">
           <DestinationInput
             formData={formData}
             setFormData={setFormData}
-            locations={locations}
+            locations={locations} // Pass available locations to the DestinationInput component
           />
           {errors.destination && (
             <p className="text-red-500 text-[0.7rem] absolute mt-1">
-              {errors.destination}
+              {errors.destination} {/* Display validation error if any */}
             </p>
           )}
         </div>
 
-        {/* Date Picker */}
+        {/* Date Range Picker */}
         <DateRangePicker
-          onDateChange={handleDateChange}
+          onDateChange={handleDateChange} // Handle date changes in the picker
           defaultDates={[
             dayjs(formData.departureDate),
             dayjs(formData.returnDate),
@@ -193,7 +210,7 @@ function SearchPage() {
           setFormData={setFormData} 
         />
 
-        {/* Search Button */}
+        {/* Submit Button */}
         <button 
           type="submit" 
           className="bg-[#48aadf] rounded-full font-semibold text-white cursor-pointer px-8 py-3 h-fit w-fit self-center"
@@ -201,11 +218,13 @@ function SearchPage() {
           Search
         </button>
       </form>
+
+      {/* Loading, Error, or Flight Results Display */}
       <div>
         {loading
         ? <div className='min-h-64 w-full flex items-center justify-center'>
             <BounceLoader
-              color="#48aadf" // Customize the color
+              color="#48aadf" // Customize the color of the loader
               loading={loading} 
             />
           </div>
@@ -231,9 +250,9 @@ function SearchPage() {
 
         : // Flights Display
           <FlightsList
-            flights={flights}
-            formatTime={formatTime}
-            getFlightDuration={getFlightDuration}
+            flights={flights} // Pass flights data to the FlightsList component
+            formatTime={formatTime} // Pass time formatting function
+            getFlightDuration={getFlightDuration} // Pass flight duration function
           />
         }
       </div>
