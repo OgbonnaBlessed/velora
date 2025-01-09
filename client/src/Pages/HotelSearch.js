@@ -100,7 +100,7 @@ function HotelSearch() {
             };
 
             // Send POST request to the backend to search for hotels
-            const response = await fetch('/api/flight/search-hotels', {
+            const response = await fetch(`/api/flight/search-hotels`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
@@ -128,7 +128,7 @@ function HotelSearch() {
             hour: 'numeric',
             minute: 'numeric',
             hour12: true,
-        }).format(new Date(date));
+    }).format(new Date(date));
 
     return (
         <motion.div 
