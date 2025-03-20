@@ -9,8 +9,8 @@ export const getAmadeusToken = async () => {
             'https://test.api.amadeus.com/v1/security/oauth2/token', // API URL for token generation
             new URLSearchParams({
                 grant_type: 'client_credentials', // OAuth2 grant type
-                client_id: "DBa230NPP3MvchoN3lAo6Ul7ecVOqeeM", // Client ID provided by Amadeus
-                client_secret: "Ad81wQHw6u4xfWCD", // Client secret provided by Amadeus
+                client_id: "xiUzNhf6PgCeinmHgGndkHQlFZbHEbL9", // Client ID provided by Amadeus
+                client_secret: "HIaYrhN4RehAEX6Y", // Client secret provided by Amadeus
             }),
             {
                 // Setting headers for the request
@@ -24,6 +24,6 @@ export const getAmadeusToken = async () => {
     } catch (error) {
         // Handling any errors that may occur during the API request
         console.error('Failed to fetch Amadeus token:', error); // Logging the error to the console
-        throw new Error('Could not authenticate with Amadeus API.'); // Throwing a custom error
+        throw new Error('Could not authenticate with Amadeus API.'); // Throwing a custom erro
     }
 };

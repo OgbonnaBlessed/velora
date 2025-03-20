@@ -6,7 +6,7 @@ import { locations } from '../../Data/Locations';
 // Import a list of locations (from the locations data) for use in input fields.
 import DestinationInput from '../Common/Inputs/DestinationInput'; 
 // Import the DestinationInput component to handle input for the destination location.
-import DateRangePicker from '../Common/Date Picker/DateRangePicker'; 
+import DateRangePicker from '../Common/Inputs/DateRangePicker'; 
 // Import the DateRangePicker component for handling the travel dates selection.
 import TravelersInput from '../Common/Inputs/TravelerInput'; 
 // Import the TravelersInput component to handle inputs related to the number of travelers.

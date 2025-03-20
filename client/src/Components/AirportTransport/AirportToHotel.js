@@ -3,9 +3,10 @@
 import React, { useEffect, useRef, useState } from 'react'; // Import necessary React hooks for managing component state and effects.
 import { FaMapMarkerAlt, FaRegCalendarAlt } from 'react-icons/fa'; // Importing map marker and calendar icons for UI.
 import dayjs from 'dayjs'; // Import dayjs for managing and formatting dates.
-import { DatePicker } from 'antd'; // Import DatePicker from Ant Design for date selection.
+ // Import DatePicker from Ant Design for date selection.
 import { TimePicker } from 'antd'; // Import TimePicker from Ant Design for time selection.
 import { AiOutlineClockCircle } from 'react-icons/ai'; // Import clock icon.
+import SingleDatePicker from '../Common/Inputs/SingleDatePicker';
 const format = 'HH:mm'; // Format for displaying time.
 
 const AirportToHotel = () => {
@@ -116,10 +117,6 @@ const AirportToHotel = () => {
 
     const handleOriginChange = (e) => {
         setOrigin(e.target.value); // Set origin state to the input value.
-    };
-
-    const handleDateChange = (selectedDates) => {
-        // The function for handling date change is currently commented out, could be used for future improvements.
     };
 
     // Function to update room information (adults/children).
@@ -393,30 +390,9 @@ const AirportToHotel = () => {
                 </div>
 
             {/* Date Picker Section */}
-            <div 
-                className="border rounded-xl p-3 flex items-center flex-1" 
-                ref={dateRef}
-            >
-                <FaRegCalendarAlt className="text-xl" />
-                <div className="w-full h-full relative">
-                    <label
-                        htmlFor="date"
-                        className="absolute left-3 text-sm font-Poppins cursor-text top-[0.1rem] scale-75 -translate-x-4 transform -translate-y-1/2"
-                    >
-                        Flight arrival date
-                    </label>
-                    <DatePicker
-                        suffixIcon={null}
-                        format={"MMM DD"}
-                        defaultValue={[today, twoDaysLater]}
-                        minDate={today}
-                        allowClear={false} // Optional: allows clearing the input
-                        inputReadOnly={true}
-                        onChange={handleDateChange}
-                        popupClassName="responsive-calendar" // Apply custom class for responsiveness
-                    />
-                </div>
-            </div>
+            <SingleDatePicker 
+
+            />
 
             <div className="border rounded-xl p-3 flex items-center">
                 <AiOutlineClockCircle className="text-xl" />

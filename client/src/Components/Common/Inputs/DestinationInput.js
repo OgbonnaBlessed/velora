@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'; // Importing React h
 import { FaMapMarkerAlt } from 'react-icons/fa'; // Importing the map marker icon from react-icons
 
 // The DestinationInput component allows users to input and select a destination
-const DestinationInput = ({ formData, setFormData, locations }) => {
+const DestinationInput = ({ formData, setFormData, locations, label }) => {
     // State variables for filtered destinations, visibility of the dropdown, and whether the input is focused
     const [filteredDestinations, setFilteredDestinations] = useState([]);
     const [isDestinationListVisible, setIsDestinationListVisible] = useState(false);
@@ -85,7 +85,7 @@ const DestinationInput = ({ formData, setFormData, locations }) => {
                             }`
                         }
                     >
-                        Where to? {/* Label text */}
+                        {label ? label : 'Where to?'} {/* Label text */}
                     </label>
                     {/* Destination input field */}
                     <input

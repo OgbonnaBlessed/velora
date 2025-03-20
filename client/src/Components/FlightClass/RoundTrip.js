@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';  // useNavigate for navigation
 import OriginInput from '../Common/Inputs/OriginInput';  // Input component for selecting the origin location
 import { locations } from '../../Data/Locations';  // Array of available locations
 import DestinationInput from '../Common/Inputs/DestinationInput';  // Input component for selecting the destination location
-import DateRangePicker from '../Common/Date Picker/DateRangePicker';  // Custom date range picker component
+import DateRangePicker from '../Common/Inputs/DateRangePicker';  // Custom date range picker component
 import TravelersInput from '../Common/Inputs/TravelerInput';  // Input component for selecting the number of travelers
 import { useSelector } from 'react-redux';  // useSelector for accessing global state (current user)
 

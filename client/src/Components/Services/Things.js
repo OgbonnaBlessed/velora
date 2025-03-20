@@ -2,7 +2,7 @@ import React, { useState } from 'react'; // Importing React and useState for man
 import dayjs from 'dayjs' // Importing dayjs for date formatting and manipulation
 import DestinationInput from '../Common/Inputs/DestinationInput'; // Importing DestinationInput component
 import { locations } from '../../Data/Locations'; // Importing a list of locations (probably an array) for the input
-import DateRangePicker from '../Common/Date Picker/DateRangePicker'; // Importing the DateRangePicker component for selecting dates
+import DateRangePicker from '../Common/Inputs/DateRangePicker'; // Importing the DateRangePicker component for selecting dates
 import { useNavigate } from 'react-router-dom'; // Importing useNavigate hook from react-router-dom for page navigation
 import { useSelector } from 'react-redux'; // Importing useSelector hook from redux for accessing the global store
 

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import OriginInput from '../Common/Inputs/OriginInput';
 import { locations } from '../../Data/Locations';
 import DestinationInput from '../Common/Inputs/DestinationInput';
-import DateRangePicker from '../Common/Date Picker/DateRangePicker';
+import DateRangePicker from '../Common/Inputs/DateRangePicker';
 import TravelersInput from '../Common/Inputs/TravelerInput';
 import { useSelector } from 'react-redux';
 

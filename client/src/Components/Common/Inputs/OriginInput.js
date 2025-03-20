@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 
 // Functional component for the 'Origin' input field
-const OriginInput = ({ formData, setFormData, locations }) => {
+const OriginInput = ({ formData, setFormData, locations, label }) => {
     // State for filtered origins based on user input
     const [filteredOrigins, setFilteredOrigins] = useState([]);
     // State for controlling the visibility of the origin list
@@ -86,7 +86,7 @@ const OriginInput = ({ formData, setFormData, locations }) => {
                             }`
                         }
                     >
-                        From where? {/* Placeholder text for the input */}
+                        {label ? label : 'From where?'}
                     </label>
                     <input
                         type="text"

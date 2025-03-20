@@ -5,7 +5,7 @@ import { BounceLoader } from 'react-spinners'; // For the loading spinner
 import { locations } from '../Data/Locations'; // Presumably a list of locations for the destination input
 import DestinationInput from '../Components/Common/Inputs/DestinationInput'; // Component for inputting destination
 import TravelersInput from '../Components/Common/Inputs/TravelerInput'; // Component for inputting traveler details
-import DateRangePicker from '../Components/Common/Date Picker/DateRangePicker'; // Date picker for selecting dates
+import DateRangePicker from '../Components/Common/Inputs/DateRangePicker'; // Date picker for selecting dates
 import { useLocation } from 'react-router-dom'; // Hook to access router state
 import dayjs from 'dayjs'; // For date manipulation
 import HotelList from '../Components/Common/HotelList'; // Component to display list of hotels

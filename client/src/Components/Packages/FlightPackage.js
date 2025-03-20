@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'; // Importing useNavigate hook to
 import OriginInput from '../Common/Inputs/OriginInput'; // Component to input origin
 import { locations } from '../../Data/Locations'; // Importing locations data for use in OriginInput and DestinationInput
 import DestinationInput from '../Common/Inputs/DestinationInput'; // Component to input destination
-import DateRangePicker from '../Common/Date Picker/DateRangePicker'; // Component for selecting dates
+import DateRangePicker from '../Common/Inputs/DateRangePicker'; // Component for selecting dates
 import TravelersInput from '../Common/Inputs/TravelerInput'; // Component to handle traveler input
 import { useSelector } from 'react-redux'; // Importing useSelector to access Redux state
 
