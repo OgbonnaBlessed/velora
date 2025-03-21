@@ -72,20 +72,20 @@ const DestinationInput = ({ formData, setFormData, locations, label }) => {
     return (
         <div className='relative' ref={destinationRef}> {/* Wrapper div for the input and dropdown */}
             {/* Main input field with map marker icon */}
-            <div className="border rounded-xl p-3 flex items-center flex-1">
+            <div className="border rounded-xl p-3 flex items-center gap-3 flex-1">
                 <FaMapMarkerAlt className="text-xl" /> {/* Map marker icon */}
                 <div className="w-full h-full relative">
                     {/* Label for the destination input with dynamic positioning based on focus */}
                     <label
                         htmlFor="destination"
-                        className={`absolute left-3 text-sm font-Poppins cursor-text transition-all duration-500 ease-in-out 
+                        className={`absolute left-0 text-sm font-Poppins cursor-text transition-all duration-500 ease-in-out 
                             ${focused
-                                ? 'top-[0.1rem] scale-75 -translate-x-2 transform -translate-y-1/2' // Focused state
-                                : 'top-1/2 transform -translate-y-1/2' // Unfocused state
+                                ? '-top-1 scale-90 text-xs origin-left' // Focused state
+                                : 'top-1/2 transform -translate-y-1/2 text-base' // Unfocused state
                             }`
                         }
                     >
-                        {label ? label : 'Where to?'} {/* Label text */}
+                        {label} {/* Label text */}
                     </label>
                     {/* Destination input field */}
                     <input
@@ -95,7 +95,7 @@ const DestinationInput = ({ formData, setFormData, locations, label }) => {
                         onFocus={toggleDestinationList} // Show the list when input is focused
                         onBlur={(e) => !e.target.value && setFocused(false)} // Remove focus if input is empty on blur
                         onChange={handleDestinationChange} // Handle changes in input field
-                        className="px-3 pt-2 w-full bg-transparent" // Styling for the input field
+                        className="pt-2 w-full bg-transparent" // Styling for the input field
                         autoComplete="off" // Disable browser autocomplete
                     />
                 </div>
@@ -103,7 +103,7 @@ const DestinationInput = ({ formData, setFormData, locations, label }) => {
 
             {/* Destination list dropdown */}
             <div 
-                className={`absolute top-16 bg-white max-h-64 overflow-y-auto shadow shadow-gray-300 rounded-lg w-64 transition-all duration-300 ease-in-out z-10
+                className={`absolute top-16 bg-white max-h-64 overflow-y-auto shadow shadow-gray-300 rounded-lg w-64 transition-all duration-300 ease-in-out z-10 font-Roboto
                     ${isDestinationListVisible 
                         ? 'translate-y-0 pointer-events-auto opacity-1' // Visible state of the list
                         : '-translate-y-5 pointer-events-none opacity-0' // Hidden state of the list

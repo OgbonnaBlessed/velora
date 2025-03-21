@@ -104,6 +104,7 @@ const Stays = () => {
             formData={formData}
             setFormData={setFormData}
             locations={locations}
+            label='Where to?'
           />
           {/* Display error message for destination */}
           {errors.destination && (
@@ -224,6 +225,7 @@ const Stays = () => {
             formData={formData}
             setFormData={setFormData}
             locations={locations}
+            label='From where?'
           />
           {/* Display error message for origin */}
           {errors.origin && (

@@ -3,9 +3,10 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { AiOutlineClockCircle } from 'react-icons/ai'
 
-const format = 'HH:mm';
+const format = 'h:mm a';
 
-const DropOff = () => {
+const DropOff = ({onTimeChange, value}) => {
+
     return (
         <div className="border rounded-xl p-3 flex items-center">
             <AiOutlineClockCircle className="text-xl" />
@@ -21,8 +22,9 @@ const DropOff = () => {
                     use12Hours
                     inputReadOnly={true}
                     suffixIcon={null}
-                    defaultValue={dayjs('10:00', format)} 
+                    value={dayjs(value, format)}                    
                     format={format} 
+                    onChange={(time) => onTimeChange(time ? time.format(format) : '')} 
                 /> 
             </div>
         </div>

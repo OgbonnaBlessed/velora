@@ -74,19 +74,19 @@ const OriginInput = ({ formData, setFormData, locations, label }) => {
             className='relative' 
             ref={originRef} // Attach the ref to the div for detecting outside clicks
         >
-            <div className="border rounded-xl p-3 flex items-center flex-1">
+            <div className="border rounded-xl p-3 flex items-center gap-3 flex-1">
                 <FaMapMarkerAlt className="text-xl" /> {/* Icon for the input field */}
                 <div className="w-full h-full relative">
                     <label
                         htmlFor="origin"
-                        className={`absolute left-3 text-sm font-Poppins cursor-text transition-all duration-500 ease-in-out 
+                        className={`absolute left-0 text-sm font-Poppins cursor-text transition-all duration-500 ease-in-out 
                             ${focused
-                                ? 'top-[0.1rem] scale-75 -translate-x-3 transform -translate-y-1/2' // Styles for the label when focused
-                                : 'top-1/2 transform -translate-y-1/2' // Styles for the label when not focused
+                                ? '-top-1 scale-90 text-xs origin-left' // Styles for the label when focused
+                                : 'top-1/2 transform -translate-y-1/2 text-base' // Styles for the label when not focused
                             }`
                         }
                     >
-                        {label ? label : 'From where?'}
+                        {label}
                     </label>
                     <input
                         type="text"
@@ -95,7 +95,7 @@ const OriginInput = ({ formData, setFormData, locations, label }) => {
                         onFocus={toggleOriginList} // Trigger list toggle when input is focused
                         onBlur={(e) => !e.target.value && setFocused(false)} // Reset focus if input is empty
                         onChange={handleOriginChange} // Handle input changes
-                        className="px-3 pt-2 w-full bg-transparent"
+                        className="pt-2 w-full bg-transparent focus:outline-none"
                         autoComplete="off" // Disable autocomplete for the input
                     />
                 </div>
@@ -103,7 +103,7 @@ const OriginInput = ({ formData, setFormData, locations, label }) => {
 
             {/* Origin list dropdown */}
             <div 
-                className={`absolute top-16 bg-white max-h-64 overflow-y-auto shadow shadow-gray-300 rounded-lg w-64 transition-all duration-300 ease-in-out z-10
+                className={`absolute top-16 bg-white max-h-64 overflow-y-auto shadow shadow-gray-300 rounded-lg w-64 transition-all duration-300 ease-in-out z-10 font-Roboto
                     ${isOriginListVisible 
                         ? 'translate-y-0 pointer-events-auto opacity-1' // Show the list when visible
                         : '-translate-y-5 pointer-events-none opacity-0' // Hide the list when not visible

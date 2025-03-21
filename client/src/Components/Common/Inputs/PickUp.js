@@ -1,11 +1,11 @@
 import { TimePicker } from 'antd'
+import dayjs from 'dayjs';
 import React from 'react'
 import { AiOutlineClockCircle } from 'react-icons/ai'
-import dayjs from 'dayjs'
 
-const format = 'HH:mm';
+const format = 'h:mm a';
 
-const PickUp = () => {
+const PickUp = ({onTimeChange, value}) => {
     return (
         <div className="border rounded-xl p-3 flex items-center">
             <AiOutlineClockCircle className="text-xl" />
@@ -17,12 +17,12 @@ const PickUp = () => {
                     Pick up time
                 </label>
                 <TimePicker
-                    id='pick-up-time'
                     use12Hours
                     inputReadOnly={true}
                     suffixIcon={null}
-                    defaultValue={dayjs('10:00', format)} 
+                    value={dayjs(value, format)}
                     format={format} 
+                    onChange={(time) => onTimeChange(time ? time.format(format) : '')}
                 />
             </div>
         </div>
