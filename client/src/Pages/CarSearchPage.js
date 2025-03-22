@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { BounceLoader } from 'react-spinners';
 import { locations } from '../Data/Locations';
 import { LucideMessageSquareWarning } from 'lucide-react';
@@ -11,6 +11,9 @@ import DateRangePicker from '../Components/Common/Inputs/DateRangePicker';
 import OriginInput from '../Components/Common/Inputs/OriginInput';
 import DestinationInput from '../Components/Common/Inputs/DestinationInput';
 import PassengerInput from '../Components/Common/Inputs/PassengerInput';
+import CarList from '../Components/Common/CarList';
+import PickUp from '../Components/Common/Inputs/PickUp';
+import DropOff from '../Components/Common/Inputs/DropOff';
 
 const CarSearchPage = () => {
     const { currentUser } = useSelector((state) => state.user);
@@ -31,7 +34,8 @@ const CarSearchPage = () => {
         passengers: 1,
         seats: 1,
     });
-
+    const [isUserSelected, setIsUserSelected] = useState(false)
+    
     // useEffect hook to update formData based on location state (if provided)
     useEffect(() => {
         if (location.state) {
@@ -75,22 +79,21 @@ const CarSearchPage = () => {
     // Handle form submission
     const handleSubmit = async (e) => {
         if (e) e.preventDefault();
-        setLoading(true);
         setError(null);
 
         let hasError = false;
         const newErrors = { origin: '', destination: '' };
 
         if (!formData.origin) {
-            newErrors.origin = 'Please select an origin.';
+            newErrors.origin = 'Please select an origin';
             hasError = true;
         }
         if (!formData.destination) {
-            newErrors.destination = 'Please select a destination.';
+            newErrors.destination = 'Please select a destination';
             hasError = true;
         }
         if (formData.origin === formData.destination) {
-            newErrors.destination = 'Origin and destination cannot be the same.';
+            newErrors.destination = 'Origin and destination cannot be the same';
             hasError = true;
         }
         if (hasError) {
@@ -108,8 +111,8 @@ const CarSearchPage = () => {
             endName: "Souvenirs De La Tour",
             endGeoCode: "48.859466,2.2976965",
             transferType: "PRIVATE",
-            startDateTime: "2025-04-10T10:30:00",
-            passengers: 2,
+            startDateTime: formatDateTime(formData.departureDate, formData.pickupTime),
+            passengers: formData.passengers,
             stopOvers: [
                 {
                     duration: "PT2H30M",
@@ -127,11 +130,11 @@ const CarSearchPage = () => {
                 transportationType: "CAR",
                 transportationNumber: "AF380",
                 departure: {
-                    localDateTime: "2025-07-10T09:00:00",
+                    localDateTime: formatDateTime(formData.departureDate, formData.pickupTime),
                     iataCode: "NCE"
                 },
                 arrival: {
-                    localDateTime: "2025-07-10T10:00:00",
+                    localDateTime: formatDateTime(formData.returnDate, formData.dropoffTime),
                     iataCode: "CDG"
                 }
             },
@@ -142,6 +145,7 @@ const CarSearchPage = () => {
         };
 
         try {
+            setLoading(true);
             const response = await fetch('/api/car/car-offers', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -169,6 +173,28 @@ const CarSearchPage = () => {
         }
     };
 
+    // Helper function to calculate the car duration in minutes
+    const getCarDuration = (car) => {
+        const departureTime = new Date(car?.start?.dateTime).getTime();
+        const arrivalTime = new Date(car?.end?.dateTime).getTime();
+        return (arrivalTime - departureTime) / (1000 * 60); // Duration in minutes
+    };
+
+    useEffect(() => {
+        if (!isUserSelected) {
+            // Update time every minute if user hasn't selected manually
+            const interval = setInterval(() => {
+                setFormData((prev) => ({
+                    ...prev,
+                    pickupTime: dayjs().format('h:mm a'),
+                    dropoffTime: dayjs().add(2, 'hours').format('h:mm a')
+                }));
+            }, 60000); // 1-minute interval
+
+            return () => clearInterval(interval); // Cleanup on unmount
+        }
+    }, [isUserSelected]); // Run when user manually selects a time
+
     return (
         <motion.div 
             initial={{ opacity: 0 }}
@@ -183,36 +209,53 @@ const CarSearchPage = () => {
             {/* Search form for cars */}
             <form 
                 onSubmit={(e) => handleSubmit(e)}
-                className="xl:flex xl:gap-3 xl:justify-between grid gap-4 md:gap-6 md:grid-cols-3 items-center"
+                className="xl:grid-cols-3 xl:gap-3 grid gap-4 md:gap-6 md:grid-cols-2 items-center"
             >
                 {/* Origin Input */}
-                <div className="relative flex-1">
-                    <OriginInput
+                <div className='relative'>
+                    <OriginInput 
                         formData={formData}
                         setFormData={setFormData}
-                        locations={locations} // Pass available locations to the OriginInput component
-                        label='From where?' // Custom label for the input
+                        locations={locations}  // Pass available locations
+                        label="Pick up"
                     />
-                    {errors.origin && (
-                        <p className="text-red-500 text-[0.7rem] absolute mt-1">
-                            {errors.origin} {/* Display validation error if any */}
-                        </p>
-                    )}
+                    <AnimatePresence mode='wait'>
+                        {errors.origin && (
+                            <motion.p 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                className="text-red-500 text-xs bottom-1 right-2 absolute"
+                            >
+                                {errors.origin}
+                            </motion.p>
+                        )}
+                    </AnimatePresence>
                 </div>
         
                 {/* Destination Input */}
-                <div className="relative flex-1">
+                <div className="relative">
                     <DestinationInput
                         formData={formData}
                         setFormData={setFormData}
-                        locations={locations} // Pass available locations to the DestinationInput component
-                        label='Where to?' // Custom label for the input
+                        locations={locations}  // Pass available locations
+                        label="Drop off"
                     />
-                    {errors.destination && (
-                        <p className="text-red-500 text-[0.7rem] absolute mt-1">
-                            {errors.destination} {/* Display validation error if any */}
-                        </p>
-                    )}
+                    {/* Display error if destination is not selected */}
+                    <AnimatePresence mode='wait'>
+                        {errors.destination && (
+                            <motion.p 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                className="text-red-500 text-xs bottom-1 right-2 absolute"
+                            >
+                                {errors.destination}
+                            </motion.p>
+                        )}
+                    </AnimatePresence>
                 </div>
         
                 {/* Date Range Picker */}
@@ -222,6 +265,22 @@ const CarSearchPage = () => {
                         dayjs(formData.departureDate),
                         dayjs(formData.returnDate),
                     ]}
+                />
+
+                <PickUp
+                    onTimeChange={(time) => {
+                        setFormData((prev) => ({ ...prev, pickupTime: time }));
+                        setIsUserSelected(true);
+                    }}
+                    value={formData.pickupTime}
+                />
+
+                <DropOff
+                    onTimeChange={(time) => {
+                        setFormData((prev) => ({ ...prev, dropoffTime: time }));
+                        setIsUserSelected(true);
+                    }}
+                    value={formData.dropoffTime}
                 />
         
                 {/* Passengers Input */}
@@ -233,14 +292,14 @@ const CarSearchPage = () => {
                 {/* Submit Button */}
                 <button 
                     type="submit" 
-                    className="bg-[#48aadf] rounded-full font-semibold text-white cursor-pointer px-8 py-3 h-fit w-fit self-center"
+                    className="bg-[#48aadf] hover:bg-[#48aadf]/80 active:scale-90 rounded-full font-semibold text-white cursor-pointer px-8 py-3 h-fit w-fit self-center transition-all duration-300 ease-in-out"
                 >
                     Search
                 </button>
             </form>
     
             {/* Loading, Error, or Flight Results Display */}
-            <div>
+            <>
                 {loading ? (
                     <div className='min-h-64 w-full flex items-center justify-center'>
                         <BounceLoader
@@ -267,26 +326,15 @@ const CarSearchPage = () => {
                             <p className='font-normal font-sans'>Please try again later</p>
                         </div>
                     </motion.div>
+                ) : cars ? (
+                    <CarList
+                        cars={cars} // Pass the car data to the CarList component
+                        getCarDuration={getCarDuration} // Pass the getCarDuration function to the CarList component
+                    />
                 ) : (
-                    (Array.isArray(cars) && cars.length > 0 ? (
-                        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-                            {cars.map((car, index) => (
-                                <div key={index} className='flex flex-col gap-4 bg-[#dbeafe] p-4 rounded-md'>
-                                    <img src={car?.vehicle?.imageURL ? car?.vehicle?.imageURL : `${process.env.PUBLIC_URL}/images/placeholder-car.png`} alt={`Car ${index + 1} image`} className='object-cover' />
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <div className='flex flex-col gap-5 items-center font-Poppins font-semibold min-h-64 w-full justify-center'>
-                            <div className='flex flex-col gap items-center'>
-                                <LucideMessageSquareWarning />
-                                <p className='text-lg'>No car offers found</p>
-                                <p className='font-normal font-sans'>Please try a different search</p>
-                            </div>
-                        </div>
-                    ))
+                    <p>Youve made a mistake</p>
                 )}
-            </div>
+            </>
         </motion.div>
       );
 }

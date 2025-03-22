@@ -70,18 +70,17 @@ function SearchPage() {
   // Handle form submission for flight search
   const handleSubmit = async (e) => {
     if (e) e.preventDefault(); // Prevent default form submission behavior
-    setLoading(true); // Show the loading indicator
     setError(null); // Reset any previous errors
-
+    
     let hasError = false; // Flag to track form validation errors
     const newErrors = { origin: '', destination: '' };
-
+    
     // Validate origin and destination inputs
     if (!formData.origin) {
       newErrors.origin = 'Please select an origin.';
       hasError = true;
     }
-
+    
     if (!formData.destination) {
       newErrors.destination = 'Please select a destination.';
       hasError = true;
@@ -92,7 +91,7 @@ function SearchPage() {
       newErrors.destination = 'Origin and destination cannot be the same.';
       hasError = true;
     }
-
+    
     // If there are errors, display them and stop the form submission
     if (hasError) {
       setErrors(newErrors);
@@ -101,9 +100,10 @@ function SearchPage() {
       }, 3000);
       return;
     }
-
+    
     // Proceed with API request to fetch flight data
     try {
+      setLoading(true); // Show the loading indicator
       const payload = {
         userId: currentUser._id, // User ID from the Redux store
         origin: formData.origin,
@@ -213,7 +213,7 @@ function SearchPage() {
         {/* Submit Button */}
         <button 
           type="submit" 
-          className="bg-[#48aadf] rounded-full font-semibold text-white cursor-pointer px-8 py-3 h-fit w-fit self-center"
+          className="bg-[#48aadf] hover:bg-[#48aadf]/80 active:scale-90 rounded-full font-semibold text-white cursor-pointer px-8 py-3 h-fit w-fit self-center transition-all duration-300 ease-in-out"
         >
           Search
         </button>

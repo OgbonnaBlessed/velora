@@ -67,18 +67,17 @@ function HotelSearch() {
     // Function to handle the form submission and fetch hotels
     const handleSubmit = async (e) => {
         if (e) e.preventDefault(); // Prevent default form submission behavior
-        setLoading(true); // Start loading
         setError(null); // Reset previous errors
-
+        
         let hasError = false;
         const newErrors = { destination: '' };
-
+        
         // Check if destination is provided
         if (!formData.destination) {
             newErrors.destination = 'Please select a destination.';
             hasError = true;
         }
-
+        
         // If there's an error, show it and stop the form submission
         if (hasError) {
             setErrors(newErrors);
@@ -87,8 +86,9 @@ function HotelSearch() {
             }, 3000); // Clear error after 3 seconds
             return;
         }
-
+        
         try {
+            setLoading(true); // Start loading
             // Prepare payload for the API request
             const payload = {
                 userId: currentUser._id, // Send user ID from Redux store
@@ -98,20 +98,20 @@ function HotelSearch() {
                 adults: parseInt(formData.adults, 10),
                 rooms: parseInt(formData.rooms, 10),
             };
-
+            
             // Send POST request to the backend to search for hotels
             const response = await fetch(`/api/flight/search-hotels`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
             });
-
+            
             // Parse the response
             const data = await response.json();
             if (!response.ok) {
                 throw new Error('Failed to fetch hotels. Please try again.');
             }
-
+            
             setHotels(data); // Set fetched hotel data
             console.log(data); // Log the fetched data for debugging
         } catch (error) {

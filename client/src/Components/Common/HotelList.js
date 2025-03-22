@@ -13,11 +13,11 @@ const HotelList = ({ hotels }) => {
         // If no hotels are found, return a message saying no hotels are available
         return (
             <motion.div 
-                initial={{ opacity: 0, y: 0 }} 
+                initial={{ opacity: 0, y: -50 }} 
                 // Initial state: opacity is set to 0 (invisible) and y-axis position is 0
-                animate={{ opacity: 1, y: -50 }} 
+                animate={{ opacity: 1, y: 0 }} 
                 // Animation: gradually increase opacity to 1 (visible) and move up by 50px
-                exit={{ opacity: 0, y: 0 }} 
+                exit={{ opacity: 0, y: -50 }} 
                 // Exit animation: fade out and reset y-axis position to 0
                 transition={{
                     duration: .5, 

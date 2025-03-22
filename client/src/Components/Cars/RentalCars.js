@@ -9,6 +9,7 @@ import PickUp from '../Common/Inputs/PickUp';
 import DropOff from '../Common/Inputs/DropOff';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import PassengerInput from '../Common/Inputs/PassengerInput';
 
 const RentalCars = () => {
     const { currentUser } = useSelector((state) => state.user);
@@ -172,6 +173,12 @@ const RentalCars = () => {
                         setIsUserSelected(true);
                     }}
                     value={formData.dropoffTime}
+                />
+
+                {/* Passengers Input */}
+                <PassengerInput
+                    formData={formData} 
+                    setFormData={setFormData} 
                 />
 
                 {/* Search Button */}
