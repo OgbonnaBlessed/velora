@@ -19,7 +19,9 @@ const RentalCars = () => {
         departureDate: dayjs().format('YYYY-MM-DD'),  // default departure date (today)
         returnDate: dayjs().add(2, 'day').format('YYYY-MM-DD'),  // default return date (2 days later)
         pickupTime: dayjs().format('h:mm a'),
-        dropoffTime: dayjs().add(2, 'hour').format('h:mm a')
+        dropoffTime: dayjs().add(2, 'hour').format('h:mm a'),
+        passengers: 1,
+        seats: 1,
     });
     const [isUserSelected, setIsUserSelected] = useState(false)
     console.log(formData);
@@ -78,7 +80,9 @@ const RentalCars = () => {
             departureDate: formData.departureDate,
             returnDate: formData.returnDate,
             pickupTime: formData.pickupTime,
-            dropoffTime: formData.drop
+            dropoffTime: formData.dropoffTime,
+            passengers: formData.passengers,
+            seats: formData.seats,
         }}); // Navigate to the flight search page
     };
 

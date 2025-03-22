@@ -7,6 +7,7 @@ import authRoutes from './routes/auth.route.js'; // Routes for authentication
 import uploadRoutes from './routes/upload.routes.js'; // Routes for file uploads
 import cookieParser from 'cookie-parser'; // Middleware to parse cookies
 import flightSearchRoutes from './routes/flight.route.js'; // Routes for flight search functionality
+import carRoutes from './routes/car.route.js'; // Routes for car rental search functionality
 import path from 'path'; // Node.js module for handling file paths
 
 // Configure environment variables
@@ -36,6 +37,7 @@ app.use('/api/user', userRoutes); // User-related API routes
 app.use('/api/auth', authRoutes); // Authentication API routes
 app.use('/api', uploadRoutes); // File upload API routes
 app.use('/api/flight', flightSearchRoutes); // Flight search API routes
+app.use('/api/car', carRoutes);
 
 // Start the server
 app.listen(3000, () => {

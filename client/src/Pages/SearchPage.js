@@ -13,11 +13,11 @@ import { useSelector } from 'react-redux'; // Hook to access the Redux store
 import { motion } from 'framer-motion'; // Framer Motion for animations
 
 function SearchPage() {
-  // Get the location object from the router
-  const location = useLocation();
-  
   // Accessing the current user from the Redux store
   const { currentUser } = useSelector((state) => state.user);
+  
+  // Get the location object from the router
+  const location = useLocation();
 
   // Setting state variables
   const [flights, setFlights] = useState(''); // To store flight data
