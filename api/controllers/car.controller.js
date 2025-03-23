@@ -2,6 +2,29 @@ import axios from "axios";
 import { getAmadeusToken } from "../helpers/tokenService.js";
 
 // Helper function to fetch IATA code for a city name
+const fetchCityInfo = async (query, token) => {
+    try {
+        // Send request to Amadeus API to fetch city location details
+        const response = await axios.get('https://test.api.amadeus.com/v1/reference-data/locations', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            params: {
+                subType: 'CITY', // We are looking for cities
+                keyword: query,   // The city name to search for
+            },
+        });
+
+        // If results are found, return the city info of the first city match
+        return response.data;
+
+    } catch (error) {
+        console.error(`Error fetching city info for ${query}:`, error);
+        throw new Error(`Failed to fetch city info for "${query}"`);
+    }
+};
+
+// Helper function to fetch IATA code for a city name
 const fetchIATACode = async (query, token) => {
     try {
         // Send request to Amadeus API to fetch city location details
@@ -27,65 +50,56 @@ const fetchIATACode = async (query, token) => {
     }
 };
 
-// Helper function to fetch city name for a given IATA code
-const fetchCityName = async (iataCode, token) => {
-    try {
-        // Send request to Amadeus API to fetch city details using the IATA code
-        const response = await axios.get('https://test.api.amadeus.com/v1/reference-data/locations', {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            params: {
-                subType: 'AIRPORT', // Looking for airports by IATA code
-                keyword: iataCode,  // IATA code to search for
-            },
-        });
-
-        // If city is found, return the city name, else fallback to IATA code
-        if (response.data?.data?.length > 0) {
-            return response.data.data[0].address.cityName; // Return the city name from the response
-        } else {
-            return iataCode; // Fallback to IATA code if city name not found
-        }
-    } catch (error) {
-        console.error(`Error fetching city name for ${iataCode}:`, error);
-        return iataCode; // Fallback to IATA code
-    }
-};
-
 // Main function to fetch car offers
 export const carOffers = async (req, res) => {
     try {
         const token = await getAmadeusToken();
+
         const {
-            startLocationCode,
-            endAddressLine,
+            origin,
             endCityName,
-            endZipCode,
-            endCountryCode,
-            endName,
-            endGeoCode,
+            destination,
             transferType,
             startDateTime,
+            endDateTime,
             passengers,
-            stopOvers,
-            startConnectedSegment,
             passengerCharacteristics
-        } = req.body;
+        } = req.body
+        
+        const originLocationCode = await fetchIATACode(origin, token);
+        const destinationLocationCode = await fetchIATACode(destination, token);
+
+        const city = await fetchCityInfo(endCityName, token);
+        const latitude = city?.data[0]?.geoCode?.latitude;
+        const longitude = city?.data[0]?.geoCode?.longitude;
+        const endCountryCode = city?.data[0]?.address?.countryCode;
+        const endAddressLine = city?.data[0]?.address?.cityName;
+
+        console.log(latitude, longitude, endCountryCode, endAddressLine);
 
         const response = await axios.post('https://test.api.amadeus.com/v1/shopping/transfer-offers', {
-            startLocationCode,
+            startLocationCode: originLocationCode,
             endAddressLine,
             endCityName,
-            endZipCode,
             endCountryCode,
-            endName,
-            endGeoCode,
+            endGeoCode: {
+                latitude,
+                longitude
+            },
             transferType,
             startDateTime,
             passengers,
-            stopOvers,
-            startConnectedSegment,
+            startConnectedSegment: {
+                transportationType: "CAR",
+                departure: {
+                    localDateTime: startDateTime,
+                    iataCode: originLocationCode
+                },
+                arrival: {
+                    localDateTime: endDateTime,
+                    iataCode: destinationLocationCode
+                }
+            },
             passengerCharacteristics
         }, {
             headers: {

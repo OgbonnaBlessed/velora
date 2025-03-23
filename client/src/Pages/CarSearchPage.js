@@ -34,6 +34,7 @@ const CarSearchPage = () => {
         passengers: 1,
         seats: 1,
     });
+    
     const [isUserSelected, setIsUserSelected] = useState(false)
     
     // useEffect hook to update formData based on location state (if provided)
@@ -103,41 +104,13 @@ const CarSearchPage = () => {
         }
 
         const payload = {
-            startLocationCode: "CDG",
-            endAddressLine: "Avenue Anatole France, 5",
-            endCityName: "Paris",
-            endZipCode: "75007",
-            endCountryCode: "FR",
-            endName: "Souvenirs De La Tour",
-            endGeoCode: "48.859466,2.2976965",
+            origin: formData.origin,
+            destination: formData.destination,
+            endCityName: formData.origin,
             transferType: "PRIVATE",
             startDateTime: formatDateTime(formData.departureDate, formData.pickupTime),
+            endDateTime: formatDateTime(formData.returnDate, formData.dropoffTime),
             passengers: formData.passengers,
-            stopOvers: [
-                {
-                    duration: "PT2H30M",
-                    sequenceNumber: 1,
-                    addressLine: "Avenue de la Bourdonnais, 19",
-                    countryCode: "FR",
-                    cityName: "Paris",
-                    zipCode: "75007",
-                    name: "De La Tours",
-                    geoCode: "48.859477,2.2976985",
-                    stateCode: "FR"
-                }
-            ],
-            startConnectedSegment: {
-                transportationType: "CAR",
-                transportationNumber: "AF380",
-                departure: {
-                    localDateTime: formatDateTime(formData.departureDate, formData.pickupTime),
-                    iataCode: "NCE"
-                },
-                arrival: {
-                    localDateTime: formatDateTime(formData.returnDate, formData.dropoffTime),
-                    iataCode: "CDG"
-                }
-            },
             passengerCharacteristics: [
                 { passengerTypeCode: "ADT", age: 20 },
                 { passengerTypeCode: "CHD", age: 10 }
