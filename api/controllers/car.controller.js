@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getAmadeusToken } from "../helpers/tokenService.js";
+import SearchData from "../models/search.model.js";
 
 // Helper function to fetch IATA code for a city name
 const fetchCityInfo = async (query, token) => {
@@ -56,12 +57,15 @@ export const carOffers = async (req, res) => {
         const token = await getAmadeusToken();
 
         const {
+            userId,
             origin,
             endCityName,
             destination,
             transferType,
             startDateTime,
             endDateTime,
+            departureDate,
+            returnDate,
             passengers,
             passengerCharacteristics
         } = req.body;
@@ -84,6 +88,17 @@ export const carOffers = async (req, res) => {
 
         // Proper format for endGeoCode
         const endGeoCode = `${latitude},${longitude}`;
+
+        // Save the search data to the database
+        await SearchData.create({
+            userId,
+            searchType: 'cars',
+            origin,
+            destination,
+            departureDate,
+            returnDate,
+            numberOfTravelers: passengers,
+        });
 
         const response = await axios.post('https://test.api.amadeus.com/v1/shopping/transfer-offers', {
             startLocationCode: originLocationCode,

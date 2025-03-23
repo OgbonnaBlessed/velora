@@ -12,7 +12,7 @@ const SearchDataSchema = new mongoose.Schema({
     // The type of search (either flights or stays)
     searchType: {
         type: String, // String type for the search type
-        enum: ['flights', 'stays'], // Only allow 'flights' or 'stays' as values
+        enum: ['flights', 'stays', 'cars'], // Only allow 'flights' or 'stays' as values
         required: true, // Ensures searchType is provided
     },
     // Details of the flight or stay search

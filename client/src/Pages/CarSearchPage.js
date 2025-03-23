@@ -55,13 +55,13 @@ const CarSearchPage = () => {
     }, [location.state]);
 
     // useEffect hook to trigger search when required
-    // useEffect(() => {
-    //     if (triggerSearch && formData.origin && formData.destination) {
-    //         handleSubmit(); // Call submit when required fields are set
-    //         setTriggerSearch(false); // Reset the trigger after search
-    //     }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [triggerSearch]);
+    useEffect(() => {
+        if (triggerSearch && formData.origin && formData.destination) {
+            handleSubmit(); // Call submit when required fields are set
+            setTriggerSearch(false); // Reset the trigger after search
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [triggerSearch]);
 
     // Handle changes in date range picker (departure and return dates)
     const handleDateChange = ([startDate, endDate]) => {
@@ -104,12 +104,15 @@ const CarSearchPage = () => {
         }
 
         const payload = {
+            userId: currentUser._id,
             origin: formData.origin,
             destination: formData.destination,
             endCityName: formData.origin,
             transferType: "PRIVATE",
             startDateTime: formatDateTime(formData.departureDate, formData.pickupTime),
             endDateTime: formatDateTime(formData.returnDate, formData.dropoffTime),
+            departureDate: formData.departureDate,
+            returnDate: formData.returnDate,
             passengers: formData.passengers,
             passengerCharacteristics: [
                 { passengerTypeCode: "ADT", age: 20 },

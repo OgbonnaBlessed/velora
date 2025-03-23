@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react'; // useEffect and useState fr
 import axios from 'axios'; // Axios for making HTTP requests
 import { useSelector } from 'react-redux'; // useSelector to access Redux state (currentUser)
 import { useNavigate } from 'react-router-dom'; // useNavigate for navigation between pages in React Router
-import { FaHotel, FaTelegramPlane, FaTrash } from 'react-icons/fa'; // Import icons for hotel, flight, and trash
+import { FaCar, FaHotel, FaTelegramPlane, FaTrash } from 'react-icons/fa'; // Import icons for hotel, flight, and trash
 import dayjs from 'dayjs'; // Import dayjs for working with dates
+import { CarIcon } from 'lucide-react';
 
 const SearchData = () => {
   // Access the current user from Redux state
@@ -26,6 +27,7 @@ const SearchData = () => {
         // Making GET request to fetch search data for the current user
         const response = await axios.get(`/api/flight/search-data/${currentUser._id}`);
         setSearchData(response.data); // Set the fetched data to state
+        console.log(response.data);
       } catch (err) {
         // Handle errors and set the error state
         setError('Failed to fetch search data. Please try again.');
@@ -77,7 +79,7 @@ const SearchData = () => {
           rooms: 1, // Set number of rooms
         }
       });
-    } else {
+    } else if (item.searchType === 'flights') {
       // If the search type is "flights", navigate to flight search page
       navigate('/flight-search', {
         state: { 
@@ -87,6 +89,17 @@ const SearchData = () => {
           returnDate: dayjs().add(2, 'day').format('YYYY-MM-DD'),
           adults: item.numberOfTravelers,
           rooms: 1,
+        }
+      });
+    } else {
+      // If the search type is "cars", navigate to car search page
+      navigate('/car-search', {
+        state: { 
+          origin: item.origin,
+          destination: item.destination,
+          departureDate: dayjs().format('YYYY-MM-DD'),
+          returnDate: dayjs().add(2, 'day').format('YYYY-MM-DD'),
+          passengers: item.numberOfTravelers,
         }
       });
     }
@@ -121,10 +134,12 @@ const SearchData = () => {
               >
                 <div className='text-2xl'>
                   {/* Display different icons based on search type */}
-                  {item.searchType === 'stays' ? <FaHotel /> : <FaTelegramPlane />}
+                  {item.searchType === 'stays' && <FaHotel />}
+                  {item.searchType === 'flights' && <FaTelegramPlane />}
+                  {item.searchType === 'cars' && <FaCar />}
                 </div>
                 {/* Display details based on search type */}
-                {item.searchType === 'stays' ? (
+                {item.searchType === 'stays' && (
                   <div className='flex flex-col'>
                     <p className='font-bold'>{`Stays in ${item.destination || 'Unknown'}`}</p>
                     <div>{`${formatDate(item.departureDate)} - ${formatDate(item.returnDate)}`}</div>
@@ -132,12 +147,22 @@ const SearchData = () => {
                       {item.numberOfTravelers} {item.numberOfTravelers > 1 ? 'travelers' : 'traveler'}
                     </div>
                   </div>
-                ) : (
+                )}
+                {item.searchType === 'flights' && (
                   <div className='flex flex-col'>
                     <p className='font-bold'>{`Flights from ${item.origin || 'Unknown'} to ${item.destination || 'Unknown'}`}</p>
                     <div>{`${formatDate(item.departureDate)} - ${formatDate(item.returnDate)}`}</div>
                     <div>
                       {item.numberOfTravelers} {item.numberOfTravelers > 1 ? 'travelers' : 'traveler'}
+                    </div>
+                  </div>
+                )} 
+                {item.searchType === 'cars' && (
+                  <div className='flex flex-col'>
+                    <p className='font-bold'>{`Cars from ${item?.origin || 'Unknown'} to ${item?.destination || 'Unknown'}`}</p>
+                    <div>{`${formatDate(item?.departureDate)} - ${formatDate(item?.returnDate)}`}</div>
+                    <div>
+                      {item.numberOfTravelers} {item.numberOfTravelers > 1 ? 'passengers' : 'passenger'}
                     </div>
                   </div>
                 )}
