@@ -20,7 +20,7 @@ const fetchCityInfo = async (query, token) => {
 
     } catch (error) {
         console.error(`Error fetching city info for ${query}:`, error);
-        throw new Error(`Failed to fetch city info for "${query}"`);
+        throw new Error(`Failed to fetch city info for "${query}", ${error}`);
     }
 };
 
@@ -64,28 +64,33 @@ export const carOffers = async (req, res) => {
             endDateTime,
             passengers,
             passengerCharacteristics
-        } = req.body
-        
+        } = req.body;
+
+        // Fetching origin and destination IATA codes
         const originLocationCode = await fetchIATACode(origin, token);
         const destinationLocationCode = await fetchIATACode(destination, token);
 
+        // Fetching city geoCode and address details
         const city = await fetchCityInfo(endCityName, token);
         const latitude = city?.data[0]?.geoCode?.latitude;
         const longitude = city?.data[0]?.geoCode?.longitude;
         const endCountryCode = city?.data[0]?.address?.countryCode;
         const endAddressLine = city?.data[0]?.address?.cityName;
 
-        console.log(latitude, longitude, endCountryCode, endAddressLine);
+        // Validate latitude and longitude
+        if (!latitude || !longitude) {
+            throw new Error('Latitude or longitude not found for the specified city.');
+        }
+
+        // Proper format for endGeoCode
+        const endGeoCode = `${latitude},${longitude}`;
 
         const response = await axios.post('https://test.api.amadeus.com/v1/shopping/transfer-offers', {
             startLocationCode: originLocationCode,
             endAddressLine,
             endCityName,
             endCountryCode,
-            endGeoCode: {
-                latitude,
-                longitude
-            },
+            endGeoCode, // String format required by Amadeus
             transferType,
             startDateTime,
             passengers,
@@ -109,6 +114,7 @@ export const carOffers = async (req, res) => {
         });
 
         res.status(200).json(response.data);
+        // console.log('Car offers fetched successfully:', response.data);
     } catch (error) {
         console.error('Error fetching car offers:', error.response?.data || error.message);
         res.status(500).json({ message: 'Failed to fetch car offers', error: error.response?.data });
