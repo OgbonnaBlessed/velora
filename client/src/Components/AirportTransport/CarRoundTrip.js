@@ -48,19 +48,19 @@ const CarRoundTrip = () => {
     
         // Validate origin input
         if (!formData.origin) {
-          newErrors.origin = 'Please select an origin';  // Set error if origin is not selected
+          newErrors.origin = 'Please select an airport';  // Set error if origin is not selected
           hasError = true;
         }
     
         // Validate destination input
         if (!formData.destination) {
-          newErrors.destination = 'Please select a destination';  // Set error if destination is not selected
+          newErrors.destination = 'Please select an hotel';  // Set error if destination is not selected
           hasError = true;
         }
     
         // Check if origin and destination are the same
         if (formData.destination && formData.origin && formData.origin === formData.destination) {
-          newErrors.destination = 'Origin and destination cannot be the same';  // Set error if same
+          newErrors.destination = 'Airport and hotel cannot be the same';  // Set error if same
           hasError = true;
         }
     

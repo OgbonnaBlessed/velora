@@ -29,6 +29,7 @@ import FlightCheckOutPage from '../Pages/FlightCheckOutPage';
 import HotelCheckOutPage from '../Pages/HotelCheckOutPage';
 import CarSearchPage from '../Pages/CarSearchPage';
 import AirportToHotelCarSearch from '../Pages/AirportToHotelCarSearch';
+import RoundTripCarSearch from '../Pages/RoundTripCarSearch';
 
 const AnimatedRoutes = () => {
   // useLocation hook from React Router to get the current location (path)
@@ -65,6 +66,7 @@ const AnimatedRoutes = () => {
           <Route path='/hotel-search' element={<HotelSearch/>} /> {/* Hotel Search Page */}
           <Route path='/car-search' element={<CarSearchPage />} />
           <Route path='/airport-to-hotel-car-search' element={<AirportToHotelCarSearch />} /> {/* Airport to Hotel Page */}
+          <Route path='/round-trip-car-search' element={<RoundTripCarSearch />} /> {/* Round Trip Car Search Page */}
           <Route path='/flight-details/:flightId' element={<FlightDetails/>} /> {/* Flight Details Page with dynamic flightId */}
           <Route path='/hotel-details/:hotelId' element={<HotelDetails/>} /> {/* Hotel Details Page with dynamic hotelId */}
           <Route path='/flight-check-out' element={<FlightCheckOutPage/>} /> {/* Flight Checkout Page */}
