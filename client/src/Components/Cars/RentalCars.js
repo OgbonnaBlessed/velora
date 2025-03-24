@@ -24,8 +24,7 @@ const RentalCars = () => {
         passengers: 1,
         seats: 1,
     });
-    const [isUserSelected, setIsUserSelected] = useState(false)
-    console.log(formData);
+    const [isUserSelected, setIsUserSelected] = useState(false);
     const navigate = useNavigate();
 
     // Handle date range selection

@@ -5,17 +5,16 @@ import { AiOutlineClockCircle } from 'react-icons/ai'
 
 const format = 'h:mm a';
 
-const PickUp = ({onTimeChange, value}) => {
+const PickUp = ({ onTimeChange, value, label }) => {
     return (
         <div className="border rounded-xl p-3 flex items-center">
             <AiOutlineClockCircle className="text-xl" />
             <div className="w-full h-full relative">
-                <label
-                    htmlFor="pick-up-time"
-                    className="absolute left-3 text-sm font-Poppins text-nowrap cursor-text top-[0.1rem] scale-75 -translate-x-3 transform -translate-y-1/2"
+                <div
+                    className="absolute text-sm font-Poppins text-nowrap cursor-text top-[0.1rem] scale-75 transform -translate-y-1/2"
                 >
-                    Pick up time
-                </label>
+                    { label || 'Pick up time' }
+                </div>
                 <TimePicker
                     use12Hours
                     inputReadOnly={true}

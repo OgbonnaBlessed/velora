@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux'; // useSelector to access Redux state 
 import { useNavigate } from 'react-router-dom'; // useNavigate for navigation between pages in React Router
 import { FaCar, FaHotel, FaTelegramPlane, FaTrash } from 'react-icons/fa'; // Import icons for hotel, flight, and trash
 import dayjs from 'dayjs'; // Import dayjs for working with dates
-import { CarIcon } from 'lucide-react';
 
 const SearchData = () => {
   // Access the current user from Redux state

@@ -3,12 +3,14 @@ import { DatePicker } from 'antd';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import dayjs from 'dayjs';
 
-const SingleDatePicker = () => {
+const SingleDatePicker = ({ onDateChange, defaultDate }) => {
     const today = dayjs(); // Get today's date using dayjs.
-    const twoDaysLater = today.add(2, "day"); // Get the date 2 days from today.
     
-    const handleDateChange = (selectedDates) => {
-        // The function for handling date change is currently commented out, could be used for future improvements.
+    const handleDateChange = (selectedDate) => {
+        if (selectedDate) { // Check if two dates are selected (start and end dates)
+            const date = selectedDate; // Destructuring to get the start and end date
+            onDateChange(date); // Call the onDateChange callback with the selected dates
+        }
     };
     
     return (
@@ -24,7 +26,7 @@ const SingleDatePicker = () => {
                 <DatePicker
                     suffixIcon={null}
                     format={"MMM DD"}
-                    defaultValue={[today, twoDaysLater]}
+                    defaultValue={defaultDate}
                     minDate={today}
                     allowClear={false} // Optional: allows clearing the input
                     inputReadOnly={true}
