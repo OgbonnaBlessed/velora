@@ -10,9 +10,7 @@ const PickUp = ({ onTimeChange, value, label }) => {
         <div className="border rounded-xl p-3 flex items-center">
             <AiOutlineClockCircle className="text-xl" />
             <div className="w-full h-full relative">
-                <div
-                    className="absolute text-sm font-Poppins text-nowrap cursor-text top-[0.1rem] scale-75 transform -translate-y-1/2"
-                >
+                <div className="absolute left-3 text-[0.65rem] font-Poppins text-nowrap cursor-text top-[0.1rem] transform -translate-y-1/2">
                     { label || 'Pick up time' }
                 </div>
                 <TimePicker

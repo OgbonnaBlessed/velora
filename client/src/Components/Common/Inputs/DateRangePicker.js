@@ -6,7 +6,7 @@ import { FaRegCalendarAlt } from 'react-icons/fa'; // Importing calendar icon fr
 const { RangePicker } = DatePicker; // Destructuring to get RangePicker component from DatePicker
 
 // DateRangePicker component takes in two props: onDateChange and defaultDates
-const DateRangePicker = ({ onDateChange, defaultDates }) => {
+const DateRangePicker = ({ onDateChange, defaultDates, label }) => {
     const today = dayjs(); // Getting the current date using dayjs
     const [dates, setDates] = useState(defaultDates); // State to manage the selected date range, initialized with defaultDates
 
@@ -32,9 +32,9 @@ const DateRangePicker = ({ onDateChange, defaultDates }) => {
             {/* Label for the DatePicker input */}
             <label
                 htmlFor="date" // Associate label with the date input
-                className="absolute left-3 text-sm font-Poppins cursor-text top-[0.1rem] scale-75 -translate-x-1 transform -translate-y-1/2"
+                className="absolute left-3 text-[0.65rem] font-Poppins text-nowrap cursor-text top-[0.1rem] transform -translate-y-1/2"
             >
-                Date {/* Label text */}
+                { label || 'Date' } {/* Label text */}
             </label>
             
             {/* RangePicker from Ant Design for selecting a date range */}

@@ -19,7 +19,7 @@ const SingleDatePicker = ({ onDateChange, defaultDate }) => {
             <div className="w-full h-full relative">
                 <label
                     htmlFor="date"
-                    className="absolute left-3 text-sm font-Poppins cursor-text top-[0.1rem] scale-75 -translate-x-4 transform -translate-y-1/2"
+                    className="absolute left-3 text-[0.65rem] font-Poppins text-nowrap cursor-text top-[0.1rem] transform -translate-y-1/2"
                 >
                     Flight arrival date
                 </label>
