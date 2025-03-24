@@ -676,3 +676,835 @@ export const explore = [
     ]
   },
 ]
+
+export const airports = [
+  { "city": "London", "airport": "Heathrow Airport", "iataCode": "LHR" },
+  { "city": "London", "airport": "Gatwick Airport", "iataCode": "LGW" },
+  { "city": "London", "airport": "London City Airport", "iataCode": "LCY" },
+  { "city": "London", "airport": "Stansted Airport", "iataCode": "STN" },
+  { "city": "London", "airport": "Luton Airport", "iataCode": "LTN" },
+  { "city": "Manchester", "airport": "Manchester Airport", "iataCode": "MAN" },
+  { "city": "Birmingham", "airport": "Birmingham Airport", "iataCode": "BHX" },
+  { "city": "Glasgow", "airport": "Glasgow Airport", "iataCode": "GLA" },
+  { "city": "Glasgow", "airport": "Glasgow Prestwick Airport", "iataCode": "PIK" },
+  { "city": "Edinburgh", "airport": "Edinburgh Airport", "iataCode": "EDI" },
+  { "city": "Bristol", "airport": "Bristol Airport", "iataCode": "BRS" },
+  { "city": "Liverpool", "airport": "Liverpool John Lennon Airport", "iataCode": "LPL" },
+  { "city": "Newcastle", "airport": "Newcastle Airport", "iataCode": "NCL" },
+  { "city": "Cardiff", "airport": "Cardiff Airport", "iataCode": "CWL" },
+  { "city": "Southampton", "airport": "Southampton Airport", "iataCode": "SOU" },
+  { "city": "New York", "airport": "John F. Kennedy International Airport", "iataCode": "JFK" },
+  { "city": "Los Angeles", "airport": "Los Angeles International Airport", "iataCode": "LAX" },
+  { "city": "Chicago", "airport": "O'Hare International Airport", "iataCode": "ORD" },
+  { "city": "Houston", "airport": "George Bush Intercontinental Airport", "iataCode": "IAH" },
+  { "city": "Phoenix", "airport": "Phoenix Sky Harbor International Airport", "iataCode": "PHX" },
+  { "city": "Philadelphia", "airport": "Philadelphia International Airport", "iataCode": "PHL" },
+  { "city": "San Antonio", "airport": "San Antonio International Airport", "iataCode": "SAT" },
+  { "city": "San Diego", "airport": "San Diego International Airport", "iataCode": "SAN" },
+  { "city": "Dallas", "airport": "Dallas/Fort Worth International Airport", "iataCode": "DFW" },
+  { "city": "San Francisco", "airport": "San Francisco International Airport", "iataCode": "SFO" },
+  { "city": "Seattle", "airport": "Seattle-Tacoma International Airport", "iataCode": "SEA" },
+  { "city": "Boston", "airport": "Logan International Airport", "iataCode": "BOS" },
+  { "city": "Miami", "airport": "Miami International Airport", "iataCode": "MIA" },
+  { "city": "Denver", "airport": "Denver International Airport", "iataCode": "DEN" },
+  { "city": "Washington D.C.", "airport": "Ronald Reagan Washington National Airport", "iataCode": "DCA" },
+  { "city": "New Delhi", "airport": "Indira Gandhi International Airport", "iataCode": "DEL" },
+  { "city": "Mumbai", "airport": "Chhatrapati Shivaji Maharaj International Airport", "iataCode": "BOM" },
+  { "city": "Bengaluru", "airport": "Kempegowda International Airport", "iataCode": "BLR" },
+  { "city": "Chennai", "airport": "Chennai International Airport", "iataCode": "MAA" },
+  { "city": "Kolkata", "airport": "Netaji Subhas Chandra Bose International Airport", "iataCode": "CCU" },
+  { "city": "Hyderabad", "airport": "Rajiv Gandhi International Airport", "iataCode": "HYD" },
+  { "city": "Ahmedabad", "airport": "Sardar Vallabhbhai Patel International Airport", "iataCode": "AMD" },
+  { "city": "Pune", "airport": "Pune International Airport", "iataCode": "PNQ" },
+  { "city": "Jaipur", "airport": "Jaipur International Airport", "iataCode": "JAI" },
+  { "city": "Kochi", "airport": "Cochin International Airport", "iataCode": "COK" },
+  { "city": "Berlin", "airport": "Berlin Brandenburg Airport", "iataCode": "BER" },
+  { "city": "Munich", "airport": "Munich Airport", "iataCode": "MUC" },
+  { "city": "Frankfurt", "airport": "Frankfurt Airport", "iataCode": "FRA" },
+  { "city": "Hamburg", "airport": "Hamburg Airport", "iataCode": "HAM" },
+  { "city": "Düsseldorf", "airport": "Düsseldorf Airport", "iataCode": "DUS" },
+  { "city": "Stuttgart", "airport": "Stuttgart Airport", "iataCode": "STR" },
+  { "city": "Cologne", "airport": "Cologne Bonn Airport", "iataCode": "CGN" },
+  { "city": "Dortmund", "airport": "Dortmund Airport", "iataCode": "DTM" },
+  { "city": "Bremen", "airport": "Bremen Airport", "iataCode": "BRE" },
+  { "city": "Leipzig", "airport": "Leipzig/Halle Airport", "iataCode": "LEJ" }
+]
+
+export const hotels = [
+  {
+    "name": "The Cavendish Hotel",
+    "city": "Derbyshire"
+  },
+  {
+    "name": "The Torridon",
+    "city": "Highland"
+  },
+  {
+    "name": "Gilpin Hotel & Lake House",
+    "city": "Cumbria"
+  },
+  {
+    "name": "The Newt",
+    "city": "Somerset"
+  },
+  {
+    "name": "Harbourmaster",
+    "city": "Ceredigion"
+  },
+  {
+    "name": "The Swan Inn",
+    "city": "West Sussex"
+  },
+  {
+    "name": "The Angel at Hetton",
+    "city": "North Yorkshire"
+  },
+  {
+    "name": "Meadowsweet",
+    "city": "Norfolk"
+  },
+  {
+    "name": "The Cuan",
+    "city": "Co Down"
+  },
+  {
+    "name": "The Goring",
+    "city": "London"
+  },
+  {
+    "name": "Saltmoore",
+    "city": "North Yorkshire"
+  },
+  {
+    "name": "New Park Manor",
+    "city": "Hampshire"
+  },
+  {
+    "name": "Beaverbrook",
+    "city": "Surrey"
+  },
+  {
+    "name": "The Rose",
+    "city": "Kent"
+  },
+  {
+    "name": "The Angel Hotel",
+    "city": "Monmouthshire"
+  },
+  {
+    "name": "Gleneagles",
+    "city": "Perth and Kinross"
+  },
+  {
+    "name": "100 Princes Street",
+    "city": "Edinburgh"
+  },
+  {
+    "name": "SeaSpace",
+    "city": "Cornwall"
+  },
+  {
+    "name": "Bull",
+    "city": "Oxfordshire"
+  },
+  {
+    "name": "The Pig in the Cotswolds",
+    "city": "Gloucestershire"
+  },
+  {
+    "name": "The Kirkstyle Inn",
+    "city": "Northumberland"
+  },
+  {
+    "name": "Broadwick Soho",
+    "city": "London"
+  },
+  {
+    "name": "The Beaumont Mayfair",
+    "city": "London"
+  },
+  {
+    "name": "Comfort Inn Kings Cross",
+    "city": "London"
+  },
+  {
+    "name": "Comfort Inn Victoria",
+    "city": "London"
+  },
+  {
+    "name": "Comfort Inn Ramsgate",
+    "city": "Ramsgate"
+  },
+  {
+    "name": "Comfort Inn & Suites Kings Cross St. Pancras",
+    "city": "London"
+  },
+  {
+    "name": "Comfort Inn Edgware Road W2",
+    "city": "London"
+  },
+  {
+    "name": "Comfort Hotel Great Yarmouth",
+    "city": "Great Yarmouth"
+  },
+  {
+    "name": "Comfort Inn Hyde Park",
+    "city": "London"
+  },
+  {
+    "name": "Comfort Inn Manchester North",
+    "city": "Manchester"
+  },
+  {
+    "name": "Comfort Inn Westminster",
+    "city": "London"
+  },
+  {
+    "name": "Comfort Inn Sunderland",
+    "city": "Sunderland"
+  },
+  {
+    "name": "Delta Hotels Bexleyheath",
+    "city": "Bexleyheath"
+  },
+  {
+    "name": "Moxy Manchester City",
+    "city": "Manchester"
+  },
+  {
+    "name": "Bulgari Hotel London",
+    "city": "London"
+  },
+  {
+    "name": "Delta Hotels Milton Keynes",
+    "city": "Milton Keynes"
+  },
+  {
+    "name": "AC Hotel Manchester Salford Quays",
+    "city": "Manchester"
+  },
+  {
+    "name": "Courtyard London City Airport",
+    "city": "London"
+  },
+  {
+    "name": "Delta Hotels Birmingham",
+    "city": "Birmingham"
+  },
+  {
+    "name": "Delta Hotels Warwick",
+    "city": "Warwick"
+  },
+  {
+    "name": "Courtyard Aberdeen Airport",
+    "city": "Aberdeen"
+  },
+  {
+    "name": "Delta Hotels Liverpool City Centre",
+    "city": "Liverpool"
+  },
+  {
+    "name": "Residence Inn London Bridge",
+    "city": "London"
+  },
+  {
+    "name": "Moxy Chester",
+    "city": "Chester"
+  },
+  {
+    "name": "Delta Hotels Preston",
+    "city": "Preston"
+  },
+  {
+    "name": "Park Grand London Kensington",
+    "city": "London"
+  },
+  {
+    "name": "Marriott Executive Apartments London, Canary Wharf",
+    "city": "London"
+  },
+  {
+    "name": "St. Pancras Renaissance Hotel London",
+    "city": "London"
+  },
+  {
+    "name": "The Kensington Hotel",
+    "city": "Ann Arbor, Michigan"
+  },
+  {
+    "name": "Lytle Park Hotel",
+    "city": "Cincinnati, Ohio"
+  },
+  {
+    "name": "Crowne Plaza Indianapolis Downtown Union Station",
+    "city": "Indianapolis, Indiana"
+  },
+  {
+    "name": "The Manner by Standard International",
+    "city": "New York City, New York"
+  },
+  {
+    "name": "Casa Loma Beach Hotel",
+    "city": "Laguna Beach, California"
+  },
+  {
+    "name": "Populus Hotel",
+    "city": "Denver, Colorado"
+  },
+  {
+    "name": "Delamar Mystic",
+    "city": "Mystic, Connecticut"
+  },
+  {
+    "name": "Hotel Saint Augustine",
+    "city": "Houston, Texas"
+  },
+  {
+    "name": "Asher Adams, Autograph Collection",
+    "city": "Salt Lake City, Utah"
+  },
+  {
+    "name": "Graduate by Hilton",
+    "city": "Auburn, Alabama"
+  },
+  {
+    "name": "FORTH Hotel",
+    "city": "Atlanta, Georgia"
+  },
+  {
+    "name": "Hotel 1928",
+    "city": "Waco, Texas"
+  },
+  {
+    "name": "Hotel Bardo",
+    "city": "Savannah, Georgia"
+  },
+  {
+    "name": "The Celestine",
+    "city": "New Orleans, Louisiana"
+  },
+  {
+    "name": "The Louis",
+    "city": "Wilson, Arkansas"
+  },
+  {
+    "name": "Scottish Inns & Suites at NRG Park",
+    "city": "Houston, Texas"
+  },
+  {
+    "name": "Extended Stay America Select Suites - Atlanta - Marietta - Windy Hill",
+    "city": "Marietta, Georgia"
+  },
+  {
+    "name": "DASKK Orlando Hotel near Universal Blvd, Ascend Hotel Collection",
+    "city": "Orlando, Florida"
+  },
+  {
+    "name": "Hampton Inn & Suites Houston Katy",
+    "city": "Katy, Texas"
+  },
+  {
+    "name": "Comfort Suites Baytown I - 10",
+    "city": "Baytown, Texas"
+  },
+  {
+    "name": "The Vagabond Hotel",
+    "city": "Miami, Florida"
+  },
+  {
+    "name": "ITH Pacific Tradewinds Hostel San Francisco",
+    "city": "San Francisco, California"
+  },
+  {
+    "name": "Holiday Inn & Suites Mt Juliet – Nashville Area, an IHG Hotel",
+    "city": "Mount Juliet, Tennessee"
+  },
+  {
+    "name": "Courtyard Atlanta NE/Duluth Sugarloaf",
+    "city": "Duluth, Georgia"
+  },
+  {
+    "name": "Fairfield Inn & Suites by Marriott Houston Brookhollow",
+    "city": "Houston, Texas"
+  },
+  {
+    "name": "Americas Best Value Inn and Suites IAH Airport North",
+    "city": "Humble, Texas"
+  },
+  {
+    "name": "Americas Best Value Inn & Suites Houston Downtown",
+    "city": "Houston, Texas"
+  },
+  {
+    "name": "STOP INN STAY HOSTELS",
+    "city": "Houston, Texas"
+  },
+  {
+    "name": "Express Inn - Spring",
+    "city": "Spring, Texas"
+  },
+  {
+    "name": "Springhill Suites By Marriott Atlanta Six Flags",
+    "city": "Lithia Springs, Georgia"
+  },
+  {
+    "name": "Extended Stay America Select Suites Atlanta Buckhead",
+    "city": "Atlanta, Georgia"
+  },
+  {
+    "name": "Coco Plum Inn",
+    "city": "Key West, Florida"
+  },
+  {
+    "name": "Motel 6 Stafford, TX – SW Houston - Sugarland",
+    "city": "Stafford, Texas"
+  },
+  {
+    "name": "Four Points by Sheraton Buffalo Grove",
+    "city": "Buffalo Grove, Illinois"
+  },
+  {
+    "name": "Residence Inn Las Vegas Airport",
+    "city": "Las Vegas, Nevada"
+  },
+  {
+    "name": "Hilton Garden Inn Gallatin, TN",
+    "city": "Gallatin, Tennessee"
+  },
+  {
+    "name": "Candlewood Suites Goodlettsville - Nashville, an IHG Hotel",
+    "city": "Goodlettsville, Tennessee"
+  },
+  {
+    "name": "Spark Suites, Hobby Airport - Houston",
+    "city": "Houston, Texas"
+  },
+  {
+    "name": "Redwood Creek Inn",
+    "city": "Redwood City, California"
+  },
+  {
+    "name": "Quality Inn & Suites near Six Flags - Austell",
+    "city": "Austell, Georgia"
+  },
+  {
+    "name": "Extended Stay America Select Suites Chicago Westmont Oak Brook",
+    "city": "Westmont, Illinois"
+  },
+  {
+    "name": "Residence Inn by Marriott Chicago Oak Brook",
+    "city": "Oak Brook, Illinois"
+  },
+  {
+    "name": "Days Inn & Suites by Wyndham Webster NASA-ClearLake-Houston",
+    "city": "Webster, Texas"
+  },
+  {
+    "name": "Marriott's Lakeshore Reserve",
+    "city": "Orlando, Florida"
+  },
+  {
+    "name": "Banana Bungalow Hollywood Hotel & Hostel",
+    "city": "Los Angeles, California"
+  },
+  {
+    "name": "Express Inn Hobby",
+    "city": "Houston, Texas"
+  },
+  {
+    "name": "Sonesta Essential Houston Hobby Airport",
+    "city": "Houston, Texas"
+  },
+  {
+    "name": "Home2 Suites by Hilton Houston-Pearland",
+    "city": "Pearland, Texas"
+  },
+  {
+    "name": "OYO Townhouse Houston Airport North",
+    "city": "Houston, Texas"
+  },
+  {
+    "name": "The Oberoi Amarvilas",
+    "city": "Agra"
+  },
+  {
+    "name": "ITC Mughal, a Luxury Collection Hotel",
+    "city": "Agra"
+  },
+  {
+    "name": "Taj Mahal Palace",
+    "city": "Mumbai"
+  },
+  {
+    "name": "The Oberoi Mumbai",
+    "city": "Mumbai"
+  },
+  {
+    "name": "The Leela Palace",
+    "city": "New Delhi"
+  },
+  {
+    "name": "The Imperial New Delhi",
+    "city": "New Delhi"
+  },
+  {
+    "name": "ITC Maurya, a Luxury Collection Hotel",
+    "city": "New Delhi"
+  },
+  {
+    "name": "The Oberoi Udaivilas",
+    "city": "Udaipur"
+  },
+  {
+    "name": "Taj Lake Palace",
+    "city": "Udaipur"
+  },
+  {
+    "name": "The Oberoi Rajvilas",
+    "city": "Jaipur"
+  },
+  {
+    "name": "Rambagh Palace",
+    "city": "Jaipur"
+  },
+  {
+    "name": "ITC Grand Chola, a Luxury Collection Hotel",
+    "city": "Chennai"
+  },
+  {
+    "name": "Taj Coromandel",
+    "city": "Chennai"
+  },
+  {
+    "name": "The Oberoi Bengaluru",
+    "city": "Bengaluru"
+  },
+  {
+    "name": "ITC Gardenia, a Luxury Collection Hotel",
+    "city": "Bengaluru"
+  },
+  {
+    "name": "Taj West End",
+    "city": "Bengaluru"
+  },
+  {
+    "name": "The Leela Palace",
+    "city": "Bengaluru"
+  },
+  {
+    "name": "The Oberoi Grand",
+    "city": "Kolkata"
+  },
+  {
+    "name": "ITC Royal Bengal, a Luxury Collection Hotel",
+    "city": "Kolkata"
+  },
+  {
+    "name": "Taj Bengal",
+    "city": "Kolkata"
+  },
+  {
+    "name": "The Leela Kovalam",
+    "city": "Kovalam"
+  },
+  {
+    "name": "Taj Exotica Resort & Spa",
+    "city": "Goa"
+  },
+  {
+    "name": "The Leela Goa",
+    "city": "Goa"
+  },
+  {
+    "name": "Alila Diwa Goa",
+    "city": "Goa"
+  },
+  {
+    "name": "Park Hyatt Goa Resort and Spa",
+    "city": "Goa"
+  },
+  {
+    "name": "The Oberoi Cecil",
+    "city": "Shimla"
+  },
+  {
+    "name": "Wildflower Hall, An Oberoi Resort",
+    "city": "Shimla"
+  },
+  {
+    "name": "Ananda in the Himalayas",
+    "city": "Narendranagar"
+  },
+  {
+    "name": "The Oberoi Vanyavilas Wildlife Resort",
+    "city": "Ranthambhore"
+  },
+  {
+    "name": "Amanbagh Resort",
+    "city": "Alwar"
+  },
+  {
+    "name": "Aman-i-Khás",
+    "city": "Ranthambhore"
+  },
+  {
+    "name": "The Oberoi Sukhvilas Spa Resort",
+    "city": "Chandigarh"
+  },
+  {
+    "name": "JW Marriott Hotel Chandigarh",
+    "city": "Chandigarh"
+  },
+  {
+    "name": "The Oberoi Amarvilas",
+    "city": "Agra"
+  },
+  {
+    "name": "Trident Agra",
+    "city": "Agra"
+  },
+  {
+    "name": "The Oberoi Gurgaon",
+    "city": "Gurgaon"
+  },
+  {
+    "name": "Trident Gurgaon",
+    "city": "Gurgaon"
+  },
+  {
+    "name": "The Oberoi New Delhi",
+    "city": "New Delhi"
+  },
+  {
+    "name": "Hyatt Regency Delhi",
+    "city": "New Delhi"
+  },
+  {
+    "name": "Shangri-La Eros New Delhi",
+    "city": "New Delhi"
+  },
+  {
+    "name": "The Claridges New Delhi",
+    "city": "New Delhi"
+  },
+  {
+    "name": "The Lodhi",
+    "city": "New Delhi"
+  },
+  {
+    "name": "The Taj Mahal Hotel",
+    "city": "New Delhi"
+  },
+  {
+    "name": "The Oberoi Amarvilas",
+    "city": "Agra"
+  },
+  {
+    "name": "ITC Grand Bharat, a Luxury Collection Retreat",
+    "city": "Gurgaon"
+  },
+  {
+    "name": "The Oberoi Amarvilas",
+    "city": "Agra"
+  },
+  {
+    "name": "The Oberoi Amarvilas",
+    "city": "Agra"
+  },
+  {
+    "name": "The Oberoi Amarvilas",
+    "city": "Agra"
+  },
+  {
+    "name": "Breidenbacher Hof",
+    "city": "Düsseldorf"
+  },
+  {
+    "name": "Hotel Adlon Kempinski",
+    "city": "Berlin"
+  },
+  {
+    "name": "Bayerischer Hof",
+    "city": "Munich"
+  },
+  {
+    "name": "Hotel Atlantic Kempinski",
+    "city": "Hamburg"
+  },
+  {
+    "name": "Excelsior Hotel Ernst",
+    "city": "Cologne"
+  },
+  {
+    "name": "The Ritz-Carlton",
+    "city": "Berlin"
+  },
+  {
+    "name": "Grandhotel Hessischer Hof",
+    "city": "Frankfurt"
+  },
+  {
+    "name": "Fairmont Hotel Vier Jahreszeiten",
+    "city": "Hamburg"
+  },
+  {
+    "name": "Hotel Nassauer Hof",
+    "city": "Wiesbaden"
+  },
+  {
+    "name": "Schlosshotel Kronberg",
+    "city": "Kronberg"
+  },
+  {
+    "name": "Hotel Taschenbergpalais Kempinski",
+    "city": "Dresden"
+  },
+  {
+    "name": "Hotel Elephant",
+    "city": "Weimar"
+  },
+  {
+    "name": "Hotel Sacher Baden",
+    "city": "Baden-Baden"
+  },
+  {
+    "name": "Hotel Bareiss",
+    "city": "Baiersbronn"
+  },
+  {
+    "name": "Brenners Park-Hotel & Spa",
+    "city": "Baden-Baden"
+  },
+  {
+    "name": "Hotel Traube Tonbach",
+    "city": "Baiersbronn"
+  },
+  {
+    "name": "Hotel Louis C. Jacob",
+    "city": "Hamburg"
+  },
+  {
+    "name": "Hotel Vier Jahreszeiten Kempinski",
+    "city": "Munich"
+  },
+  {
+    "name": "Hotel Schloss Elmau",
+    "city": "Krün"
+  },
+  {
+    "name": "Hotel Belle Epoque",
+    "city": "Baden-Baden"
+  },
+  {
+    "name": "Hotel Der Kleine Prinz",
+    "city": "Baden-Baden"
+  },
+  {
+    "name": "Hotel Regent",
+    "city": "Berlin"
+  },
+  {
+    "name": "Hotel de Rome",
+    "city": "Berlin"
+  },
+  {
+    "name": "Hotel Concorde",
+    "city": "Berlin"
+  },
+  {
+    "name": "Hotel Palace Berlin",
+    "city": "Berlin"
+  },
+  {
+    "name": "Hotel Bristol Berlin",
+    "city": "Berlin"
+  },
+  {
+    "name": "Hotel Savoy Berlin",
+    "city": "Berlin"
+  },
+  {
+    "name": "Hotel Zoo Berlin",
+    "city": "Berlin"
+  },
+  {
+    "name": "Hotel am Steinplatz",
+    "city": "Berlin"
+  },
+  {
+    "name": "Hotel Indigo Berlin - East Side Gallery",
+    "city": "Berlin"
+  },
+  {
+    "name": "Hotel Indigo Dresden - Wettiner Platz",
+    "city": "Dresden"
+  },
+  {
+    "name": "Hotel Indigo Düsseldorf - Victoriaplatz",
+    "city": "Düsseldorf"
+  },
+  {
+    "name": "Hotel Indigo Frankfurt - Oper",
+    "city": "Frankfurt"
+  },
+  {
+    "name": "Hotel Indigo Hamburg - St. Pauli",
+    "city": "Hamburg"
+  },
+  {
+    "name": "Hotel Indigo Munich - Leuchtenbergring",
+    "city": "Munich"
+  },
+  {
+    "name": "Hotel Indigo Stuttgart - Hauptbahnhof",
+    "city": "Stuttgart"
+  },
+  {
+    "name": "Hotel Indigo Cologne - City Centre",
+    "city": "Cologne"
+  },
+  {
+    "name": "Hotel Indigo Leipzig - City Centre",
+    "city": "Leipzig"
+  },
+  {
+    "name": "Hotel Indigo Nuremberg - City Centre",
+    "city": "Nuremberg"
+  },
+  {
+    "name": "Hotel Indigo Hanover - City Centre",
+    "city": "Hanover"
+  },
+  {
+    "name": "Hotel Indigo Bremen - City Centre",
+    "city": "Bremen"
+  },
+  {
+    "name": "Hotel Indigo Mannheim - City Centre",
+    "city": "Mannheim"
+  },
+  {
+    "name": "Hotel Indigo Karlsruhe - City Centre",
+    "city": "Karlsruhe"
+  },
+  {
+    "name": "Hotel Indigo Freiburg - City Centre",
+    "city": "Freiburg"
+  },
+  {
+    "name": "Hotel Indigo Augsburg - City Centre",
+    "city": "Augsburg"
+  },
+  {
+    "name": "Hotel Indigo Wiesbaden - City Centre",
+    "city": "Wiesbaden"
+  },
+  {
+    "name": "Hotel Indigo Mainz - City Centre",
+    "city": "Mainz"
+  },
+  {
+    "name": "Hotel Indigo Saarbrücken - City Centre",
+    "city": "Saarbrücken"
+  }
+]

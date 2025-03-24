@@ -3,12 +3,12 @@
 import React, { useEffect, useState } from 'react'; // Import necessary React hooks for managing component state and effects.
 import dayjs from 'dayjs'; // Import dayjs for managing and formatting dates.
 import SingleDatePicker from '../Common/Inputs/SingleDatePicker';
-import OriginInput from '../Common/Inputs/OriginInput';
+import AirportInput from '../Common/Inputs/AirportInput';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import DestinationInput from '../Common/Inputs/DestinationInput';
-import { locations } from '../../Data/Locations';
+import { airports, hotels } from '../../Data/Locations';
 import PassengerInput from '../Common/Inputs/PassengerInput';
 import PickUp from '../Common/Inputs/PickUp';
 
@@ -104,10 +104,10 @@ const AirportToHotel = () => {
     
                 {/* Origin Input Section */}
                 <div className='relative'>
-                    <OriginInput
+                    <AirportInput
                         formData={formData}
                         setFormData={setFormData}
-                        locations={locations}  // Pass available locations
+                        airports={airports}  // Pass available locations
                         label="Airport"
                     />
                     <AnimatePresence mode='wait'>
@@ -130,7 +130,7 @@ const AirportToHotel = () => {
                     <DestinationInput
                         formData={formData}
                         setFormData={setFormData}
-                        locations={locations}  // Pass available locations
+                        locations={hotels}  // Pass available locations
                         label="Hotel"
                     />
                     {/* Display error if destination is not selected */}

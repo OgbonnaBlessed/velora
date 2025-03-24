@@ -81,6 +81,8 @@ export const carOffers = async (req, res) => {
         const endCountryCode = city?.data[0]?.address?.countryCode;
         const endAddressLine = city?.data[0]?.address?.cityName;
 
+        console.log('City info:', city);
+
         // Validate latitude and longitude
         if (!latitude || !longitude) {
             throw new Error('Latitude or longitude not found for the specified city.');
