@@ -59,7 +59,7 @@ const AirportToHotel = () => {
     
         // Check if origin and destination are the same
         if (formData.destination && formData.origin && formData.origin === formData.destination) {
-          newErrors.destination = 'airport and hotel cannot be the same';  // Set error if same
+          newErrors.destination = 'Airport and hotel cannot be the same';  // Set error if same
           hasError = true;
         }
     
@@ -148,12 +148,6 @@ const AirportToHotel = () => {
                         )}
                     </AnimatePresence>
                 </div>
-    
-                {/* Passengers Input Section */}
-                <PassengerInput
-                    formData={formData} 
-                    setFormData={setFormData} 
-                />
 
                 {/* Date Picker Section */}
                 <SingleDatePicker 
@@ -168,6 +162,12 @@ const AirportToHotel = () => {
                     }}
                     value={formData.pickupTime}
                     label="Flight arrival time"
+                />
+
+                {/* Passengers Input Section */}
+                <PassengerInput
+                    formData={formData} 
+                    setFormData={setFormData} 
                 />
 
                 {/* Search Button */}
