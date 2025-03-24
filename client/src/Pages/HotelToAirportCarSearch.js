@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -15,7 +14,7 @@ import CarList from '../Components/Common/CarList';
 import PickUp from '../Components/Common/Inputs/PickUp';
 import SingleDatePicker from '../Components/Common/Inputs/SingleDatePicker';
 
-const AirportToHotelCarSearch = () => {
+const HotelToAirportCarSearch = () => {
     const { currentUser } = useSelector((state) => state.user);
     const location = useLocation();
 
@@ -194,7 +193,7 @@ const AirportToHotelCarSearch = () => {
                         formData={formData}
                         setFormData={setFormData}
                         locations={locations}  // Pass available locations
-                        label="Airport"
+                        label="Hotel"
                     />
                     <AnimatePresence mode='wait'>
                         {errors.origin && (
@@ -217,7 +216,7 @@ const AirportToHotelCarSearch = () => {
                         formData={formData}
                         setFormData={setFormData}
                         locations={locations}  // Pass available locations
-                        label="Hotel"
+                        label="Airport"
                     />
                     {/* Display error if destination is not selected */}
                     <AnimatePresence mode='wait'>
@@ -239,7 +238,7 @@ const AirportToHotelCarSearch = () => {
                 <SingleDatePicker
                     onDateChange={handleDateChange}
                     defaultDate={dayjs(formData.departureDate)}
-                    label="Flight arrival date"
+                    label="Flight departure date"
                 />
 
                 <PickUp
@@ -248,7 +247,7 @@ const AirportToHotelCarSearch = () => {
                         setIsUserSelected(true);
                     }}
                     value={formData.pickupTime}
-                    label="Flight arrival time"
+                    label="Flight departure time"
                 />
         
                 {/* Passengers Input */}
@@ -308,4 +307,4 @@ const AirportToHotelCarSearch = () => {
     );
 }
 
-export default AirportToHotelCarSearch
+export default HotelToAirportCarSearch

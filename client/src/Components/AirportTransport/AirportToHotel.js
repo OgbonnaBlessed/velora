@@ -153,6 +153,7 @@ const AirportToHotel = () => {
                 <SingleDatePicker 
                     onDateChange={handleDateChange}
                     defaultDate={dayjs(formData.departureDate)}
+                    label="Flight arrival date"
                 />
 
                 <PickUp

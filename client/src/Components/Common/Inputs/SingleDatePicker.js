@@ -3,7 +3,7 @@ import { DatePicker } from 'antd';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import dayjs from 'dayjs';
 
-const SingleDatePicker = ({ onDateChange, defaultDate }) => {
+const SingleDatePicker = ({ onDateChange, defaultDate, label }) => {
     const today = dayjs(); // Get today's date using dayjs.
     
     const handleDateChange = (selectedDate) => {
@@ -21,7 +21,7 @@ const SingleDatePicker = ({ onDateChange, defaultDate }) => {
                     htmlFor="date"
                     className="absolute left-3 text-[0.65rem] font-Poppins text-nowrap cursor-text top-[0.1rem] transform -translate-y-1/2"
                 >
-                    Flight arrival date
+                    { label }
                 </label>
                 <DatePicker
                     suffixIcon={null}
