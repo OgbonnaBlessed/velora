@@ -929,199 +929,199 @@ export const hotels = [
   },
   {
     "name": "The Kensington Hotel",
-    "city": "Ann Arbor, Michigan"
+    "city": "Ann Arbor"
   },
   {
     "name": "Lytle Park Hotel",
-    "city": "Cincinnati, Ohio"
+    "city": "Cincinnati"
   },
   {
     "name": "Crowne Plaza Indianapolis Downtown Union Station",
-    "city": "Indianapolis, Indiana"
+    "city": "Indianapolis"
   },
   {
     "name": "The Manner by Standard International",
-    "city": "New York City, New York"
+    "city": "New York City"
   },
   {
     "name": "Casa Loma Beach Hotel",
-    "city": "Laguna Beach, California"
+    "city": "Laguna Beach"
   },
   {
     "name": "Populus Hotel",
-    "city": "Denver, Colorado"
+    "city": "Denver"
   },
   {
     "name": "Delamar Mystic",
-    "city": "Mystic, Connecticut"
+    "city": "Mystic"
   },
   {
     "name": "Hotel Saint Augustine",
-    "city": "Houston, Texas"
+    "city": "Houston"
   },
   {
     "name": "Asher Adams, Autograph Collection",
-    "city": "Salt Lake City, Utah"
+    "city": "Salt Lake City"
   },
   {
     "name": "Graduate by Hilton",
-    "city": "Auburn, Alabama"
+    "city": "Auburn"
   },
   {
     "name": "FORTH Hotel",
-    "city": "Atlanta, Georgia"
+    "city": "Atlanta"
   },
   {
     "name": "Hotel 1928",
-    "city": "Waco, Texas"
+    "city": "Waco"
   },
   {
     "name": "Hotel Bardo",
-    "city": "Savannah, Georgia"
+    "city": "Savannah"
   },
   {
     "name": "The Celestine",
-    "city": "New Orleans, Louisiana"
+    "city": "New Orleans"
   },
   {
     "name": "The Louis",
-    "city": "Wilson, Arkansas"
+    "city": "Wilson"
   },
   {
     "name": "Scottish Inns & Suites at NRG Park",
-    "city": "Houston, Texas"
+    "city": "Houston"
   },
   {
     "name": "Extended Stay America Select Suites - Atlanta - Marietta - Windy Hill",
-    "city": "Marietta, Georgia"
+    "city": "Marietta"
   },
   {
     "name": "DASKK Orlando Hotel near Universal Blvd, Ascend Hotel Collection",
-    "city": "Orlando, Florida"
+    "city": "Orlando"
   },
   {
     "name": "Hampton Inn & Suites Houston Katy",
-    "city": "Katy, Texas"
+    "city": "Katy"
   },
   {
     "name": "Comfort Suites Baytown I - 10",
-    "city": "Baytown, Texas"
+    "city": "Baytown"
   },
   {
     "name": "The Vagabond Hotel",
-    "city": "Miami, Florida"
+    "city": "Miami"
   },
   {
     "name": "ITH Pacific Tradewinds Hostel San Francisco",
-    "city": "San Francisco, California"
+    "city": "San Francisco"
   },
   {
     "name": "Holiday Inn & Suites Mt Juliet – Nashville Area, an IHG Hotel",
-    "city": "Mount Juliet, Tennessee"
+    "city": "Mount Juliet"
   },
   {
     "name": "Courtyard Atlanta NE/Duluth Sugarloaf",
-    "city": "Duluth, Georgia"
+    "city": "Duluth"
   },
   {
     "name": "Fairfield Inn & Suites by Marriott Houston Brookhollow",
-    "city": "Houston, Texas"
+    "city": "Houston"
   },
   {
     "name": "Americas Best Value Inn and Suites IAH Airport North",
-    "city": "Humble, Texas"
+    "city": "Humble"
   },
   {
     "name": "Americas Best Value Inn & Suites Houston Downtown",
-    "city": "Houston, Texas"
+    "city": "Houston"
   },
   {
     "name": "STOP INN STAY HOSTELS",
-    "city": "Houston, Texas"
+    "city": "Houston"
   },
   {
     "name": "Express Inn - Spring",
-    "city": "Spring, Texas"
+    "city": "Spring"
   },
   {
     "name": "Springhill Suites By Marriott Atlanta Six Flags",
-    "city": "Lithia Springs, Georgia"
+    "city": "Lithia Springs"
   },
   {
     "name": "Extended Stay America Select Suites Atlanta Buckhead",
-    "city": "Atlanta, Georgia"
+    "city": "Atlanta"
   },
   {
     "name": "Coco Plum Inn",
-    "city": "Key West, Florida"
+    "city": "Key West"
   },
   {
     "name": "Motel 6 Stafford, TX – SW Houston - Sugarland",
-    "city": "Stafford, Texas"
+    "city": "Stafford"
   },
   {
     "name": "Four Points by Sheraton Buffalo Grove",
-    "city": "Buffalo Grove, Illinois"
+    "city": "Buffalo Grove"
   },
   {
     "name": "Residence Inn Las Vegas Airport",
-    "city": "Las Vegas, Nevada"
+    "city": "Las Vegas"
   },
   {
     "name": "Hilton Garden Inn Gallatin, TN",
-    "city": "Gallatin, Tennessee"
+    "city": "Gallatin"
   },
   {
     "name": "Candlewood Suites Goodlettsville - Nashville, an IHG Hotel",
-    "city": "Goodlettsville, Tennessee"
+    "city": "Goodlettsville"
   },
   {
     "name": "Spark Suites, Hobby Airport - Houston",
-    "city": "Houston, Texas"
+    "city": "Houston"
   },
   {
     "name": "Redwood Creek Inn",
-    "city": "Redwood City, California"
+    "city": "Redwood City"
   },
   {
     "name": "Quality Inn & Suites near Six Flags - Austell",
-    "city": "Austell, Georgia"
+    "city": "Austell"
   },
   {
     "name": "Extended Stay America Select Suites Chicago Westmont Oak Brook",
-    "city": "Westmont, Illinois"
+    "city": "Westmont"
   },
   {
     "name": "Residence Inn by Marriott Chicago Oak Brook",
-    "city": "Oak Brook, Illinois"
+    "city": "Oak Brook"
   },
   {
     "name": "Days Inn & Suites by Wyndham Webster NASA-ClearLake-Houston",
-    "city": "Webster, Texas"
+    "city": "Webster"
   },
   {
     "name": "Marriott's Lakeshore Reserve",
-    "city": "Orlando, Florida"
+    "city": "Orlando"
   },
   {
     "name": "Banana Bungalow Hollywood Hotel & Hostel",
-    "city": "Los Angeles, California"
+    "city": "Los Angeles"
   },
   {
     "name": "Express Inn Hobby",
-    "city": "Houston, Texas"
+    "city": "Houston"
   },
   {
     "name": "Sonesta Essential Houston Hobby Airport",
-    "city": "Houston, Texas"
+    "city": "Houston"
   },
   {
     "name": "Home2 Suites by Hilton Houston-Pearland",
-    "city": "Pearland, Texas"
+    "city": "Pearland"
   },
   {
     "name": "OYO Townhouse Houston Airport North",
-    "city": "Houston, Texas"
+    "city": "Houston"
   },
   {
     "name": "The Oberoi Amarvilas",
