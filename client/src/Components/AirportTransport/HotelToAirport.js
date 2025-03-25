@@ -1,16 +1,14 @@
-// This file isn't completed yet, hence, there isn't detailed comments for it.
-
 import React, { useEffect, useState } from 'react'; // Import necessary React hooks for managing component state and effects.
 import dayjs from 'dayjs'; // Import dayjs for managing and formatting dates.
 import SingleDatePicker from '../Common/Inputs/SingleDatePicker';
-import OriginInput from '../Common/Inputs/OriginInput';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import DestinationInput from '../Common/Inputs/DestinationInput';
-import { locations } from '../../Data/Locations';
+import { airports, hotels } from '../../Data/Locations';
 import PassengerInput from '../Common/Inputs/PassengerInput';
 import PickUp from '../Common/Inputs/PickUp';
+import HotelInput2 from '../Common/Inputs/HotelInput2';
+import AirportInput2 from '../Common/Inputs/AirportInput2';
 
 const HotelToAirport = () => {
     const { currentUser } = useSelector((state) => state.user);
@@ -104,10 +102,10 @@ const HotelToAirport = () => {
     
                 {/* Origin Input Section */}
                 <div className='relative'>
-                    <OriginInput
+                    <HotelInput2
                         formData={formData}
                         setFormData={setFormData}
-                        locations={locations}  // Pass available locations
+                        hotels={hotels}  // Pass available locations
                         label="Hotel"
                     />
                     <AnimatePresence mode='wait'>
@@ -127,10 +125,10 @@ const HotelToAirport = () => {
     
                 {/* Destination Input Section */}
                 <div className="relative">
-                    <DestinationInput
+                    <AirportInput2
                         formData={formData}
                         setFormData={setFormData}
-                        locations={locations}  // Pass available locations
+                        airports={airports}  // Pass available locations
                         label="Airport"
                     />
                     {/* Display error if destination is not selected */}

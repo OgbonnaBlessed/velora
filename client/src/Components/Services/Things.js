@@ -5,6 +5,7 @@ import { locations } from '../../Data/Locations'; // Importing a list of locatio
 import DateRangePicker from '../Common/Inputs/DateRangePicker'; // Importing the DateRangePicker component for selecting dates
 import { useNavigate } from 'react-router-dom'; // Importing useNavigate hook from react-router-dom for page navigation
 import { useSelector } from 'react-redux'; // Importing useSelector hook from redux for accessing the global store
+import { AnimatePresence, motion } from 'framer-motion';
 
 const Things = () => {
   // Accessing the current user from the global store
@@ -40,7 +41,7 @@ const Things = () => {
 
     // Check if user is signed in (currentUser must be truthy)
     if (!currentUser) {
-      newErrors.origin = 'You are not signed in.'; // Show error for origin if user is not signed in
+      newErrors.origin = 'You are not signed in'; // Show error for origin if user is not signed in
       hasError = true;
     }
 
@@ -52,13 +53,13 @@ const Things = () => {
 
     // Check if the destination is empty
     if (!formData.destination) {
-      newErrors.destination = 'Please select a destination.'; // Show error for missing destination
+      newErrors.destination = 'Please select a destination'; // Show error for missing destination
       hasError = true;
     }
 
     // Check if the origin and destination are the same
     if (formData.destination && formData.origin && formData.origin === formData.destination) {
-      newErrors.destination = 'Origin and destination cannot be the same.'; // Show error if both are the same
+      newErrors.destination = 'Origin and destination cannot be the same'; // Show error if both are the same
       hasError = true;
     }
 
@@ -90,16 +91,25 @@ const Things = () => {
         {/* Destination Input */}
         <div className="relative flex-1">
           <DestinationInput
-            formData={formData} // Passing formData to the DestinationInput component
-            setFormData={setFormData} // Passing setFormData to update the form data
-            locations={locations} // Passing the list of locations for the input field
+            formData={formData}
+            setFormData={setFormData}
+            locations={locations}  // Pass available locations
+            label="Where to?"
           />
-          {/* Error message for destination */}
-          {errors.destination && (
-            <p className="text-red-500 text-[0.7rem] absolute mt-1">
-              {errors.destination}
-            </p>
-          )}
+          {/* Display error if destination is not selected */}
+          <AnimatePresence mode='wait'>
+            {errors.destination && (
+              <motion.p 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                className="text-red-500 text-xs bottom-1 right-2 absolute"
+              >
+                {errors.destination}
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Date Picker */}
@@ -115,7 +125,7 @@ const Things = () => {
         <button 
           type="button" 
           onClick={handleSearch} // Trigger the handleSearch function when the button is clicked
-          className="bg-[#48aadf] rounded-full font-semibold text-white cursor-pointer px-8 py-3 h-fit w-fit self-center"
+          className="bg-[#48aadf] hover:bg-[#48aadf]/80 active:scale-90 rounded-full font-semibold text-white cursor-pointer px-8 py-3 h-fit w-fit self-center transition-all duration-300 ease-in-out"
         >
           Search
         </button>

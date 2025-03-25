@@ -7,6 +7,7 @@ import DestinationInput from '../Common/Inputs/DestinationInput';
 import DateRangePicker from '../Common/Inputs/DateRangePicker';
 import TravelersInput from '../Common/Inputs/TravelerInput';
 import { useSelector } from 'react-redux';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const StayPackage = () => {
     // Use Redux to get the current user from the global state
@@ -47,25 +48,25 @@ const StayPackage = () => {
 
         // Check if the user is signed in (if not, show an error)
         if (!currentUser) {
-            newErrors.origin = 'You are not signed in.';
+            newErrors.origin = 'You are not signed in';
             hasError = true;
         }
 
         // Check if the origin is selected
         if (!formData.origin) {
-            newErrors.origin = 'Please select an origin.';
+            newErrors.origin = 'Please select an origin';
             hasError = true;
         }
 
         // Check if the destination is selected
         if (!formData.destination) {
-            newErrors.destination = 'Please select a destination.';
+            newErrors.destination = 'Please select a destination';
             hasError = true;
         }
 
         // Ensure origin and destination are not the same
         if (formData.destination && formData.origin && formData.origin === formData.destination) {
-            newErrors.destination = 'Origin and destination cannot be the same.';
+            newErrors.destination = 'Origin and destination cannot be the same';
             hasError = true;
         }
 
@@ -92,34 +93,49 @@ const StayPackage = () => {
   return (
     <div className="flex flex-col gap-8 w-full">
         <div className="xl:flex xl:gap-3 xl:justify-between grid gap-4 md:gap-6 md:grid-cols-3 items-center">
-            {/* Origin Input */}
-            <div className="relative flex-1">
-                <OriginInput
+            <div className='relative'>
+                <OriginInput 
                     formData={formData}
                     setFormData={setFormData}
-                    locations={locations}
+                    locations={locations}  // Pass available locations
+                    label="From where?"
                 />
-                {/* Display error message for origin if any */}
-                {errors.origin && (
-                    <p className="text-red-500 text-[0.7rem] absolute mt-1">
-                    {errors.origin}
-                    </p>
-                )}
+                <AnimatePresence mode='wait'>
+                    {errors.origin && (
+                        <motion.p 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3, ease: 'easeInOut' }}
+                            className="text-red-500 text-xs bottom-1 right-2 absolute"
+                        >
+                            {errors.origin}
+                        </motion.p>
+                    )}
+                </AnimatePresence>
             </div>
 
-            {/* Destination Input */}
-            <div className="relative flex-1">
+            <div className="relative">
                 <DestinationInput
                     formData={formData}
                     setFormData={setFormData}
-                    locations={locations}
+                    locations={locations}  // Pass available locations
+                    label="Where to?"
                 />
-                {/* Display error message for destination if any */}
-                {errors.destination && (
-                    <p className="text-red-500 text-[0.7rem] absolute mt-1">
-                        {errors.destination}
-                    </p>
-                )}
+                {/* Display error if destination is not selected */}
+                <AnimatePresence mode='wait'>
+                    {errors.destination && (
+                        <motion.p 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3, ease: 'easeInOut' }}
+                            className="text-red-500 text-xs bottom-1 right-2 absolute"
+                        >
+                            {errors.destination}
+                        </motion.p>
+                    )}
+                </AnimatePresence>
             </div>
 
             {/* Date Picker for Departure and Return Date */}
@@ -141,7 +157,7 @@ const StayPackage = () => {
             <button 
                 type="button" 
                 onClick={handleSearch} // Trigger the handleSearch function when clicked
-                className="bg-[#48aadf] rounded-full font-semibold text-white cursor-pointer px-8 py-3 h-fit w-fit self-center"
+                className="bg-[#48aadf] hover:bg-[#48aadf]/80 active:scale-90 rounded-full font-semibold text-white cursor-pointer px-8 py-3 h-fit w-fit self-center transition-all duration-300 ease-in-out"
             >
                 Search
             </button>

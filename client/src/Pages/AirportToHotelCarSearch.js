@@ -88,10 +88,6 @@ const AirportToHotelCarSearch = () => {
             newErrors.destination = 'Please select an hotel';
             hasError = true;
         }
-        if (formData.origin === formData.destination) {
-            newErrors.destination = 'Airport and hotel cannot be the same';
-            hasError = true;
-        }
         if (hasError) {
             setErrors(newErrors);
             setTimeout(() => setErrors({ origin: '', destination: '' }), 3000);
@@ -195,6 +191,7 @@ const AirportToHotelCarSearch = () => {
                         setFormData={setFormData}
                         airports={airports}  // Pass available locations
                         label="Airport"
+                        fieldName="origin"
                     />
                     <AnimatePresence mode='wait'>
                         {errors.origin && (
@@ -218,6 +215,7 @@ const AirportToHotelCarSearch = () => {
                         setFormData={setFormData}
                         hotels={hotels}  // Pass available locations
                         label="Hotel"
+                        fieldName="destination"
                     />
                     {/* Display error if destination is not selected */}
                     <AnimatePresence mode='wait'>

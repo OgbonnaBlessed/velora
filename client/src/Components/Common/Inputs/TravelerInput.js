@@ -97,14 +97,14 @@ const TravelersInput = ({ formData, setFormData }) => {
                     id="travelers"
                     value={travelersInput}
                     onFocus={() => setTravelerModalOpen(true)}  // Open modal when input is focused
-                    className="px-3 pt-2 w-full bg-transparent"
+                    className="px-3 pt-2 w-full bg-transparent font-sans font-normal"
                     autoComplete="off"
                     readOnly  // Prevent editing directly in the input
                 />
             </div>
             {/* Traveler details modal */}
             <div
-                className={`absolute top-16 left-0 z-20 bg-white p-4 shadow shadow-gray-300 rounded-xl text-sm w-52 flex flex-col gap-4 transition-all duration-300 ease-in-out
+                className={`absolute top-16 left-0 z-20 bg-white p-4 shadow shadow-gray-300 rounded-xl text-sm w-52 flex flex-col gap-4 transition-all duration-300 ease-in-out font-sans font-normal
                     ${travelerModalOpen
                         ? 'translate-y-0 opacity-1 pointer-events-auto'
                         : '-translate-y-5 opacity-0 pointer-events-none'

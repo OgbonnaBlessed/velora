@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 
-const AirportInput = ({ formData, setFormData, airports, label }) => {
+const HotelInput2 = ({ formData, setFormData, hotels, label }) => {
     const [filteredOrigins, setFilteredOrigins] = useState([]);
     const [isOriginListVisible, setIsOriginListVisible] = useState(false);
     const [focused, setFocused] = useState(false);
@@ -10,20 +10,20 @@ const AirportInput = ({ formData, setFormData, airports, label }) => {
 
     useEffect(() => {
         const defaultCity = formData.origin;
-        if (defaultCity && airports.length) {
-            const defaultAirport = airports.find(airport => airport.city.toLowerCase() === defaultCity.toLowerCase());
-            if (defaultAirport) {
-                setInputValue(`${defaultAirport.airport}, ${defaultAirport.city}`);
-                setFormData(prev => ({ ...prev, origin: defaultAirport.city }));
+        if (defaultCity && hotels.length) {
+            const defaultHotel = hotels.find(hotel => hotel.city.toLowerCase() === defaultCity.toLowerCase());
+            if (defaultHotel) {
+                setInputValue(`${defaultHotel.name}, ${defaultHotel.city}`);
+                setFormData(prev => ({ ...prev, origin: defaultHotel.city }));
             }
         }
-    }, [setFormData, airports, formData.origin]);
+    }, [setFormData, hotels, formData.origin]);
 
     // Toggle and sort the origin list
     const toggleOriginList = () => {
         setFocused(true);
-        const sortedLocations = [...airports].sort((a, b) =>
-            a.airport.localeCompare(b.airport)
+        const sortedLocations = [...hotels].sort((a, b) =>
+            a.name.localeCompare(b.name)
         );
         setFilteredOrigins(sortedLocations);
         setIsOriginListVisible(true);
@@ -31,7 +31,7 @@ const AirportInput = ({ formData, setFormData, airports, label }) => {
 
     // Handle the selection of an origin
     const selectOrigin = (selectedOrigin) => {
-        setInputValue(`${selectedOrigin.airport}, ${selectedOrigin.city}`); // Display airport name in input
+        setInputValue(`${selectedOrigin.name}, ${selectedOrigin.city}`); // Display airport name in input
         setFormData((prev) => ({ ...prev, origin: selectedOrigin.city })); // Save city to formData
         setFilteredOrigins([]);
         setIsOriginListVisible(false);
@@ -41,8 +41,8 @@ const AirportInput = ({ formData, setFormData, airports, label }) => {
     const handleOriginChange = (e) => {
         const value = e.target.value;
         setInputValue(value); // Update the input value
-        const sortedLocations = [...airports].sort((a, b) =>
-            a.airport.localeCompare(b.airport)
+        const sortedLocations = [...hotels].sort((a, b) =>
+            a.name.localeCompare(b.name)
         );
         setFilteredOrigins(
             value.trim() === ""
@@ -123,7 +123,7 @@ const AirportInput = ({ formData, setFormData, airports, label }) => {
                                 onClick={() => selectOrigin(location)} // Pass the entire object
                                 className="cursor-pointer hover:bg-gray-200 px-3 py-2"
                             >
-                                {location.airport}, {location.city}
+                                {location.name}, {location.city}
                             </li>
                         )))
                         : (
@@ -137,4 +137,4 @@ const AirportInput = ({ formData, setFormData, airports, label }) => {
     );
 };
 
-export default AirportInput;
+export default HotelInput2;

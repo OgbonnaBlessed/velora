@@ -12,7 +12,7 @@ const DropOff = ({ onTimeChange, value, label }) => {
             <AiOutlineClockCircle className="text-xl" />
             <div className="w-full h-full relative">
                 <label className="absolute left-3 text-[0.65rem] font-Poppins text-nowrap cursor-text top-[0.1rem] transform -translate-y-1/2">
-                    { label || 'Drop off time' }
+                    { label }
                 </label>
                 <TimePicker 
                     id='drop-off-time'

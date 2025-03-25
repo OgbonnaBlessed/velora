@@ -12,6 +12,18 @@ const HotelInput = ({ formData, setFormData, hotels, label }) => {
     // Ref to keep track of the destination input field to detect outside clicks
     const destinationRef = useRef();
 
+    // useEffect hook to set the default destination value in the input field
+    useEffect(() => {
+        const defaultCity = formData.destination; // Get the default destination city from formData
+        if (defaultCity && hotels.length) { // Check if there is a default city and hotels data is present
+            const defaultHotel = hotels.find(hotel => hotel.city.toLowerCase() === defaultCity.toLowerCase()); // Find the default hotel
+            if (defaultHotel) { // If the default hotel is found
+                setInputValue(`${defaultHotel.name}, ${defaultHotel.city}`); // Display the hotel name in the input field
+                setFormData(prev => ({ ...prev, destination: defaultHotel.city })); // Update the form data with the default destination
+            }
+        }
+    }, [setFormData, hotels, formData.destination]); // Run the effect when formData.destination changes
+
     // Function to toggle the visibility of the destination list and sort locations
     const toggleDestinationList = () => {
         setFocused(true); // Set input to focused when user starts typing
@@ -97,7 +109,7 @@ const HotelInput = ({ formData, setFormData, hotels, label }) => {
                         onFocus={toggleDestinationList} // Show the list when input is focused
                         onBlur={(e) => !e.target.value && setFocused(false)} // Remove focus if input is empty on blur
                         onChange={handleDestinationChange} // Handle changes in input field
-                        className="pt-2 w-full bg-transparent" // Styling for the input field
+                        className="pt-2 w-full bg-transparent font-sans font-normal" // Styling for the input field
                         autoComplete="off" // Disable browser autocomplete
                     />
                 </div>

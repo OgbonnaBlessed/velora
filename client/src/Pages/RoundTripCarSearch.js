@@ -1,19 +1,20 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
+
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BounceLoader } from 'react-spinners';
-import { locations } from '../Data/Locations';
+import { airports, hotels } from '../Data/Locations';
 import { LucideMessageSquareWarning } from 'lucide-react';
 import DateRangePicker from '../Components/Common/Inputs/DateRangePicker';
-import OriginInput from '../Components/Common/Inputs/OriginInput';
-import DestinationInput from '../Components/Common/Inputs/DestinationInput';
 import PassengerInput from '../Components/Common/Inputs/PassengerInput';
 import CarList from '../Components/Common/CarList';
 import PickUp from '../Components/Common/Inputs/PickUp';
 import DropOff from '../Components/Common/Inputs/DropOff';
+import AirportInput from '../Components/Common/Inputs/AirportInput';
+import HotelInput from '../Components/Common/Inputs/HotelInput';
 
 const RoundTripCarSearch = () => {
     const { currentUser } = useSelector((state) => state.user);
@@ -192,10 +193,10 @@ const RoundTripCarSearch = () => {
             >
                 {/* Origin Input */}
                 <div className='relative'>
-                    <OriginInput 
+                    <AirportInput 
                         formData={formData}
                         setFormData={setFormData}
-                        locations={locations}  // Pass available locations
+                        airports={airports}  // Pass available locations
                         label="Airport"
                     />
                     <AnimatePresence mode='wait'>
@@ -215,10 +216,10 @@ const RoundTripCarSearch = () => {
         
                 {/* Destination Input */}
                 <div className="relative">
-                    <DestinationInput
+                    <HotelInput
                         formData={formData}
                         setFormData={setFormData}
-                        locations={locations}  // Pass available locations
+                        hotels={hotels}  // Pass available locations
                         label="Hotel"
                     />
                     {/* Display error if destination is not selected */}

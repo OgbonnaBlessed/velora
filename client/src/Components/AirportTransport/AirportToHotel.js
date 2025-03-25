@@ -55,12 +55,6 @@ const AirportToHotel = () => {
           hasError = true;
         }
     
-        // Check if origin and destination are the same
-        if (formData.destination && formData.origin && formData.origin === formData.destination) {
-          newErrors.destination = 'Airport and hotel cannot be the same';  // Set error if same
-          hasError = true;
-        }
-    
         // If there are errors, update the errors state and clear them after 3 seconds
         if (hasError) {
             setErrors(newErrors);

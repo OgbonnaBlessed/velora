@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs'; 
 // Import the dayjs library for handling and formatting dates.
 import { useSelector } from 'react-redux'; 
+import { AnimatePresence, motion } from 'framer-motion';
 // Import useSelector hook to access state from Redux.
 
 const OneWay = () => {
@@ -61,25 +62,25 @@ const OneWay = () => {
 
     // Check if user is signed in.
     if (!currentUser) {
-      newErrors.origin = 'You are not signed in.';
+      newErrors.origin = 'You are not signed in';
       hasError = true;
     }
 
     // Check if origin is provided.
     if (!formData.origin) {
-      newErrors.origin = 'Please select an origin.';
+      newErrors.origin = 'Please select an origin';
       hasError = true;
     }
 
     // Check if destination is provided.
     if (!formData.destination) {
-      newErrors.destination = 'Please select a destination.';
+      newErrors.destination = 'Please select a destination';
       hasError = true;
     }
 
     // Check if origin and destination are the same.
     if (formData.destination && formData.origin && formData.origin === formData.destination) {
-      newErrors.destination = 'Origin and destination cannot be the same.';
+      newErrors.destination = 'Origin and destination cannot be the same';
       hasError = true;
     }
 
@@ -110,34 +111,49 @@ const OneWay = () => {
       <div className="xl:flex xl:gap-3 xl:justify-between grid gap-4 md:gap-6 md:grid-cols-3 items-center">
         {/* Grid layout to display input fields for origin, destination, dates, and travelers. */}
         
-        <div className="relative flex-1">
-          <OriginInput
+        <div className='relative'>
+          <OriginInput 
             formData={formData}
             setFormData={setFormData}
-            locations={locations}
+            locations={locations}  // Pass available locations
+            label="From where?"
           />
-          {/* Origin input field with passed form data and locations. */}
-          {errors.origin && (
-            <p className="text-red-500 text-[0.7rem] absolute mt-1">
-              {errors.origin}
-            </p>
-            // Display error message for the origin input if any.
-          )}
+          <AnimatePresence mode='wait'>
+            {errors.origin && (
+              <motion.p 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                className="text-red-500 text-xs bottom-1 right-2 absolute"
+              >
+                {errors.origin}
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
 
-        <div className="relative flex-1">
+        <div className="relative">
           <DestinationInput
             formData={formData}
             setFormData={setFormData}
-            locations={locations}
+            locations={locations}  // Pass available locations
+            label="Where to?"
           />
-          {/* Destination input field with passed form data and locations. */}
-          {errors.destination && (
-            <p className="text-red-500 text-[0.7rem] absolute mt-1">
-              {errors.destination}
-            </p>
-            // Display error message for the destination input if any.
-          )}
+          {/* Display error if destination is not selected */}
+          <AnimatePresence mode='wait'>
+            {errors.destination && (
+              <motion.p 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                className="text-red-500 text-xs bottom-1 right-2 absolute"
+              >
+                {errors.destination}
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Date Picker for selecting departure and return dates */}
@@ -159,7 +175,7 @@ const OneWay = () => {
         <button 
           type="button" 
           onClick={handleSearch} // Add onClick handler to initiate the search
-          className="bg-[#48aadf] rounded-full font-semibold text-white cursor-pointer px-8 py-3 h-fit w-fit self-center"
+          className="bg-[#48aadf] hover:bg-[#48aadf]/80 active:scale-90 rounded-full font-semibold text-white cursor-pointer px-8 py-3 h-fit w-fit self-center transition-all duration-300 ease-in-out"
         >
           Search
         </button>

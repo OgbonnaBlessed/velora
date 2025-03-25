@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs'
-import OriginInput from '../Common/Inputs/OriginInput';
-import { locations } from '../../Data/Locations';
+import { airports, hotels } from '../../Data/Locations';
 import { useSelector } from 'react-redux';
-import DestinationInput from '../Common/Inputs/DestinationInput';
 import DateRangePicker from '../Common/Inputs/DateRangePicker';
 import PickUp from '../Common/Inputs/PickUp';
 import DropOff from '../Common/Inputs/DropOff';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import PassengerInput from '../Common/Inputs/PassengerInput';
+import AirportInput from '../Common/Inputs/AirportInput';
+import HotelInput from '../Common/Inputs/HotelInput';
 
 const CarRoundTrip = () => {
     const { currentUser } = useSelector((state) => state.user);
@@ -106,10 +106,10 @@ const CarRoundTrip = () => {
         <div className="flex flex-col gap-8 w-full">
             <div className="xl:grid-cols-3 xl:gap-3 grid gap-4 md:gap-6 md:grid-cols-2 items-center">
                 <div className='relative'>
-                    <OriginInput 
+                    <AirportInput
                         formData={formData}
                         setFormData={setFormData}
-                        locations={locations}  // Pass available locations
+                        airports={airports}  // Pass available locations
                         label="Airport"
                     />
                     <AnimatePresence mode='wait'>
@@ -128,10 +128,10 @@ const CarRoundTrip = () => {
                 </div>
 
                 <div className="relative">
-                    <DestinationInput
+                    <HotelInput
                         formData={formData}
                         setFormData={setFormData}
-                        locations={locations}  // Pass available locations
+                        hotels={hotels}  // Pass available locations
                         label="Hotel"
                     />
                     {/* Display error if destination is not selected */}

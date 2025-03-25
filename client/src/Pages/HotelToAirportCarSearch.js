@@ -5,14 +5,14 @@ import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BounceLoader } from 'react-spinners';
-import { locations } from '../Data/Locations';
+import { airports, hotels } from '../Data/Locations';
 import { LucideMessageSquareWarning } from 'lucide-react';
-import OriginInput from '../Components/Common/Inputs/OriginInput';
-import DestinationInput from '../Components/Common/Inputs/DestinationInput';
 import PassengerInput from '../Components/Common/Inputs/PassengerInput';
 import CarList from '../Components/Common/CarList';
 import PickUp from '../Components/Common/Inputs/PickUp';
 import SingleDatePicker from '../Components/Common/Inputs/SingleDatePicker';
+import HotelInput2 from '../Components/Common/Inputs/HotelInput2';
+import AirportInput2 from '../Components/Common/Inputs/AirportInput2';
 
 const HotelToAirportCarSearch = () => {
     const { currentUser } = useSelector((state) => state.user);
@@ -189,10 +189,10 @@ const HotelToAirportCarSearch = () => {
             >
                 {/* Origin Input */}
                 <div className='relative'>
-                    <OriginInput 
+                    <HotelInput2 
                         formData={formData}
                         setFormData={setFormData}
-                        locations={locations}  // Pass available locations
+                        hotels={hotels}  // Pass available locations
                         label="Hotel"
                     />
                     <AnimatePresence mode='wait'>
@@ -212,10 +212,10 @@ const HotelToAirportCarSearch = () => {
         
                 {/* Destination Input */}
                 <div className="relative">
-                    <DestinationInput
+                    <AirportInput2
                         formData={formData}
                         setFormData={setFormData}
-                        locations={locations}  // Pass available locations
+                        airports={airports}  // Pass available locations
                         label="Airport"
                     />
                     {/* Display error if destination is not selected */}

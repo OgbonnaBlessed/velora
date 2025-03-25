@@ -7,6 +7,7 @@ import TravelersInput from '../Common/Inputs/TravelerInput'; // Travelers input 
 import OriginInput from '../Common/Inputs/OriginInput'; // Origin input component
 import { useNavigate } from 'react-router-dom'; // For navigation between pages
 import { useSelector } from 'react-redux'; // Redux hook to get the current user from state
+import { AnimatePresence, motion } from 'framer-motion';
 
 const Stays = () => {
   // Extract the current user from the Redux state
@@ -53,25 +54,25 @@ const Stays = () => {
 
     // Check if user is logged in, and if not, set an error
     if (!currentUser) {
-      newErrors.destination = 'You are not signed in.';
+      newErrors.destination = 'You are not signed in';
       hasError = true;
     }
 
     // Validate if origin is selected when adding a flight
     if (addFlight === true && !formData.origin) {
-      newErrors.origin = 'Please select an origin.';
+      newErrors.origin = 'Please select an origin';
       hasError = true;
     }
 
     // Validate if destination is selected
     if (!formData.destination) {
-      newErrors.destination = 'Please select a destination.';
+      newErrors.destination = 'Please select a destination';
       hasError = true;
     }
 
     // Validate if origin and destination are the same
     if (addFlight === true && formData.destination && formData.origin && formData.origin === formData.destination) {
-      newErrors.destination = 'Origin and destination cannot be the same.';
+      newErrors.destination = 'Origin and destination cannot be the same';
       hasError = true;
     }
 
@@ -99,19 +100,26 @@ const Stays = () => {
     <form className="p-4 sm:p-6 md:p-8 flex flex-col gap-8">
       <div className="xl:flex xl:gap-8 xl:justify-between grid gap-4 md:gap-6 md:grid-cols-3 items-center">
         <div className="relative flex-1">
-          {/* Destination Input Component */}
           <DestinationInput
             formData={formData}
             setFormData={setFormData}
-            locations={locations}
-            label='Where to?'
+            locations={locations}  // Pass available locations
+            label="Where to?"
           />
-          {/* Display error message for destination */}
-          {errors.destination && (
-            <p className="text-red-500 text-[0.7rem] absolute mt-1">
-              {errors.destination}
-            </p>
-          )}
+          {/* Display error if destination is not selected */}
+          <AnimatePresence mode='wait'>
+            {errors.destination && (
+              <motion.p 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                className="text-red-500 text-xs bottom-1 right-2 absolute"
+              >
+                {errors.destination}
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Date Range Picker Component */}
@@ -133,7 +141,7 @@ const Stays = () => {
         <button 
           type="button" 
           onClick={handleSearch} // Trigger search when clicked
-          className="bg-[#48aadf] rounded-full font-semibold text-white cursor-pointer px-8 py-3 h-fit w-fit self-center"
+          className="bg-[#48aadf] hover:bg-[#48aadf]/80 active:scale-90 rounded-full font-semibold text-white cursor-pointer px-8 py-3 h-fit w-fit self-center transition-all duration-300 ease-in-out"
         >
           Search
         </button>
@@ -220,19 +228,26 @@ const Stays = () => {
 
       {/* Show Origin Input if addFlight is true */}
       {addFlight &&
-        <div className="relative w-72 max-w-full">
-          <OriginInput
+        <div className='relative w-72 max-w-full'>
+          <OriginInput 
             formData={formData}
             setFormData={setFormData}
-            locations={locations}
-            label='From where?'
+            locations={locations}  // Pass available locations
+            label="Pick up"
           />
-          {/* Display error message for origin */}
-          {errors.origin && (
-            <p className="text-red-500 text-[0.7rem] absolute mt-1">
-              {errors.origin}
-            </p>
-          )}
+          <AnimatePresence mode='wait'>
+            {errors.origin && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                className="text-red-500 text-xs bottom-1 right-2 absolute"
+              >
+                {errors.origin}
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
       }
     </form>

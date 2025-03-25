@@ -95,7 +95,7 @@ const OriginInput = ({ formData, setFormData, locations, label }) => {
                         onFocus={toggleOriginList} // Trigger list toggle when input is focused
                         onBlur={(e) => !e.target.value && setFocused(false)} // Reset focus if input is empty
                         onChange={handleOriginChange} // Handle input changes
-                        className="pt-2 w-full bg-transparent focus:outline-none"
+                        className="pt-2 w-full bg-transparent focus:outline-none font-sans font-normal"
                         autoComplete="off" // Disable autocomplete for the input
                     />
                 </div>

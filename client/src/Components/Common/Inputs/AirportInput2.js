@@ -1,21 +1,34 @@
 import React, { useState, useRef, useEffect } from 'react'; // Importing React hooks (useState, useRef, useEffect) for state management, DOM referencing, and lifecycle handling
 import { FaMapMarkerAlt } from 'react-icons/fa'; // Importing the map marker icon from react-icons
 
-// The DestinationInput component allows users to input and select a destination
-const DestinationInput = ({ formData, setFormData, locations, label }) => {
+// The AirportInput2 component allows users to input and select a destination
+const AirportInput2 = ({ formData, setFormData, airports, label }) => {
     // State variables for filtered destinations, visibility of the dropdown, and whether the input is focused
     const [filteredDestinations, setFilteredDestinations] = useState([]);
     const [isDestinationListVisible, setIsDestinationListVisible] = useState(false);
+    const [inputValue, setInputValue] = useState(''); // To store and display the hotel name
     const [focused, setFocused] = useState(false);
     
     // Ref to keep track of the destination input field to detect outside clicks
     const destinationRef = useRef();
 
+    // useEffect hook to set the default destination value in the input field
+    useEffect(() => {
+        const defaultCity = formData.destination; // Get the default destination city from formData
+        if (defaultCity && airports.length) { // Check if there is a default city and airports data is present
+            const defaultAirport = airports.find(airport => airport.city.toLowerCase() === defaultCity.toLowerCase()); // Find the default hotel
+            if (defaultAirport) { // If the default hotel is found
+                setInputValue(`${defaultAirport.airport}, ${defaultAirport.city}`); // Display the hotel name in the input field
+                setFormData(prev => ({ ...prev, destination: defaultAirport.city })); // Update the form data with the default destination
+            }
+        }
+    }, [setFormData, airports, formData.destination]); // Run the effect when formData.destination changes
+
     // Function to toggle the visibility of the destination list and sort locations
     const toggleDestinationList = () => {
         setFocused(true); // Set input to focused when user starts typing
-        const sortedLocations = [...locations].sort((a, b) =>
-            a.city.localeCompare(b.city) // Sort locations alphabetically by city name
+        const sortedLocations = [...airports].sort((a, b) =>
+            a.airport.localeCompare(b.airport) // Sort locations alphabetically by city name
         );
         setFilteredDestinations(sortedLocations); // Set the sorted list of locations to be filtered
         setIsDestinationListVisible(true); // Show the destination list dropdown
@@ -23,7 +36,8 @@ const DestinationInput = ({ formData, setFormData, locations, label }) => {
 
     // Function to handle selecting a destination from the list
     const selectDestination = (selectedDestination) => {
-        setFormData((prev) => ({ ...prev, destination: selectedDestination })); // Update form data with the selected destination
+        setInputValue(`${selectedDestination.airport}, ${selectedDestination.city}`); // Display airport name in input
+        setFormData((prev) => ({ ...prev, destination: selectedDestination.city })); // Update form data with the selected destination
         setFilteredDestinations([]); // Clear the filtered destination list after selection
         setIsDestinationListVisible(false); // Hide the destination list after selection
     };
@@ -31,15 +45,15 @@ const DestinationInput = ({ formData, setFormData, locations, label }) => {
     // Function to handle changes in the destination input field
     const handleDestinationChange = (e) => {
         const value = e.target.value; // Get the current value of the input field
-        setFormData((prev) => ({ ...prev, destination: value })); // Update the form data with the new input value
-        const sortedLocations = [...locations].sort((a, b) =>
-            a.city.localeCompare(b.city) // Sort locations alphabetically by city name
+        setInputValue(value);
+        const sortedLocations = [...airports].sort((a, b) =>
+            a.airport.localeCompare(b.airport) // Sort locations alphabetically by city name
         );
         setFilteredDestinations(
             value.trim() === "" // If input is empty, show all locations
                 ? sortedLocations
                 : sortedLocations.filter((location) =>  // Filter locations based on input value
-                    location.city?.toLowerCase().includes(value.trim().toLowerCase()) // Case-insensitive filter for city names
+                    location.name?.toLowerCase().includes(value.trim().toLowerCase()) // Case-insensitive filter for city names
                 )
         );
         setIsDestinationListVisible(true); // Show the destination list dropdown while typing
@@ -91,7 +105,7 @@ const DestinationInput = ({ formData, setFormData, locations, label }) => {
                     <input
                         type="text"
                         id="destination"
-                        value={formData.destination} // Controlled input value from formData
+                        value={inputValue} // Controlled input value from formData
                         onFocus={toggleDestinationList} // Show the list when input is focused
                         onBlur={(e) => !e.target.value && setFocused(false)} // Remove focus if input is empty on blur
                         onChange={handleDestinationChange} // Handle changes in input field
@@ -115,10 +129,10 @@ const DestinationInput = ({ formData, setFormData, locations, label }) => {
                         ? (filteredDestinations.map((location, index) => (
                         <li
                             key={index}
-                            onClick={() => selectDestination(location.city)} // Select destination on click
+                            onClick={() => selectDestination(location)} // Select destination on click
                             className="cursor-pointer hover:bg-gray-200 px-3 py-2"
                         >
-                            {location.city} {/* Display location city name */}
+                            {location.airport}, {location.city} {/* Display location city name */}
                         </li>
                         )))
                         : (
@@ -132,4 +146,4 @@ const DestinationInput = ({ formData, setFormData, locations, label }) => {
     );
 };
 
-export default DestinationInput; // Exporting the component for use in other parts of the application
+export default AirportInput2; // Exporting the component for use in other parts of the application
