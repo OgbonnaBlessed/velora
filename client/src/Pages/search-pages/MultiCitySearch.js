@@ -3,17 +3,17 @@
 import { LucideMessageSquareWarning, Plus } from 'lucide-react'; // Importing an icon for warning messages
 import React, { useEffect, useState } from 'react'; // Importing React and hooks
 import { BounceLoader } from 'react-spinners'; // Importing a loading spinner component
-import { locations } from '../Data/Locations'; // Importing the locations data (presumably a list of places)
-import DateRangePicker from '../Components/Common/Inputs/DateRangePicker'; // Importing the Date Range Picker Component
-import FlightsList from '../Components/Common/lists/FlightsList'; // Importing the Flights List Component
+import { locations } from '../../Data/Locations'; // Importing the locations data (presumably a list of places)
+import DateRangePicker from '../../Components/Common/Inputs/DateRangePicker'; // Importing the Date Range Picker Component
+import FlightsList from '../../Components/Common/lists/FlightsList'; // Importing the Flights List Component
 import { useLocation } from 'react-router-dom'; // Hook to get the location from the router
 import dayjs from 'dayjs'; // Dayjs for date manipulation
 import { useSelector } from 'react-redux'; // Hook to access the Redux store
 import { motion, AnimatePresence } from 'framer-motion'; // Framer Motion for animations
 import axios from 'axios';
-import DestinationInput2 from '../Components/Common/Inputs/DestinationInput2';
-import OriginInput2 from '../Components/Common/Inputs/OriginInput2';
-import TravelersInput2 from '../Components/Common/Inputs/TravelerInput2';
+import DestinationInput2 from '../../Components/Common/Inputs/DestinationInput2';
+import OriginInput2 from '../../Components/Common/Inputs/OriginInput2';
+import TravelersInput2 from '../../Components/Common/Inputs/TravelerInput2';
 
 function MultiCitySearch() {
     // Accessing the current user from the Redux store

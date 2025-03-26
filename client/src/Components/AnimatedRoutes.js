@@ -20,18 +20,18 @@ import ConnectedDevices from './ConnectedDevices';
 import AirportSecurity from './AirportSecurity';
 import TravelDocument from './TravelDocument';
 import Preferences from './Preferences';
-import SearchPage from '../Pages/SearchPage';
 import FlightDetails from '../Pages/FlightDetails';
 import BookingCompleted from '../Pages/BookingCompleted';
-import HotelSearch from '../Pages/HotelSearch';
 import HotelDetails from '../Pages/HotelDetails';
 import FlightCheckOutPage from '../Pages/FlightCheckOutPage';
 import HotelCheckOutPage from '../Pages/HotelCheckOutPage';
-import CarSearchPage from '../Pages/CarSearchPage';
-import AirportToHotelCarSearch from '../Pages/AirportToHotelCarSearch';
-import RoundTripCarSearch from '../Pages/RoundTripCarSearch';
-import HotelToAirportCarSearch from '../Pages/HotelToAirportCarSearch';
-import MultiCitySearch from '../Pages/MultiCitySearch';
+import MultiCitySearch from '../Pages/search-pages/MultiCitySearch';
+import RoundTripCarSearch from '../Pages/search-pages/RoundTripCarSearch';
+import HotelToAirportCarSearch from '../Pages/search-pages/HotelToAirportCarSearch';
+import AirportToHotelCarSearch from '../Pages/search-pages/AirportToHotelCarSearch';
+import CarSearchPage from '../Pages/search-pages/CarSearchPage';
+import SearchPage from '../Pages/search-pages/SearchPage';
+import HotelSearch from '../Pages/search-pages/HotelSearch';
 
 const AnimatedRoutes = () => {
   // useLocation hook from React Router to get the current location (path)
@@ -65,7 +65,7 @@ const AnimatedRoutes = () => {
           <Route path='/travel_document' element={<TravelDocument/>} /> {/* Travel Document Page */}
           <Route path='/preference' element={<Preferences/>} /> {/* Preferences Page */}
           <Route path='/flight-search' element={<SearchPage/>} /> {/* Flight Search Page */}
-          <Route path='/hotel-search' element={<HotelSearch/>} /> {/* Hotel Search Page */}
+          <Route path='/hotel-search' element={<HotelSearch />} /> {/* Hotel Search Page */}
           <Route path='/car-search' element={<CarSearchPage />} />
           <Route path='/airport-to-hotel-car-search' element={<AirportToHotelCarSearch />} /> {/* Airport to Hotel Page */}
           <Route path='/hotel-to-airport-car-search' element={<HotelToAirportCarSearch />} /> {/* Hotel to Airport Page */}

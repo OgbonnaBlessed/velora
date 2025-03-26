@@ -121,7 +121,7 @@ const CarFilters = ({ handleSubmit }) => {
                                 </div>
 
                                 {/* Car Type Filter */}
-                                <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-2 font-Poppins font-[400]">
                                     <label className="font-Grotesk font-semibold">Car Type</label>
                                     <div className="flex flex-col gap-2">
                                         {["SUV", "Sedan", "Hatchback", "Truck", "Convertible"].map((type) =>
@@ -137,7 +137,7 @@ const CarFilters = ({ handleSubmit }) => {
                                 </div>
 
                                 {/* Fuel Type Filter */}
-                                <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-2 font-Poppins font-[400]">
                                     <label className="font-Grotesk font-semibold">Fuel Type</label>
                                     <div className="flex flex-col gap-2">
                                         {["Petrol", "Diesel", "Electric", "Hybrid"].map((fuel) =>
@@ -153,7 +153,7 @@ const CarFilters = ({ handleSubmit }) => {
                                 </div>
 
                                 {/* Transmission Type Filter */}
-                                <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-2 font-Poppins font-[400]">
                                     <label className="font-Grotesk font-semibold">Transmission</label>
                                     <div className="flex flex-col gap-2">
                                         {["Automatic", "Manual"].map((trans) =>

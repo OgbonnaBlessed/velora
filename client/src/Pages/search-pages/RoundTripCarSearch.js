@@ -6,15 +6,15 @@ import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BounceLoader } from 'react-spinners';
-import { airports, hotels } from '../Data/Locations';
+import { airports, hotels } from '../../Data/Locations';
 import { LucideMessageSquareWarning } from 'lucide-react';
-import DateRangePicker from '../Components/Common/Inputs/DateRangePicker';
-import PassengerInput from '../Components/Common/Inputs/PassengerInput';
-import CarList from '../Components/Common/lists/CarList';
-import PickUp from '../Components/Common/Inputs/PickUp';
-import DropOff from '../Components/Common/Inputs/DropOff';
-import AirportInput from '../Components/Common/Inputs/AirportInput';
-import HotelInput from '../Components/Common/Inputs/HotelInput';
+import DateRangePicker from '../../Components/Common/Inputs/DateRangePicker';
+import PassengerInput from '../../Components/Common/Inputs/PassengerInput';
+import CarList from '../../Components/Common/lists/CarList';
+import PickUp from '../../Components/Common/Inputs/PickUp';
+import DropOff from '../../Components/Common/Inputs/DropOff';
+import AirportInput from '../../Components/Common/Inputs/AirportInput';
+import HotelInput from '../../Components/Common/Inputs/HotelInput';
 
 const RoundTripCarSearch = () => {
     const { currentUser } = useSelector((state) => state.user);

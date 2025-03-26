@@ -1,21 +1,21 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BounceLoader } from 'react-spinners';
-import { airports, hotels } from '../Data/Locations';
+import { locations } from '../../Data/Locations';
 import { LucideMessageSquareWarning } from 'lucide-react';
-import PassengerInput from '../Components/Common/Inputs/PassengerInput';
-import CarList from '../Components/Common/lists/CarList';
-import PickUp from '../Components/Common/Inputs/PickUp';
-import SingleDatePicker from '../Components/Common/Inputs/SingleDatePicker';
-import AirportInput from '../Components/Common/Inputs/AirportInput';
-import HotelInput from '../Components/Common/Inputs/HotelInput';
+import DateRangePicker from '../../Components/Common/Inputs/DateRangePicker';
+import OriginInput from '../../Components/Common/Inputs/OriginInput';
+import DestinationInput from '../../Components/Common/Inputs/DestinationInput';
+import PassengerInput from '../../Components/Common/Inputs/PassengerInput';
+import CarList from '../../Components/Common/lists/CarList';
+import PickUp from '../../Components/Common/Inputs/PickUp';
+import DropOff from '../../Components/Common/Inputs/DropOff';
 
-const AirportToHotelCarSearch = () => {
+const CarSearchPage = () => {
     const { currentUser } = useSelector((state) => state.user);
     const location = useLocation();
 
@@ -28,7 +28,9 @@ const AirportToHotelCarSearch = () => {
         origin: '',
         destination: '',
         departureDate: dayjs().format('YYYY-MM-DD'),  // default departure date (today)
+        returnDate: dayjs().add(2, 'day').format('YYYY-MM-DD'),  // default return date (2 days later)
         pickupTime: dayjs().format('h:mm a'),
+        dropoffTime: dayjs().add(2, 'hour').format('h:mm a'),
         passengers: 1,
         seats: 1,
     });
@@ -42,7 +44,9 @@ const AirportToHotelCarSearch = () => {
                 origin: location.state.origin,
                 destination: location.state.destination,
                 departureDate: location.state.departureDate,
+                returnDate: location.state.returnDate,
                 pickupTime: location.state.pickupTime,
+                dropoffTime: location.state.dropoffTime,
                 passengers: location.state.passengers,
                 seats: location.state.seats,
             });
@@ -59,11 +63,12 @@ const AirportToHotelCarSearch = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [triggerSearch]);
 
-    // Handle date range selection
-    const handleDateChange = (date) => {
+    // Handle changes in date range picker (departure and return dates)
+    const handleDateChange = ([startDate, endDate]) => {
         setFormData((prev) => ({
             ...prev,
-            departureDate: date.format('YYYY-MM-DD')
+            departureDate: startDate.format('YYYY-MM-DD'),
+            returnDate: endDate.format('YYYY-MM-DD'),
         }));
     };
 
@@ -81,11 +86,15 @@ const AirportToHotelCarSearch = () => {
         const newErrors = { origin: '', destination: '' };
 
         if (!formData.origin) {
-            newErrors.origin = 'Please select an airport';
+            newErrors.origin = 'Please select an origin';
             hasError = true;
         }
         if (!formData.destination) {
-            newErrors.destination = 'Please select an hotel';
+            newErrors.destination = 'Please select a destination';
+            hasError = true;
+        }
+        if (formData.origin === formData.destination) {
+            newErrors.destination = 'Origin and destination cannot be the same';
             hasError = true;
         }
         if (hasError) {
@@ -94,9 +103,6 @@ const AirportToHotelCarSearch = () => {
             return;
         }
 
-        const returnDate = dayjs(formData.departureDate).add(2, 'day').format('YYYY-MM-DD');
-        const dropoffTime = dayjs(formData.pickupTime, 'h:mm a').add(2, 'hour').format('h:mm a');
-
         const payload = {
             userId: currentUser._id,
             origin: formData.origin,
@@ -104,9 +110,9 @@ const AirportToHotelCarSearch = () => {
             endCityName: formData.origin,
             transferType: "PRIVATE",
             startDateTime: formatDateTime(formData.departureDate, formData.pickupTime),
-            endDateTime: formatDateTime(returnDate, dropoffTime),
+            endDateTime: formatDateTime(formData.returnDate, formData.dropoffTime),
             departureDate: formData.departureDate,
-            returnDate,
+            returnDate: formData.returnDate,
             passengers: formData.passengers,
             passengerCharacteristics: [
                 { passengerTypeCode: "ADT", age: 20 },
@@ -116,7 +122,7 @@ const AirportToHotelCarSearch = () => {
 
         try {
             setLoading(true);
-            const response = await fetch('/api/car/airport-hotel-car-offers', {
+            const response = await fetch('/api/car/car-offers', {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json', 
@@ -184,14 +190,13 @@ const AirportToHotelCarSearch = () => {
                 onSubmit={(e) => handleSubmit(e)}
                 className="xl:grid-cols-3 xl:gap-3 grid gap-4 md:gap-6 md:grid-cols-2 items-center"
             >
-                {/* Origin Input Section */}
+                {/* Origin Input */}
                 <div className='relative'>
-                    <AirportInput
+                    <OriginInput 
                         formData={formData}
                         setFormData={setFormData}
-                        airports={airports}  // Pass available locations
-                        label="Airport"
-                        fieldName="origin"
+                        locations={locations}  // Pass available locations
+                        label="Pick up"
                     />
                     <AnimatePresence mode='wait'>
                         {errors.origin && (
@@ -207,15 +212,14 @@ const AirportToHotelCarSearch = () => {
                         )}
                     </AnimatePresence>
                 </div>
-    
-                {/* Destination Input Section */}
+        
+                {/* Destination Input */}
                 <div className="relative">
-                    <HotelInput
+                    <DestinationInput
                         formData={formData}
                         setFormData={setFormData}
-                        hotels={hotels}  // Pass available locations
-                        label="Hotel"
-                        fieldName="destination"
+                        locations={locations}  // Pass available locations
+                        label="Drop off"
                     />
                     {/* Display error if destination is not selected */}
                     <AnimatePresence mode='wait'>
@@ -233,11 +237,13 @@ const AirportToHotelCarSearch = () => {
                     </AnimatePresence>
                 </div>
         
-                {/* Date Picker Section */}
-                <SingleDatePicker
-                    onDateChange={handleDateChange}
-                    defaultDate={dayjs(formData.departureDate)}
-                    label="Flight arrival date"
+                {/* Date Range Picker */}
+                <DateRangePicker
+                    onDateChange={handleDateChange} // Handle date changes in the picker
+                    defaultDates={[
+                        dayjs(formData.departureDate),
+                        dayjs(formData.returnDate),
+                    ]}
                 />
 
                 <PickUp
@@ -246,7 +252,14 @@ const AirportToHotelCarSearch = () => {
                         setIsUserSelected(true);
                     }}
                     value={formData.pickupTime}
-                    label="Flight arrival time"
+                />
+
+                <DropOff
+                    onTimeChange={(time) => {
+                        setFormData((prev) => ({ ...prev, dropoffTime: time }));
+                        setIsUserSelected(true);
+                    }}
+                    value={formData.dropoffTime}
                 />
         
                 {/* Passengers Input */}
@@ -306,4 +319,4 @@ const AirportToHotelCarSearch = () => {
     );
 }
 
-export default AirportToHotelCarSearch
+export default CarSearchPage

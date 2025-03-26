@@ -1,12 +1,12 @@
 import { LucideMessageSquareWarning } from 'lucide-react'; // Importing an icon for warning messages
 import React, { useEffect, useState } from 'react'; // Importing React and hooks
 import { BounceLoader } from 'react-spinners'; // Importing a loading spinner component
-import { locations } from '../Data/Locations'; // Importing the locations data (presumably a list of places)
-import OriginInput from '../Components/Common/Inputs/OriginInput'; // Importing the Origin Input Component
-import DestinationInput from '../Components/Common/Inputs/DestinationInput'; // Importing the Destination Input Component
-import TravelersInput from '../Components/Common/Inputs/TravelerInput'; // Importing the Travelers Input Component
-import DateRangePicker from '../Components/Common/Inputs/DateRangePicker'; // Importing the Date Range Picker Component
-import FlightsList from '../Components/Common/lists/FlightsList'; // Importing the Flights List Component
+import { locations } from '../../Data/Locations'; // Importing the locations data (presumably a list of places)
+import OriginInput from '../../Components/Common/Inputs/OriginInput'; // Importing the Origin Input Component
+import DestinationInput from '../../Components/Common/Inputs/DestinationInput'; // Importing the Destination Input Component
+import TravelersInput from '../../Components/Common/Inputs/TravelerInput'; // Importing the Travelers Input Component
+import DateRangePicker from '../../Components/Common/Inputs/DateRangePicker'; // Importing the Date Range Picker Component
+import FlightsList from '../../Components/Common/lists/FlightsList'; // Importing the Flights List Component
 import { useLocation } from 'react-router-dom'; // Hook to get the location from the router
 import dayjs from 'dayjs'; // Dayjs for date manipulation
 import { useSelector } from 'react-redux'; // Hook to access the Redux store

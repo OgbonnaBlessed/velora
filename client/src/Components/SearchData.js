@@ -169,7 +169,7 @@ const SearchData = () => {
 
                 {/* Delete button */}
                 <div 
-                  className='absolute top-2 right-2 text-[#48aadf] bg-white rounded-full p-2 cursor-pointer'
+                  className='absolute top-1 right-1 text-[#48aadf] rounded-full p-2 cursor-pointer'
                   onClick={(e) => {
                     e.stopPropagation(); // Prevent the click from bubbling up to the list item
                     handleDelete(item._id); // Delete the item when clicked

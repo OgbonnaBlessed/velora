@@ -1,20 +1,21 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
+
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BounceLoader } from 'react-spinners';
-import { airports, hotels } from '../Data/Locations';
+import { airports, hotels } from '../../Data/Locations';
 import { LucideMessageSquareWarning } from 'lucide-react';
-import PassengerInput from '../Components/Common/Inputs/PassengerInput';
-import CarList from '../Components/Common/lists/CarList';
-import PickUp from '../Components/Common/Inputs/PickUp';
-import SingleDatePicker from '../Components/Common/Inputs/SingleDatePicker';
-import HotelInput2 from '../Components/Common/Inputs/HotelInput2';
-import AirportInput2 from '../Components/Common/Inputs/AirportInput2';
+import PassengerInput from '../../Components/Common/Inputs/PassengerInput';
+import CarList from '../../Components/Common/lists/CarList';
+import PickUp from '../../Components/Common/Inputs/PickUp';
+import SingleDatePicker from '../../Components/Common/Inputs/SingleDatePicker';
+import AirportInput from '../../Components/Common/Inputs/AirportInput';
+import HotelInput from '../../Components/Common/Inputs/HotelInput';
 
-const HotelToAirportCarSearch = () => {
+const AirportToHotelCarSearch = () => {
     const { currentUser } = useSelector((state) => state.user);
     const location = useLocation();
 
@@ -85,10 +86,6 @@ const HotelToAirportCarSearch = () => {
         }
         if (!formData.destination) {
             newErrors.destination = 'Please select an hotel';
-            hasError = true;
-        }
-        if (formData.origin === formData.destination) {
-            newErrors.destination = 'Airport and hotel cannot be the same';
             hasError = true;
         }
         if (hasError) {
@@ -187,13 +184,14 @@ const HotelToAirportCarSearch = () => {
                 onSubmit={(e) => handleSubmit(e)}
                 className="xl:grid-cols-3 xl:gap-3 grid gap-4 md:gap-6 md:grid-cols-2 items-center"
             >
-                {/* Origin Input */}
+                {/* Origin Input Section */}
                 <div className='relative'>
-                    <HotelInput2 
+                    <AirportInput
                         formData={formData}
                         setFormData={setFormData}
-                        hotels={hotels}  // Pass available locations
-                        label="Hotel"
+                        airports={airports}  // Pass available locations
+                        label="Airport"
+                        fieldName="origin"
                     />
                     <AnimatePresence mode='wait'>
                         {errors.origin && (
@@ -209,14 +207,15 @@ const HotelToAirportCarSearch = () => {
                         )}
                     </AnimatePresence>
                 </div>
-        
-                {/* Destination Input */}
+    
+                {/* Destination Input Section */}
                 <div className="relative">
-                    <AirportInput2
+                    <HotelInput
                         formData={formData}
                         setFormData={setFormData}
-                        airports={airports}  // Pass available locations
-                        label="Airport"
+                        hotels={hotels}  // Pass available locations
+                        label="Hotel"
+                        fieldName="destination"
                     />
                     {/* Display error if destination is not selected */}
                     <AnimatePresence mode='wait'>
@@ -238,7 +237,7 @@ const HotelToAirportCarSearch = () => {
                 <SingleDatePicker
                     onDateChange={handleDateChange}
                     defaultDate={dayjs(formData.departureDate)}
-                    label="Flight departure date"
+                    label="Flight arrival date"
                 />
 
                 <PickUp
@@ -247,7 +246,7 @@ const HotelToAirportCarSearch = () => {
                         setIsUserSelected(true);
                     }}
                     value={formData.pickupTime}
-                    label="Flight departure time"
+                    label="Flight arrival time"
                 />
         
                 {/* Passengers Input */}
@@ -307,4 +306,4 @@ const HotelToAirportCarSearch = () => {
     );
 }
 
-export default HotelToAirportCarSearch
+export default AirportToHotelCarSearch
