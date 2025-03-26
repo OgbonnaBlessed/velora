@@ -6,13 +6,16 @@ import {
     getSearchData, 
     hotelDetails, 
     searchFlights, 
-    searchHotels 
+    searchHotels, 
+    searchMultiCityFlights
 } from '../controllers/flight.controller.js'; // Controller functions for flight and hotel operations
 
 const router = express.Router(); // Create a new Express router instance
 
 // Route for searching flights, which invokes the searchFlights controller
 router.post('/search-flights', searchFlights); // POST request to search flights
+
+router.post('/multi-city', searchMultiCityFlights);
 
 // Route for searching hotels, which invokes the searchHotels controller
 router.post('/search-hotels', searchHotels); // POST request to search hotels

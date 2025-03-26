@@ -47,8 +47,9 @@ const SearchData = () => {
 
   // Date formatter function to format date into 'weekday, month day' format
   const formatDate = (date) => {
+    if (!date) return 'Unknown'; // Return a fallback if date is null or undefined
     const options = { weekday: 'short', month: 'short', day: 'numeric' };
-    return new Intl.DateTimeFormat('en-US', options).format(new Date(date)); // Format date using Intl API
+    return new Intl.DateTimeFormat('en-US', options).format(new Date(date));
   };
 
   // Handle delete action for a specific search item

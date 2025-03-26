@@ -10,7 +10,7 @@ import FlightsList from '../Components/Common/FlightsList'; // Importing the Fli
 import { useLocation } from 'react-router-dom'; // Hook to get the location from the router
 import dayjs from 'dayjs'; // Dayjs for date manipulation
 import { useSelector } from 'react-redux'; // Hook to access the Redux store
-import { motion } from 'framer-motion'; // Framer Motion for animations
+import { AnimatePresence, motion } from 'framer-motion'; // Framer Motion for animations
 
 function SearchPage() {
   // Accessing the current user from the Redux store
@@ -168,31 +168,50 @@ function SearchPage() {
         className="xl:flex xl:gap-3 xl:justify-between grid gap-4 md:gap-6 md:grid-cols-3 items-center"
       >
         {/* Origin Input */}
-        <div className="relative flex-1">
-          <OriginInput
+        <div className='relative'>
+          <OriginInput 
             formData={formData}
             setFormData={setFormData}
-            locations={locations} // Pass available locations to the OriginInput component
+            locations={locations}  // Pass available locations
+            label="From where?"
           />
-          {errors.origin && (
-            <p className="text-red-500 text-[0.7rem] absolute mt-1">
-              {errors.origin} {/* Display validation error if any */}
-            </p>
-          )}
+          <AnimatePresence mode='wait'>
+            {errors.origin && (
+              <motion.p 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                className="text-red-500 text-xs bottom-1 right-2 absolute"
+              >
+                {errors.origin}
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Destination Input */}
-        <div className="relative flex-1">
+        <div className="relative">
           <DestinationInput
             formData={formData}
             setFormData={setFormData}
-            locations={locations} // Pass available locations to the DestinationInput component
+            locations={locations}  // Pass available locations
+            label="Where to?"
           />
-          {errors.destination && (
-            <p className="text-red-500 text-[0.7rem] absolute mt-1">
-              {errors.destination} {/* Display validation error if any */}
-            </p>
-          )}
+          {/* Display error if destination is not selected */}
+          <AnimatePresence mode='wait'>
+            {errors.destination && (
+              <motion.p 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                className="text-red-500 text-xs bottom-1 right-2 absolute"
+              >
+                {errors.destination}
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Date Range Picker */}

@@ -37,7 +37,6 @@ const MultiCity = () => {
       errors: {},
     },
   ]);
-  console.log(flights)
 
   const addFlight = () => {
     if (flights.length < 5) {
@@ -151,7 +150,7 @@ const MultiCity = () => {
     if (hasError) return;
   
     // Proceed to navigate if no errors
-    // navigate('/flight-search', { state: { flights } });
+    navigate('/multi-city-search', { state: { flights } });
   };
 
   return (
