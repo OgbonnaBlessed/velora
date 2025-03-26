@@ -1,8 +1,9 @@
 import React from 'react'; 
 // Importing React to enable JSX syntax and component functionality.
-import HotelCard from './Cards/HotelCard'; 
+import HotelCard from '../Cards/HotelCard'; 
 // Importing the HotelCard component to display individual hotel cards.
 import { motion } from 'framer-motion'; 
+import HotelFilters from '../filters/HotelFilters';
 // Importing motion from framer-motion to add animations to the components.
 
 const HotelList = ({ hotels }) => {
@@ -48,16 +49,24 @@ const HotelList = ({ hotels }) => {
                 ease: "easeInOut"
                 // Apply an 'easeInOut' transition effect for smooth animation
             }}
-            className="grid grid-cols-1 xl:grid-cols-2 gap-6"
-            // Tailwind CSS classes to create a responsive grid layout:
-            // grid-cols-1: Single column on small screens, xl:grid-cols-2: Two columns on extra large screens
-            // gap-6: Set the space between grid items
+            className="flex flex-col gap-12 w-full md:mt-8 mt-5"
         >
-            {/* Loop through the hotels data and render a HotelCard for each hotel */}
-            {hotels.data.map((hotel, index) => (
-                <HotelCard key={index} hotel={hotel} />
-                // Pass the hotel data to each HotelCard component and use the index as the key
-            ))}
+            <HotelFilters
+                handleSubmit={(filters) => {
+                    console.log(filters); 
+                    // When the filters are submitted, log the filters to the console
+                }}
+            />
+
+            <div className="flex flex-col gap-5 w-full">
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                    {/* Loop through the hotels data and render a HotelCard for each hotel */}
+                    {hotels.data.map((hotel, index) => (
+                        <HotelCard key={index} hotel={hotel} />
+                        // Pass the hotel data to each HotelCard component and use the index as the key
+                    ))}
+                </div>
+            </div>
         </motion.div>
     );
 };

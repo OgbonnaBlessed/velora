@@ -8,7 +8,7 @@ import { BounceLoader } from 'react-spinners';
 import { airports, hotels } from '../Data/Locations';
 import { LucideMessageSquareWarning } from 'lucide-react';
 import PassengerInput from '../Components/Common/Inputs/PassengerInput';
-import CarList from '../Components/Common/CarList';
+import CarList from '../Components/Common/lists/CarList';
 import PickUp from '../Components/Common/Inputs/PickUp';
 import SingleDatePicker from '../Components/Common/Inputs/SingleDatePicker';
 import HotelInput2 from '../Components/Common/Inputs/HotelInput2';

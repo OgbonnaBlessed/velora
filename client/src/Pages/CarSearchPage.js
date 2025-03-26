@@ -11,7 +11,7 @@ import DateRangePicker from '../Components/Common/Inputs/DateRangePicker';
 import OriginInput from '../Components/Common/Inputs/OriginInput';
 import DestinationInput from '../Components/Common/Inputs/DestinationInput';
 import PassengerInput from '../Components/Common/Inputs/PassengerInput';
-import CarList from '../Components/Common/CarList';
+import CarList from '../Components/Common/lists/CarList';
 import PickUp from '../Components/Common/Inputs/PickUp';
 import DropOff from '../Components/Common/Inputs/DropOff';
 

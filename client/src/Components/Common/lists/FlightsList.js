@@ -1,19 +1,20 @@
 import React from 'react'; 
 // Importing React to enable JSX syntax and component functionality.
-import Filters from './Filters'; 
-// Importing the carCard component to display individual car cards.
+import FlightFilters from '../filters/FlightFilters'; 
+// Importing the Filters component for displaying the flight filters.
+import FlightCard from '../Cards/FlightCard'; 
+// Importing the FlightCard component to display individual flight cards.
 import { Search } from 'lucide-react'; 
-// Importing the Search icon from lucide-react for visual feedback when no cars are found.
+// Importing the Search icon from lucide-react for visual feedback when no flights are found.
 import { motion } from 'framer-motion'; 
-import CarCard from './Cards/CarCard';
 // Importing motion from framer-motion to apply animations to the components.
 
-const CarList = ({ cars, getCarDuration }) => {
-    // The CarList component takes in cars, formatTime, and getCarDuration as props.
+const FlightsList = ({ flights, formatTime, getFlightDuration }) => {
+    // The FlightsList component takes in flights, formatTime, and getFlightDuration as props.
 
-    // Check if cars data is empty or not available
-    if (!cars || cars?.length === 0) {
-        // Return a 'no cars found' message if no cars are found
+    // Check if flights data is empty or not available
+    if (!flights || flights?.data?.length === 0) {
+        // Return a 'no flights found' message if no flights are found
         return (
             <motion.div 
                 initial={{ opacity: 0, y: -50 }} 
@@ -29,17 +30,17 @@ const CarList = ({ cars, getCarDuration }) => {
                     // Apply an 'easeInOut' transition effect for smooth animation
                 }}
                 className="flex flex-col gap-5 items-center font-Poppins font-semibold min-h-64 w-full justify-center"
-                // Apply Tailwind CSS classes for styling the 'no cars found' message container
+                // Apply Tailwind CSS classes for styling the 'no flights found' message container
             >
                 <div className="flex flex-col gap items-center">
                     <Search className='mb-2'/>
                     {/* Display the search icon */}
-                    <p className="text-lg">Sorry, no cars found.</p>
-                    {/* Message to inform the user no cars were found */}
+                    <p className="text-lg">Sorry, no flights found.</p>
+                    {/* Message to inform the user no flights were found */}
                     <p className="font-normal font-sans">
-                        Kindly change your selected parameters to view available cars.
+                        Kindly change your selected parameters to view available flights.
                     </p>
-                    {/* Additional information on how to view available cars */}
+                    {/* Additional information on how to view available flights */}
                 </div>
             </motion.div>
         );
@@ -62,26 +63,28 @@ const CarList = ({ cars, getCarDuration }) => {
             className="flex flex-col gap-12 w-full md:mt-8 mt-5"
             // Styling for the main container using Tailwind CSS
         >
-            <Filters
+            <FlightFilters
                 handleSubmit={(filters) => {
                     console.log(filters); 
                     // When the filters are submitted, log the filters to the console
                 }}
             />
-            {/* Filters component for car filtering options */}
+            {/* Filters component for flight filtering options */}
 
             <div className="flex flex-col gap-5 w-full">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-between gap-10">
-                    {/* Grid layout for car cards, responsive for different screen sizes */}
-                    {cars?.map((car) => (
-                        // Loop through the cars data and display a carCard for each car
-                        <CarCard
-                            key={car.id} 
-                            // Use the index as the key for each carCard (for rendering optimization)
-                            car={car}
-                            // Pass the formatTime function as a prop to carCard
-                            getCarDuration={getCarDuration} 
-                            // Pass the getcarDuration function as a prop to carCard
+                    {/* Grid layout for flight cards, responsive for different screen sizes */}
+                    {flights?.data?.map((flight, index) => (
+                        // Loop through the flights data and display a FlightCard for each flight
+                        <FlightCard
+                            key={index} 
+                            // Use the index as the key for each FlightCard (for rendering optimization)
+                            flight={flight} 
+                            // Pass the individual flight data to the FlightCard component
+                            formatTime={formatTime} 
+                            // Pass the formatTime function as a prop to FlightCard
+                            getFlightDuration={getFlightDuration} 
+                            // Pass the getFlightDuration function as a prop to FlightCard
                         />
                     ))}
                 </div>
@@ -90,5 +93,5 @@ const CarList = ({ cars, getCarDuration }) => {
     );
 };
 
-export default CarList;
-// Export the CarList component for use in other parts of the application.
+export default FlightsList;
+// Export the FlightsList component for use in other parts of the application.

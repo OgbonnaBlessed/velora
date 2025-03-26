@@ -6,7 +6,7 @@ import OriginInput from '../Components/Common/Inputs/OriginInput'; // Importing 
 import DestinationInput from '../Components/Common/Inputs/DestinationInput'; // Importing the Destination Input Component
 import TravelersInput from '../Components/Common/Inputs/TravelerInput'; // Importing the Travelers Input Component
 import DateRangePicker from '../Components/Common/Inputs/DateRangePicker'; // Importing the Date Range Picker Component
-import FlightsList from '../Components/Common/FlightsList'; // Importing the Flights List Component
+import FlightsList from '../Components/Common/lists/FlightsList'; // Importing the Flights List Component
 import { useLocation } from 'react-router-dom'; // Hook to get the location from the router
 import dayjs from 'dayjs'; // Dayjs for date manipulation
 import { useSelector } from 'react-redux'; // Hook to access the Redux store

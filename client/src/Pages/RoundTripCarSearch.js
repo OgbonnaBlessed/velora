@@ -10,7 +10,7 @@ import { airports, hotels } from '../Data/Locations';
 import { LucideMessageSquareWarning } from 'lucide-react';
 import DateRangePicker from '../Components/Common/Inputs/DateRangePicker';
 import PassengerInput from '../Components/Common/Inputs/PassengerInput';
-import CarList from '../Components/Common/CarList';
+import CarList from '../Components/Common/lists/CarList';
 import PickUp from '../Components/Common/Inputs/PickUp';
 import DropOff from '../Components/Common/Inputs/DropOff';
 import AirportInput from '../Components/Common/Inputs/AirportInput';

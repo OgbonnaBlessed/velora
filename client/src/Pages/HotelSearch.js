@@ -8,7 +8,7 @@ import TravelersInput from '../Components/Common/Inputs/TravelerInput'; // Compo
 import DateRangePicker from '../Components/Common/Inputs/DateRangePicker'; // Date picker for selecting dates
 import { useLocation } from 'react-router-dom'; // Hook to access router state
 import dayjs from 'dayjs'; // For date manipulation
-import HotelList from '../Components/Common/HotelList'; // Component to display list of hotels
+import HotelList from '../Components/Common/lists/HotelList'; // Component to display list of hotels
 import { useSelector } from 'react-redux'; // To access Redux state
 import { AnimatePresence, motion } from 'framer-motion'; // For animations
 

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'; // Importing React and hooks
 import { BounceLoader } from 'react-spinners'; // Importing a loading spinner component
 import { locations } from '../Data/Locations'; // Importing the locations data (presumably a list of places)
 import DateRangePicker from '../Components/Common/Inputs/DateRangePicker'; // Importing the Date Range Picker Component
-import FlightsList from '../Components/Common/FlightsList'; // Importing the Flights List Component
+import FlightsList from '../Components/Common/lists/FlightsList'; // Importing the Flights List Component
 import { useLocation } from 'react-router-dom'; // Hook to get the location from the router
 import dayjs from 'dayjs'; // Dayjs for date manipulation
 import { useSelector } from 'react-redux'; // Hook to access the Redux store
