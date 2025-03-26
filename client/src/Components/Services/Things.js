@@ -14,7 +14,6 @@ const Things = () => {
   // Initializing state for form data and error messages
   const [errors, setErrors] = useState({ origin: '', destination: '' });
   const [formData, setFormData] = useState({
-    origin: '', // Origin city for the trip
     destination: '', // Destination city for the trip
     departureDate: dayjs().format('YYYY-MM-DD'), // Default departure date is today
     returnDate: dayjs().add(2, 'day').format('YYYY-MM-DD'), // Default return date is 2 days after today
@@ -37,17 +36,11 @@ const Things = () => {
   // Handle search button click
   const handleSearch = () => {
     let hasError = false; // Flag to track if there are errors in the form
-    const newErrors = { origin: '', destination: '' }; // New error state for origin and destination
+    const newErrors = { destination: '' }; // New error state for origin and destination
 
     // Check if user is signed in (currentUser must be truthy)
     if (!currentUser) {
-      newErrors.origin = 'You are not signed in'; // Show error for origin if user is not signed in
-      hasError = true;
-    }
-
-    // Check if the origin is empty
-    if (!formData.origin) {
-      newErrors.origin = 'Please select an origin.'; // Show error for missing origin
+      newErrors.destination = 'You are not signed in'; // Show error for origin if user is not signed in
       hasError = true;
     }
 
@@ -57,24 +50,17 @@ const Things = () => {
       hasError = true;
     }
 
-    // Check if the origin and destination are the same
-    if (formData.destination && formData.origin && formData.origin === formData.destination) {
-      newErrors.destination = 'Origin and destination cannot be the same'; // Show error if both are the same
-      hasError = true;
-    }
-
     // If there are errors, set the error state and reset after 3 seconds
     if (hasError) {
       setErrors(newErrors);
       setTimeout(() => {
-        setErrors({ origin: '', destination: '' }); // Reset errors after 3 seconds
+        setErrors({ destination: '' }); // Reset errors after 3 seconds
       }, 3000);
       return; // Exit function early if there are errors
     }
 
     // Navigate to the flight search page with the form data as state
-    navigate('/flight-search', { state: { 
-      origin: formData.origin, 
+    navigate('/hotel-search', { state: { 
       destination: formData.destination, 
       departureDate: formData.departureDate, 
       returnDate: formData.returnDate, 

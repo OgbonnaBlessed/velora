@@ -10,7 +10,7 @@ import { useLocation } from 'react-router-dom'; // Hook to access router state
 import dayjs from 'dayjs'; // For date manipulation
 import HotelList from '../Components/Common/HotelList'; // Component to display list of hotels
 import { useSelector } from 'react-redux'; // To access Redux state
-import { motion } from 'framer-motion'; // For animations
+import { AnimatePresence, motion } from 'framer-motion'; // For animations
 
 function HotelSearch() {
     // Access location state from react-router to get previous search data if available
@@ -150,13 +150,23 @@ function HotelSearch() {
                     <DestinationInput
                         formData={formData}
                         setFormData={setFormData}
-                        locations={locations} // Passing locations list to the destination input
+                        locations={locations}  // Pass available locations
+                        label="Where to?"
                     />
-                    {errors.destination && (
-                        <p className="text-red-500 text-[0.7rem] absolute mt-1">
-                            {errors.destination} {/* Display validation error */}
-                        </p>
-                    )}
+                    {/* Display error if destination is not selected */}
+                    <AnimatePresence mode='wait'>
+                        {errors.destination && (
+                            <motion.p 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                className="text-red-500 text-xs bottom-1 right-2 absolute"
+                            >
+                                {errors.destination}
+                            </motion.p>
+                        )}
+                    </AnimatePresence>
                 </div>
 
                 {/* Date Picker for selecting departure and return dates */}

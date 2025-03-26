@@ -233,7 +233,7 @@ const Stays = () => {
             formData={formData}
             setFormData={setFormData}
             locations={locations}  // Pass available locations
-            label="Pick up"
+            label="From where?"
           />
           <AnimatePresence mode='wait'>
             {errors.origin && (
