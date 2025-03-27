@@ -53,7 +53,7 @@ const CarCard = ({ car, getCarDuration }) => {
             </div>
             <button
                 type="button"
-                // onClick={handleSelect} // Navigate to flight details when "Select" is clicked
+                onClick={handleSelect} // Navigate to flight details when "Select" is clicked
                 className="bg-[#48aadf] hover:bg-[#48aadf]/80 active:scale-90 rounded-full font-semibold text-white cursor-pointer px-8 py-3 h-fit w-fit self-center transition-all duration-300 ease-in-out text-base"
             >
                 Select

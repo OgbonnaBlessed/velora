@@ -19,7 +19,7 @@ const HotelDetails = () => {
                 setLoading(true); // Starts loading
                 try {
                     // Fetch hotel details from the server
-                    const response = await fetch(`/api/flight/hotel-details/${hotel.hotelId}`, {
+                    const response = await fetch(`/api/hotel/hotel-details/${hotel.hotelId}`, {
                         method: 'GET',
                         headers: { 'Content-Type': 'application/json' },
                     });

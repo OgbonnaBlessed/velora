@@ -24,7 +24,7 @@ const SearchData = () => {
     const fetchSearchData = async () => {
       try {
         // Making GET request to fetch search data for the current user
-        const response = await axios.get(`/api/flight/search-data/${currentUser._id}`);
+        const response = await axios.get(`/api/search/search-data/${currentUser._id}`);
         setSearchData(response.data); // Set the fetched data to state
         console.log(response.data);
       } catch (err) {

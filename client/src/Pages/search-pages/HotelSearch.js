@@ -100,7 +100,7 @@ function HotelSearch() {
             };
             
             // Send POST request to the backend to search for hotels
-            const response = await fetch(`/api/flight/search-hotels`, {
+            const response = await fetch(`/api/hotel/search-hotels`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
