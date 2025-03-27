@@ -29,6 +29,8 @@ const HotelDetails = () => {
                     if (!response.ok) {
                         // If response is not successful, set error message
                         setError(data.error || 'Failed to fetch hotel details. Please try again.');
+                        console.log(data.error);
+                        
                     } else {
                         // Set hotel details if the response is successful
                         setHotelDetails(data);
@@ -65,10 +67,10 @@ const HotelDetails = () => {
     // Show loading spinner while waiting for data
     if (loading) {
         return (
-            <div className="flex items-center justify-center h-96">
+            <div className="min-h-screen w-full flex items-center justify-center">
                 <BounceLoader 
                     color="#48aadf" 
-                    size={50} 
+                    loading={loading} 
                 />
             </div>
         );
@@ -120,6 +122,7 @@ const HotelDetails = () => {
                     {name} {/* Hotel Name */}
                 </h1>
             </div>
+
             <div className="text-gray-600 text-sm md:text-base">
                 {/* Display additional hotel information */}
                 <p>Chain Code: {chainCode}</p>

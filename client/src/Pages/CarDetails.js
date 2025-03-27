@@ -1,13 +1,34 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ArrowLeft, ChevronLeft } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { BounceLoader } from "react-spinners";
 
 const CarDetails = () => {
+    const [loading, setLoading] = useState(false);
+    const [pageLoading, setPageLoading] = useState(false);
     const location = useLocation(); // Get the state passed from CarCard
     const navigate = useNavigate();
     const car = location.state?.car;
     console.log("Car details:", car);
+
+    useEffect(() => {
+        setPageLoading(true);
+        setTimeout(() => {
+            setPageLoading(false);
+        }, 5000);
+    }, [])
+
+    if (pageLoading) {
+        return (
+            <div className='min-h-screen w-full flex items-center justify-center'>
+                <BounceLoader 
+                    color="#48aadf"
+                    loading={pageLoading}
+                />
+            </div>
+        )
+    }
 
     // Fallback if car data is missing
     if (!car) {
@@ -29,7 +50,6 @@ const CarDetails = () => {
         vehicle,
         serviceProvider,
         converted,
-        availability,
         start,
         end,
     } = car;
@@ -48,145 +68,160 @@ const CarDetails = () => {
         return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
     };
 
+    // Ensure monetaryAmount is a number
+    const monetaryAmount = Number(converted?.monetaryAmount) || 0; 
+    const tax = monetaryAmount * 0.1; // 10% tax
+    const total = monetaryAmount + tax; // Total price including tax
+
     // Function to handle booking
     const handleBooking = () => {
-        alert("Booking functionality coming soon!");
+        setLoading(true);
+        setTimeout(() => {
+            alert("Booking functionality coming soon!");
+            setLoading(false);
+        }, 5000);
     };
 
     return (
-        <div className="p-6 lg:p-12 bg-[#f8fafc] min-h-screen flex flex-col gap-8 pt-28">
-            {/* Header */}
-            <div className="flex justify-between items-center">
-                <button 
-                    onClick={() => navigate(-1)} 
-                    className="flex items-center gap-2 text-[#48aadf] font-semibold cursor-pointer"
-                >
-                    <ArrowLeft />
-                </button>
+        <div className="flex flex-col items-center lg:items-start gap-5 px-6 sm:px-8 lg:px-24 pt-28 md:pt-36 pb-12 bg-white font-Grotesk">
+
+            <div className="flex flex-col md:flex-row gap-4 md:gap-6 self-start">
+                <h1 className="md:text-3xl text-xl font-semibold">
+                    {vehicle?.description} {/* Hotel Name */}
+                </h1>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* Left Column: Car Image & Provider */}
-                <div className="bg-white p-6 rounded-md shadow-lg flex flex-col gap-6">
+            <div className="text-gray-600 text-sm md:text-base self-start">
+                {/* Display additional hotel information */}
+                <p>Service Provider: {serviceProvider?.name}</p>
+                <div className="flex items-center gap-2">
+                    <p>Logo: </p>
+                    <img 
+                        src={serviceProvider?.logoUrl} 
+                        alt="Service Provider Logo"
+                        onError={(e) => e.target.src = `${process.env.PUBLIC_URL}/images/service_provider.png`}
+                        className="w-10"
+                    />
+                </div>
+                <p>Vehicle Code: {vehicle?.code}</p>
+            </div>
+
+            <div className="flex flex-col lg:gap-5 gap-3 w-full mt-5">
+                <div className="flex flex-col w-full">
                     <img 
                         src={vehicle?.imageURL || `${process.env.PUBLIC_URL}/images/placeholder-car.png`}
                         alt={`Car-${car.id} image`} 
                         onError={(e) => e.target.src = `${process.env.PUBLIC_URL}/images/placeholder-car.png`}
-                        className="rounded-md object-cover"
+                        className="object-cover hover:scale-105 cursor-pointer transition-all duration-300"
                     />
-                    <div className="flex items-center gap-2">
-                        <img 
-                            src={serviceProvider?.logoUrl} 
-                            alt="Service Provider Logo"
-                            onError={(e) => e.target.src = `${process.env.PUBLIC_URL}/images/service_provider.png`}
-                            className="w-12"
-                        />
-                        <div>
-                            <h3 className="font-semibold text-lg">{serviceProvider?.name}</h3>
-                        </div>
-                    </div>
                 </div>
 
-                {/* Right Column: Car Details */}
-                <div className="bg-white p-6 rounded-md shadow-lg flex flex-col gap-6">
-                    <h2 className="text-xl font-semibold">Vehicle Information</h2>
-                    <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                            <p>
-                                <strong>Seats:</strong>
-                            </p> 
-                            {vehicle?.seats?.map((seat) => (
-                                <p>{seat.count}</p>
-                            )) || "N/A" }
-                        </div>
-                        <div className="flex items-start gap-2">
-                            <p>
-                                <strong>Description:</strong>
-                            </p> 
-                            {vehicle?.description}
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <p>
-                                <strong>Baggages:</strong>
-                            </p> 
-                            {vehicle?.baggages?.map((baggage) => (
-                                <p>{baggage.count}, {baggage.size}</p>
-                            )) || "N/A" }
-                        </div>
-                    </div>
+                <div className="flex lg:flex-row flex-col gap-5 w-full">
+                    <div className="w-full bg-blue-100  rounded-3xl p-6">
+                        <h2 className="text-xl font-semibold">Vehicle Information</h2>
+                        <div className="p-4 flex flex-col gap-1 font-Grotesk">
+                            <div className="flex items-center gap-2">
+                                <p className="font-Grotesk font-semibold">
+                                    Seats:
+                                </p> 
+                                {vehicle?.seats?.map((seat) => (
+                                    <p className="text-sm">{seat.count}</p>
+                                )) || "N/A" }
+                            </div>
+                            <div className="flex items-baseline gap-2">
+                                <p className="font-Grotesk font-semibold">
+                                   Description:
+                                </p> 
+                                <p className="text-sm">
+                                    {vehicle?.description}
+                                </p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <p className="font-Grotesk font-semibold">
+                                    Baggages:
+                                </p> 
+                                {vehicle?.baggages?.map((baggage) => (
+                                    <p className="text-sm">{baggage.count}, {baggage.size}</p>
+                                )) || "N/A" }
+                            </div>
 
-                    <div className="flex items-start gap-12">
-                        {/* <p><strong>Pickup Location:</strong> {start?.locationCode || "Not specified"}</p>
-                        <p><strong>Drop-off Location:</strong> {end?.address?.cityName || "Not specified"}</p> */}
-                        <div className="flex flex-col gap-1">
-                            <h2 className="font-semibold text-lg">Pick up</h2>
-                            <div className="flex flex-col">
-                                <div className="flex items-center gap-1 text-sm">
-                                    <h3>Date:</h3>
-                                    <div>{formatDate(start?.dateTime)}</div>
-                                </div>
-                                <div className="flex items-center gap-1">
-                                    <h3>Time:</h3>
-                                    <div>{formatTime(start?.dateTime)}</div>
+                            <div className="flex flex-col font-Grotesk">
+                                <h2 className="font-semibold font-Grotesk">Pick up</h2>
+                                <div className="flex flex-col ml-4 text-sm">
+                                    <div className="flex items-center gap-1">
+                                        <h3>Date:</h3>
+                                        <div>{formatDate(start?.dateTime)}</div>
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                        <h3>Time:</h3>
+                                        <div>{formatTime(start?.dateTime)}</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div className="flex flex-col gap-1">
-                            <h2 className="font-semibold text-lg">Drop off</h2>
-                            <div className="flex flex-col">
-                                <div className="flex items-center gap-1 text-sm">
-                                    <h3>Date:</h3>
-                                    <div>{formatDate(end?.dateTime)}</div>
+                            <div className="flex flex-col font-Grotesk">
+                                <h2 className="font-semibold font-Grotesk">Drop off</h2>
+                                <div className="flex flex-col ml-4 text-sm">
+                                    <div className="flex items-center gap-1">
+                                        <h3>Date:</h3>
+                                        <div>{formatDate(end?.dateTime)}</div>
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                        <h3>Time:</h3>
+                                        <div>{formatTime(end?.dateTime)}</div>
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-1">
-                                    <h3>Time:</h3>
-                                    <div>{formatTime(end?.dateTime)}</div>
-                                </div>
+                            </div>
+                            <div className="flex items-center font-Grotesk gap-1">
+                                <h3 className="font-semibold">Total Price:</h3>
+                                <p className="text-sm">{converted?.monetaryAmount} {converted?.currencyCode}</p>
+                            </div>
+                            <div className="font-Grotesk">
+                                <h2 className="font-semibold">Terms & Conditions</h2>
+                                <p className="text-gray-600 text-sm ml-4">
+                                    {cancellationRules.map((rules, index) => (
+                                        <div className="flex items-start gap-1 mb-1">
+                                            <span>{index + 1}.</span>
+                                            <p>{rules?.ruleDescription}</p>
+                                        </div>
+                                    ))}
+                                </p>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            {/* Pricing and Availability */}
-            <div className="bg-white p-6 rounded-md shadow-lg flex flex-col gap-4">
-                <h2 className="text-xl font-semibold">Pricing & Availability</h2>
-                <div className="flex justify-between items-center">
-                    <div>
-                        <p className="text-gray-600">Total Price:</p>
-                        <h3 className="text-2xl font-bold">{converted?.monetaryAmount} {converted?.currencyCode}</h3>
-                    </div>
-                    <div>
-                        <p className="text-gray-600">Availability:</p>
-                        <h3 className="text-lg font-bold">
-                            {availability ? "Available" : "Not Available"}
-                        </h3>
-                    </div>
-                </div>
-            </div>
-
-            {/* Terms & Conditions */}
-            <div className="bg-white p-6 rounded-md shadow-lg">
-                <h2 className="text-xl font-semibold mb-2">Terms & Conditions</h2>
-                <p className="text-gray-600 text-sm">
-                    {cancellationRules.map((rules, index) => (
-                        <div className="flex items-start gap-1 mb-2">
-                            <span>{index + 1}.</span>
-                            <p>{rules?.ruleDescription}</p>
+                    <div className='bg-blue-100  rounded-3xl p-5 flex flex-col gap-3 w-[35rem] max-w-full h-fit'>
+                        <h1 className='text-lg font-semibold font-Grotesk'>Payment summary</h1>
+                        <div className='flex flex-col gap-2'>
+                            <div className='flex items-center justify-between'>
+                                <p>Car</p>
+                                <p>{converted?.monetaryAmount} {converted?.currencyCode}</p>
+                            </div>
+                            <div className='flex items-center justify-between'>
+                                <p>Taxes & fees</p>
+                                <p>{tax.toFixed(2)} {converted?.currencyCode}</p>
+                            </div>
+                            <div className='flex items-center justify-between border-t-2 border-white py-3 mt-3'>
+                                <p className='font-semibold font-Grotesk'>Trip total</p>
+                                <p>{total.toFixed(0)} {converted?.currencyCode}</p>
+                            </div>
                         </div>
-                    ))}
-                </p>
-            </div>
-
-            {/* Booking Button */}
-            <div className="flex justify-center">
-                <button 
-                    onClick={handleBooking}
-                    className="bg-[#48aadf] text-white px-8 py-3 rounded-full font-semibold hover:bg-[#48aadf]/80 active:scale-90 transition-all duration-300 ease-in-out"
-                >
-                    Book Now
-                </button>
+                        <button
+                            type="button"
+                            disabled={loading}
+                            className={`${loading ? 'bg-[#48aadf]/50 cursor-not-allowed' : 'bg-[#48aadf] cursor-pointer'} hover:bg-[#48aadf]/50 active:scale-90 rounded-lg py-3 w-full font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2 relative text-sm sm:text-base`}
+                            onClick={handleBooking} // Trigger checkout process
+                        >
+                            {loading ? (
+                                <>
+                                    <span>Proceeding to checkout...</span>
+                                    <Loader2 className="animate-spin w-6 h-6 text-white absolute right-3" />
+                                </>
+                            ) : (
+                                'Proceed to Check Out'
+                            )}
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     );

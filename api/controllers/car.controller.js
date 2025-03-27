@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getAmadeusToken } from "../helpers/tokenService.js";
 import SearchData from "../models/search.model.js";
-import { fetchCityInfo } from "../helpers/convert.js";
+import { fetchCityInfo, fetchIATACode } from "../helpers/convert.js";
 
 // Main function to fetch car offers
 export const carOffers = async (req, res) => {

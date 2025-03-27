@@ -56,7 +56,7 @@ const SearchData = () => {
   const handleDelete = async (id) => {
     try {
       // Sending DELETE request to remove the search data from the server
-      await axios.delete(`/api/flight/search-data/${id}`);
+      await axios.delete(`/api/search/search-data/${id}`);
       // Remove the deleted item from the state
       setSearchData((prevData) => prevData.filter((item) => item._id !== id));
     } catch (error) {
