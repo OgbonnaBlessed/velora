@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { BounceLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { Loader2 } from 'lucide-react';
 
 const HotelDetails = () => {
     // Hooks to manage state and navigation
@@ -10,13 +11,14 @@ const HotelDetails = () => {
     const [hotelDetails, setHotelDetails] = useState(null); // Holds hotel details data
     const [error, setError] = useState(null); // Holds any error message
     const [loading, setLoading] = useState(false); // Manages loading state
+    const [pageLoading, setPageLoading] = useState(false);
     const { hotel } = location.state; // Destructures hotel object from the state passed via location
 
     // Fetch hotel details when the component mounts or hotel changes
     useEffect(() => {
         if (hotel) {
             const fetchHotelDetails = async () => {
-                setLoading(true); // Starts loading
+                setPageLoading(true); // Starts loading
                 try {
                     // Fetch hotel details from the server
                     const response = await fetch(`/api/hotel/hotel-details/${hotel.hotelId}`, {
@@ -40,7 +42,7 @@ const HotelDetails = () => {
                     // Handle unexpected errors
                     setError('An unexpected error occurred. Please try again later.');
                 }
-                setLoading(false); // Stops loading after the request
+                setPageLoading(false); // Stops loading after the request
             };
 
             fetchHotelDetails(); // Call the fetch function
@@ -65,12 +67,12 @@ const HotelDetails = () => {
     }).format(new Date(date));
 
     // Show loading spinner while waiting for data
-    if (loading) {
+    if (pageLoading) {
         return (
             <div className="min-h-screen w-full flex items-center justify-center">
                 <BounceLoader 
                     color="#48aadf" 
-                    loading={loading} 
+                    loading={pageLoading} 
                 />
             </div>
         );
@@ -101,7 +103,14 @@ const HotelDetails = () => {
 
     // Navigate to checkout page with hotel details and price information
     const proceedToCheckOut = () => {
-        navigate(`/hotel-check-out`, { state: { hotelDetails, tax, total } });
+        setLoading(true);
+        setTimeout(() => {
+            setTimeout(() => {
+                navigate(`/hotel-check-out`, { state: { hotelDetails, tax, total } });
+            }, 1000);
+
+            setLoading(false);
+        }, 5000);
     };
 
     return (
@@ -211,10 +220,18 @@ const HotelDetails = () => {
                         </div>
                         <button
                             type="button"
-                            className='bg-[#48aadf] rounded-full py-3 w-full font-semibold cursor-pointer text-white'
+                            disabled={loading}
+                            className={`${loading ? 'bg-[#48aadf]/50 cursor-not-allowed' : 'bg-[#48aadf] cursor-pointer'} hover:bg-[#48aadf]/50 active:scale-90 rounded-lg py-3 w-full font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2 relative text-sm sm:text-base`}
                             onClick={proceedToCheckOut} // Trigger checkout process
                         >
-                            Check out
+                            {loading ? (
+                                <>
+                                    <span>Proceeding to checkout...</span>
+                                    <Loader2 className="animate-spin w-6 h-6 text-white absolute right-3" />
+                                </>
+                            ) : (
+                                'Proceed to Check Out'
+                            )}
                         </button>
                     </div>
                 </div>

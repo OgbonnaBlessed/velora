@@ -1,7 +1,7 @@
 // Import necessary modules
 import express from 'express'; // Express for routing
 // Import controller functions for user management and bookings
-import { test, updateUser, deleteUser, signout, getUsers, getUser, getBookmarks, addBookmark, removeBookmark, bookings, bookHotel, cancelBooking } from '../controllers/user.controller.js'; 
+import { test, updateUser, deleteUser, signout, getUsers, getUser, getBookmarks, addBookmark, removeBookmark, bookings, bookHotel, cancelBooking, bookCar } from '../controllers/user.controller.js'; 
 // Import the token verification middleware for user authentication
 import { verifyToken } from '../utils/verifyUser.js';
 
@@ -28,6 +28,7 @@ router.get('/:userId', getUser);
 router.post('/book/:userId', verifyToken, bookings);
 // POST request to book a hotel for a user, requires token verification
 router.post('/book-hotel/:userId', verifyToken, bookHotel);
+router.post('/book-car/:userId',verifyToken, bookCar);
 // DELETE request to cancel a user's booking by bookingId
 router.delete('/:userId/bookings/:bookingId', cancelBooking); // Cancel booking
 

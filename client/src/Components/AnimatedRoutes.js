@@ -33,6 +33,8 @@ import CarSearchPage from '../Pages/search-pages/CarSearchPage';
 import SearchPage from '../Pages/search-pages/SearchPage';
 import HotelSearch from '../Pages/search-pages/HotelSearch';
 import CarDetails from '../Pages/CarDetails';
+import CarCheckOutPage from '../Pages/CarCheckOutPage';
+import StateRequiredRoutes from './StateRequiredRoutes';
 
 const AnimatedRoutes = () => {
   // useLocation hook from React Router to get the current location (path)
@@ -65,18 +67,21 @@ const AnimatedRoutes = () => {
           <Route path='/airport_security' element={<AirportSecurity/>} /> {/* Airport Security Page */}
           <Route path='/travel_document' element={<TravelDocument/>} /> {/* Travel Document Page */}
           <Route path='/preference' element={<Preferences/>} /> {/* Preferences Page */}
-          <Route path='/flight-search' element={<SearchPage/>} /> {/* Flight Search Page */}
-          <Route path='/hotel-search' element={<HotelSearch />} /> {/* Hotel Search Page */}
-          <Route path='/car-search' element={<CarSearchPage />} />
-          <Route path='/airport-to-hotel-car-search' element={<AirportToHotelCarSearch />} /> {/* Airport to Hotel Page */}
-          <Route path='/hotel-to-airport-car-search' element={<HotelToAirportCarSearch />} /> {/* Hotel to Airport Page */}
-          <Route path='/round-trip-car-search' element={<RoundTripCarSearch />} /> {/* Round Trip Car Search Page */}
-          <Route path='/multi-city-search' element={<MultiCitySearch />} /> {/* Multi City Flight Search */}
-          <Route path='/flight-details/:flightId' element={<FlightDetails/>} /> {/* Flight Details Page with dynamic flightId */}
-          <Route path='/hotel-details/:hotelId' element={<HotelDetails/>} /> {/* Hotel Details Page with dynamic hotelId */}
-          <Route path='/car-details/:carId' element={<CarDetails />} />
-          <Route path='/flight-check-out' element={<FlightCheckOutPage/>} /> {/* Flight Checkout Page */}
-          <Route path='/hotel-check-out' element={<HotelCheckOutPage />} /> {/* Hotel Checkout Page */}
+          <Route element={<StateRequiredRoutes />}>
+            <Route path='/flight-search' element={<SearchPage/>} /> {/* Flight Search Page */}
+            <Route path='/hotel-search' element={<HotelSearch />} /> {/* Hotel Search Page */}
+            <Route path='/car-search' element={<CarSearchPage />} />
+            <Route path='/airport-to-hotel-car-search' element={<AirportToHotelCarSearch />} /> {/* Airport to Hotel Page */}
+            <Route path='/hotel-to-airport-car-search' element={<HotelToAirportCarSearch />} /> {/* Hotel to Airport Page */}
+            <Route path='/round-trip-car-search' element={<RoundTripCarSearch />} /> {/* Round Trip Car Search Page */}
+            <Route path='/multi-city-search' element={<MultiCitySearch />} /> {/* Multi City Flight Search */}
+            <Route path='/flight-check-out' element={<FlightCheckOutPage/>} /> {/* Flight Checkout Page */}
+            <Route path='/flight-details/:flightId' element={<FlightDetails/>} /> {/* Flight Details Page with dynamic flightId */}
+            <Route path='/hotel-details/:hotelId' element={<HotelDetails/>} /> {/* Hotel Details Page with dynamic hotelId */}
+            <Route path='/car-details/:carId' element={<CarDetails />} />
+            <Route path='/hotel-check-out' element={<HotelCheckOutPage />} /> {/* Hotel Checkout Page */}
+            <Route path='/car-check-out' element={<CarCheckOutPage />} />
+          </Route>
           <Route path='/booking-completed' element={<BookingCompleted/>} /> {/* Booking Completed Page */}
         </Route>
       </Routes>

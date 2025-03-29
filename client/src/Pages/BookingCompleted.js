@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FaCheckCircle } from "react-icons/fa"; // Importing check circle icon from react-icons
-import { Link } from "react-router-dom"; // Importing Link for routing to the homepage
+import { Link, useLocation, useNavigate } from "react-router-dom"; // Importing Link for routing to the homepage
 import { motion } from "framer-motion"; // Importing motion from framer-motion for animations
 
 const BookingCompleted = () => {
+  const location = useLocation(); // Get location object
+  const navigate = useNavigate(); // Initialize navigation
+
+  // Check if the page was accessed via checkout
+  useEffect(() => {
+    if (location.state?.fromCheckout !== true) {
+      navigate("/"); // Redirect to homepage if accessed directly
+    }
+  }, [location, navigate]);
+
   return (
     <motion.div 
       initial={{ opacity: 0 }} // Initial opacity when the component appears
@@ -13,7 +23,7 @@ const BookingCompleted = () => {
         duration: .5, // Transition duration of 0.5 seconds
         ease: "easeInOut" // Easing function for smooth transition
       }}
-      className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-100 to-[#48aadf] text-white px-4"
+      className="min-h-screen font-Grotesk flex flex-col items-center justify-center bg-gradient-to-b from-blue-100 to-[#48aadf] text-white px-4"
       // Full screen minimum height with a gradient background and center alignment
     >
       <div className="flex flex-col items-center gap-4 bg-white p-6 md:p-8 rounded-lg shadow-lg text-center w-full max-w-md">
@@ -22,10 +32,10 @@ const BookingCompleted = () => {
         <div className="relative w-20 h-20 flex items-center justify-center rounded-full">
           {/* Circle container for the check icon */}
           
-          <div className="absolute inset-0 animate-scale-circle bg-green-500 rounded-full opacity-20"></div>
+          <div className="absolute inset-0 animate-scale-circle bg-[#48aadf] rounded-full opacity-20"></div>
           {/* Animated background circle that scales and has a green background with reduced opacity */}
 
-          <FaCheckCircle className="text-green-500 text-5xl md:text-6xl animate-tick" />
+          <FaCheckCircle className="text-[#48aadf] text-5xl md:text-6xl animate-tick" />
           {/* Checkmark icon with green color and animation */}
         </div>
 
@@ -41,7 +51,7 @@ const BookingCompleted = () => {
 
         <Link
           to="/" // Link to navigate back to the homepage
-          className="mt-4 px-4 py-2 md:px-6 md:py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow-lg transition duration-200"
+          className="mt-4 px-4 py-2 md:px-6 md:py-3 bg-[#48aadf] hover:bg-[#48aadf]/80 text-white rounded-lg font-semibold transition duration-200"
           // Styled button to go to the homepage
         >
           Go to Homepage

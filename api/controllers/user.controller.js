@@ -513,6 +513,145 @@ export const bookHotel = async (req, res, next) => {
     }
 };
 
+// Handle user car bookings
+export const bookCar = async (req, res, next) => {
+    // Check if the user trying to make the booking is the same as the one whose ID is in the URL
+    // If not, send a 403 error indicating unauthorized access
+    if (req.user.id !== req.params.userId) {
+        return next(errorHandler(403, 'You are not allowed to book for this user'));
+    }
+
+    // Destructure formData, hotelDetails, and total from the request body
+    // formData holds user data, hotelDetails holds hotel information, and total holds the booking cost
+    const { formData, car, total } = req.body;
+
+    try {
+        // Add a unique ID to the booking using uuidv4
+        const bookingWithId = { ...car, id: uuidv4() };
+
+        // Update the user's document by adding the booking details to their bookings array and updating their formData
+        const updatedUser = await User.findByIdAndUpdate(
+            req.params.userId, // User to update (based on userId in URL)
+            {
+                $push: { bookings: bookingWithId }, // Push the booking details into the user's bookings array
+                $set: { ...formData }, // Update any other user details passed through formData (e.g., address, phone number)
+            },
+            { new: true } // Return the updated user document
+        );
+
+        // Helper function to format time (e.g., arrival time, check-in time)
+        const formatTime = (date) =>
+            new Intl.DateTimeFormat('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true,
+            }).format(new Date(date));
+
+        // Helper function to format dates (e.g., check-in and check-out dates)
+        const formatDate = (dateString) => {
+            const options = { month: 'short', day: 'numeric', year: 'numeric' };
+            return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
+        };
+
+        // Set up the nodemailer transporter to send a booking confirmation email
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.mail.yahoo.com', // SMTP server for sending the email
+            port: 465, // Secure SMTP port
+            secure: true, // Use SSL
+            auth: {
+                user: process.env.EMAIL_USER, // Email user from environment variable
+                pass: process.env.EMAIL_PASS, // Email password from environment variable
+            },
+            tls: {
+                rejectUnauthorized: false, // Disable unauthorized certificate checks (usually required for self-signed certificates)
+            },
+        });
+
+        // Define the email content (HTML template) to be sent
+        const mailOptions = {
+            from: `"Velora" <${process.env.EMAIL_USER}>`, // Sender email
+            to: updatedUser.email, // Recipient email (user's email)
+            subject: 'Booking Confirmation', // Email subject
+            html: `
+            <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+                <!-- Email Header -->
+                <div style="background-color: #f5f5f5; padding: 20px; text-align: center;">
+                    <h2 style="color: #48aadf;">Booking Confirmation</h2>
+                    <p style="font-size: 1.1em;">Thank you for booking with Velora!</p>
+                </div>
+                
+                <!-- Email Body -->
+                <div style="padding: 20px; background-color: #ffffff; border: 1px solid #ddd; border-radius: 5px; margin: 20px auto; max-width: 600px;">
+                    <p><strong>Dear ${formData.firstName} ${formData.lastName},</strong></p>
+                    <p>We are pleased to confirm your hotel booking. Here are your hotel details:</p>
+                    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Car ID:</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">${car?.id}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Car Description:</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                ${car?.vehicle?.description}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Arrival Date:</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                ${formatDate(car?.start?.dateTime)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Departure Date:</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                ${formatDate(car?.end?.dateTime)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Arrival:</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                ${formatTime(car?.end?.dateTime)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Passengers:</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                ${car?.vehicle?.seats.map((seat) => `${seat.count}`).join(", ")} 
+                                ${car?.vehicle?.seats.map((seat) => (seat.count > 1 ? 'Adults' : 'Adult')).join(", ")}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Total Price:</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                ${total.toFixed(0)} ${car?.converted?.currencyCode}
+                            </td>
+                        </tr>
+                    </table>
+                    <p>We wish you a pleasant journey! If you have any questions, please feel free to contact us.</p>
+                </div>
+                
+                <!-- Email Footer -->
+                <div style="background-color: #48aadf; color: #ffffff; text-align: center; padding: 10px;">
+                    <p style="margin: 0;">&copy; 2024 Velora. All rights reserved.</p>
+                </div>
+            </div>`,
+        };
+
+        // Send the booking confirmation email
+        await transporter.sendMail(mailOptions);
+    
+        // Exclude the password from the user response before sending it to the client
+        const { password, ...rest } = updatedUser._doc;
+
+        // Send the updated user data (without the password) as a response
+        res.status(200).json(rest);
+      
+    } catch (error) {
+        // Handle any errors that occur during the booking process
+        next(error);
+    }
+};
+
 // Cancel flight booking
 export const cancelBooking = async (req, res, next) => {
     // Extracting userId and bookingId from the request parameters

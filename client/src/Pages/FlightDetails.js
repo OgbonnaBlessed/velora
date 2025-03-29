@@ -1,12 +1,22 @@
-import { ArrowRight, CheckCheck, ChevronRight } from 'lucide-react'; // Importing icons from lucide-react library
-import React from 'react'; // Importing React
+import { ArrowRight, CheckCheck, ChevronRight, Loader2 } from 'lucide-react'; // Importing icons from lucide-react library
+import React, { useEffect, useState } from 'react'; // Importing React
 import { useLocation, useNavigate } from 'react-router-dom'; // Importing hooks for routing
 import { motion } from 'framer-motion'; // Importing motion for page transitions with framer-motion library
+import { BounceLoader } from 'react-spinners';
 
 const FlightDetails = () => {
   const location = useLocation(); // Hook to access the current location (used to retrieve flight data passed via state)
   const navigate = useNavigate(); // Hook to navigate to different routes programmatically
   const { flight } = location.state; // Destructuring the flight data passed from the previous page
+  const [loading, setLoading] = useState(false);
+  const [pageLoading, setPageLoading] = useState(false);
+
+  useEffect(() => {
+    setPageLoading(true);
+    setTimeout(() => {
+      setPageLoading(false);
+    }, 5000);
+  }, [])
 
   // Helper function to calculate the total flight duration in minutes
   const getFlightDuration = (flight) => {
@@ -28,7 +38,14 @@ const FlightDetails = () => {
 
   // Function to handle navigation to the checkout page, passing flight and price details via state
   const proceedToCheckOut = () => {
-    navigate(`/flight-check-out`, { state: { flight, tax, total } });
+    setLoading(true);
+    setTimeout(() => {
+      setTimeout(() => {
+        navigate(`/flight-check-out`, { state: { flight, tax, total } });
+      }, 1000);
+
+      setLoading(false);
+    }, 5000);
   };
 
   // Helper function to format the time in 12-hour format (e.g., 10:30 AM)
@@ -49,6 +66,17 @@ const FlightDetails = () => {
   const formatWord = (word) => {
     return word.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
   };
+
+  if (pageLoading) {
+    return (
+      <div className='min-h-screen w-full flex items-center justify-center'>
+        <BounceLoader
+          color="#48aadf"
+          loading={pageLoading}
+        />
+      </div>
+    )
+  }
 
   return (
     <motion.div 
@@ -78,7 +106,7 @@ const FlightDetails = () => {
         
         {/* Flight details section */}
         <div className='flex flex-col gap-5 flex-1 max-w-full'>
-          <div className='bg-blue-100 shadow shadow-[#48aadf] rounded-3xl p-5 flex flex-col gap-1 w-full'>
+          <div className='bg-blue-100 rounded-3xl p-5 flex flex-col gap-1 w-full'>
             {/* Flight itinerary details (departure and arrival times, stops, etc.) */}
             <div className='font-semibold font-Grotesk text-lg'>
               {`${formatWord(flight.itineraries[0].segments[0].departure.cityName)} to 
@@ -103,7 +131,7 @@ const FlightDetails = () => {
           </div>
 
           {/* Fare details section */}
-          <div className='flex flex-col gap-2 p-5 bg-blue-100 shadow shadow-[#48aadf] rounded-3xl w-full'>
+          <div className='flex flex-col gap-2 p-5 bg-blue-100 rounded-3xl w-full'>
             <h1 className='font-semibold font-Grotesk text-lg'>
               Your fare: {formatWord(flight.travelerPricings[0].fareDetailsBySegment[0].cabin)}
             </h1>
@@ -126,7 +154,7 @@ const FlightDetails = () => {
         </div>
 
         {/* Payment summary section */}
-        <div className='bg-blue-100 rounded-3xl p-5 flex flex-col gap-3 w-96 max-w-full shadow shadow-[#48aadf]'>
+        <div className='bg-blue-100 rounded-3xl p-5 flex flex-col gap-3 w-96 max-w-full'>
           <h1 className='text-lg font-semibold font-Grotesk'>Payment summary</h1>
           <div className='flex flex-col gap-2'>
             <div className='flex items-center justify-between'>
@@ -145,10 +173,18 @@ const FlightDetails = () => {
           {/* Checkout button to proceed to the checkout page */}
           <button
             type="button"
-            className='bg-[#48aadf] rounded-full py-3 w-full font-semibold cursor-pointer text-white'
-            onClick={proceedToCheckOut}
+            disabled={loading}
+            className={`${loading ? 'bg-[#48aadf]/50 cursor-not-allowed' : 'bg-[#48aadf] cursor-pointer'} hover:bg-[#48aadf]/50 active:scale-90 rounded-lg py-3 w-full font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2 relative text-sm sm:text-base`}
+            onClick={proceedToCheckOut} // Trigger checkout process
           >
-            Check out
+            {loading ? (
+              <>
+                <span>Proceeding to checkout...</span>
+                <Loader2 className="animate-spin w-6 h-6 text-white absolute right-3" />
+              </>
+            ) : (
+              'Proceed to Check Out'
+            )}
           </button>
         </div>
       </div>

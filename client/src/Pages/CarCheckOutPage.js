@@ -11,11 +11,11 @@ import { updateFailure, updateStart, updateSuccess } from '../redux/user/userSli
 import { motion } from "framer-motion"; // Importing motion for animation from framer-motion library
 import { BounceLoader } from "react-spinners";
 
-const FlightCheckOutPage = () => {
+const CarCheckOutPage = () => {
   // React router hooks to access location and navigation properties
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   // Redux hooks to access the dispatch function and user state
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
@@ -24,37 +24,30 @@ const FlightCheckOutPage = () => {
   const [receiveSMS, setRecieveSMS] = useState(false);
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [pageLoading, setPageLoading] = useState(false);
   const [updateUserError, setUpdateUserError] = useState(null);
   const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
   const [visible, setVisible] = useState('debit-card');
   const [validationError, setValidationError] = useState(false);
-  const [pageLoading, setPageLoading] = useState(false);
 
   // References to DOM elements for tabs
   const indicatorRef = useRef(null);
   const tabContainerRef = useRef(null);
-  
-  // Extract flight, tax, and total values from the location state
-  const { flight, total } = location.state;
 
-  useEffect(() => {
-    setPageLoading(true);
-    setTimeout(() => {
-      setPageLoading(false);
-    }, 5000);
-  }, [])
+  const car = location?.state?.car
+  const total = location?.state?.total
 
   // Side effect to populate the formData state with currentUser's data
   useEffect(() => {
     if (currentUser) {
       const userData = {
-        firstName: currentUser.firstName || '',
-        lastName: currentUser.lastName || '',
-        middleName: currentUser.middleName || '',
-        number: currentUser.number || '',
-        countryCode: currentUser.countryCode || '',
-        DOB: currentUser.DOB || '',
-        travelDocument: {
+          firstName: currentUser.firstName || '',
+          lastName: currentUser.lastName || '',
+          middleName: currentUser.middleName || '',
+          number: currentUser.number || '',
+          countryCode: currentUser.countryCode || '',
+          DOB: currentUser.DOB || '',
+          travelDocument: {
           country: currentUser.travelDocument?.country || '',
         },
       };
@@ -78,23 +71,23 @@ const FlightCheckOutPage = () => {
   // Generic handler for form input changes (handles nested objects like formData.location.city)
   const handleChange = (e) => {
     const { id, value } = e.target;
-    
+      
     // Split nested keys (e.g., "location.city") into an array
     setFormData((prev) => {
-      const keys = id.split('.'); // Split nested keys
-      let updatedData = { ...prev }; // Make a copy of formData
+    const keys = id.split('.'); // Split nested keys
+    let updatedData = { ...prev }; // Make a copy of formData
 
-      let currentLevel = updatedData;
-      keys.forEach((key, index) => {
-        if (index === keys.length - 1) {
-          currentLevel[key] = value; // Set the final value for the nested key
-        } else {
-          currentLevel[key] = { ...currentLevel[key] }; // Create new object for each nested level
-          currentLevel = currentLevel[key];
-        }
-      });
+    let currentLevel = updatedData;
+    keys.forEach((key, index) => {
+      if (index === keys.length - 1) {
+        currentLevel[key] = value; // Set the final value for the nested key
+      } else {
+        currentLevel[key] = { ...currentLevel[key] }; // Create new object for each nested level
+        currentLevel = currentLevel[key];
+      }
+    });
 
-      return updatedData;
+    return updatedData;
     });
   };
 
@@ -136,15 +129,18 @@ const FlightCheckOutPage = () => {
   }
 
   // Function to handle tab switching
-  const OpenTab = (tabname) => {
-    setVisible(tabname); // Update visible tab
-  }
+  const OpenTab = (tabName) => {
+    setVisible(tabName);
+  };
 
-  // Side effect to update the active tab indicator
-  useEffect(() => {
-    const tabs = tabContainerRef.current?.querySelectorAll('p');
+  // Function to update the underline indicator position
+  const updateIndicator = () => {
+    const tabs = tabContainerRef.current?.querySelectorAll("p");
+    if (!tabs) return; // Exit if tabs are undefined
+
+    // Find the active tab based on visible state
     const activeTab = Array.from(tabs).find(
-      (tab) => tab.textContent.toLowerCase().replace(/\s+/g, '-') === visible
+      (tab) => tab.textContent.toLowerCase().replace(/\s+/g, "-") === visible
     );
 
     if (activeTab && indicatorRef.current) {
@@ -152,27 +148,59 @@ const FlightCheckOutPage = () => {
       indicatorRef.current.style.width = `${offsetWidth}px`; // Set indicator width
       indicatorRef.current.style.left = `${offsetLeft}px`; // Set indicator position
     }
-  }, [visible]); // Re-run effect when visible tab changes
-
-  // Helper function to calculate flight duration in minutes
-  const getFlightDuration = (flight) => {
-    const segments = flight.itineraries[0]?.segments;
-    const departureTime = new Date(segments[0].departure.at).getTime();
-    const arrivalTime = new Date(segments[segments.length - 1].arrival.at).getTime();
-    return (arrivalTime - departureTime) / (1000 * 60); // Duration in minutes
   };
-  
-  // Helper function to calculate arrival date from departure date and flight duration
-  const getArrivalDate = (flight) => {
-    const segments = flight.itineraries[0]?.segments;
-    const departureTime = new Date(segments[0].departure.at).getTime();
-    const flightDurationInMinutes = getFlightDuration(flight);
+
+  // Side effect to update indicator on visible state change
+  useEffect(() => {
+    updateIndicator();
+  }, [visible]);
+
+  // Run once on component mount
+  useEffect(() => {
+    // Update on initial mount
+    updateIndicator();
+
+    // Create a ResizeObserver to watch for changes
+    const observer = new ResizeObserver(() => {
+      updateIndicator();
+    });
+
+    if (tabContainerRef.current) {
+      observer.observe(tabContainerRef.current);
+    }
+
+    // Cleanup the observer
+    return () => observer.disconnect();
+  }, []);
+
+  // Helper function to calculate car duration in minutes
+  const getCarDuration = (car) => {
+    const startTime = new Date(car?.start?.dateTime).getTime();
+    const endTime = new Date(car?.end?.dateTime).getTime();
     
-    const arrivalTime = departureTime + (flightDurationInMinutes * 60 * 1000); // Calculate arrival time
-    return new Date(arrivalTime);
+    if (isNaN(startTime) || isNaN(endTime)) {
+      console.error("Invalid start or end time");
+      return null;
+    }
+    
+    return (endTime - startTime) / (1000 * 60); // Duration in minutes
   };
 
-  const arrivalDate = getArrivalDate(flight);
+  // Helper function to calculate arrival date from start time and duration
+  const getArrivalDate = (car) => {
+    const startTime = new Date(car?.start?.dateTime).getTime();
+    const durationInMinutes = getCarDuration(car);
+    
+    if (startTime && durationInMinutes !== null) {
+      const arrivalTime = startTime + (durationInMinutes * 60 * 1000);
+      return new Date(arrivalTime);
+    }
+    
+    return null;
+  };
+
+  // Usage
+  const arrivalDate = getArrivalDate(car);
 
   // Helper function to format time as 'hour:minute AM/PM'
   const formatTime = (date) =>
@@ -186,11 +214,6 @@ const FlightCheckOutPage = () => {
   const formatDate = (dateString) => {
     const options = { month: 'short', day: 'numeric', year: 'numeric' };
     return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
-  };
-
-  // Helper function to format words (e.g., title case)
-  const formatWord = (word) => {
-    return word.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
   };
 
   // Handle form submission for booking
@@ -229,16 +252,16 @@ const FlightCheckOutPage = () => {
       setLoading(true);
 
       // Send form data and flight data to backend for booking
-      const res = await fetch(`/api/user/book/${currentUser._id}`, {
+      const res = await fetch(`/api/user/book-car/${currentUser._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ formData, flight }),
+        body: JSON.stringify({ formData, car, total }),
       });
-            
+              
       const data = await res.json();
-            
+              
       if (!res.ok) {
         dispatch(updateFailure(data.message));
         setUpdateUserError(data.message);
@@ -247,8 +270,7 @@ const FlightCheckOutPage = () => {
       } else {
         dispatch(updateSuccess(data));
         setUpdateUserSuccess("Update successful");
-        setLoading(false);
-
+        
         // Redirect to booking confirmation page
         setTimeout(() => {
           setTimeout(() => {
@@ -276,6 +298,13 @@ const FlightCheckOutPage = () => {
     }
   }, [updateUserSuccess, updateUserError]);
 
+  useEffect(() => {
+    setPageLoading(true);
+    setTimeout(() => {
+      setPageLoading(false);
+    }, 5000);
+  }, []);
+
   if (pageLoading) {
     return (
       <div className='min-h-screen w-full flex items-center justify-center'>
@@ -296,7 +325,7 @@ const FlightCheckOutPage = () => {
         duration: .5,
         ease: "easeInOut"
       }}
-      className="flex flex-col-reverse lg:flex-row bg-white rounded-lg overflow-hidden items-start gap-5 px-4 sm:px-6 lg:px-20 pt-28 md:pt-36 pb-10"
+      className="flex flex-col-reverse lg:flex-row bg-white rounded-lg overflow-hidden items-start gap-5 px-4 sm:px-6 lg:px-20 pt-28 md:pt-36 pb-10 font-Grotesk"
     >
 
       {/* Left Section - Checkout Form */}
@@ -696,18 +725,12 @@ const FlightCheckOutPage = () => {
           {/* Header section for flight details, with top and bottom padding and a white border separating it from the rest of the content */}
           
           <p className="font-medium">
-            {/* Main text displaying the departure and arrival flight cities along with their IATA codes */}
-            {formatWord(flight.itineraries[0].segments[0].departure.cityName)} ({formatWord(flight.itineraries[0].segments[0].departure.iataCode)}) to {" "}
-            {formatWord(flight.itineraries[0].segments.slice(-1)[0].arrival.cityName)} ({formatWord(flight.itineraries[0].segments[0].arrival.iataCode)})
-            {/* The departure and arrival cities and IATA codes are formatted using the formatWord function */}
+           {car?.start?.locationCode} to {car?.end?.address?.cityName}
           </p>
           
           <p className="text-sm">
-            {/* Text displaying the departure and arrival times, formatted with the formatDate and formatTime helper functions */}
-            {formatDate(flight.itineraries[0].segments[0].departure.at)} |{" "} 
-            {`${formatTime(flight.itineraries[0].segments[0].departure.at)} - 
-                ${formatTime(flight.itineraries[0].segments.slice(-1)[0].arrival.at)}`}
-            {/* The departure date and time are formatted and then the arrival time is displayed in the same format */}
+            {formatDate(car?.start?.dateTime)} | {" "} 
+            {`${formatTime(car?.start?.dateTime)} - ${formatTime(car?.end?.dateTime)}`}
           </p>
           
           <p className="text-sm">Arrives {formatDate(arrivalDate)}</p>
@@ -720,7 +743,9 @@ const FlightCheckOutPage = () => {
           <div>
             <p className="font-semibold">Your Price Summary</p>
             {/* Header text indicating that this section shows the price summary */}
-            <p>Traveler 1: Adult</p>
+            <p>
+              Traveler {car?.vehicle?.seats?.map((seat) => (<>{seat.count}</>))}: {car?.vehicle?.seats?.map((seat) => (<>{seat.count > 1 ? 'Adults' : 'Adult'}</>))}
+            </p>
             {/* Text indicating that this price is for the first adult traveler */}
           </div>
 
@@ -732,4 +757,4 @@ const FlightCheckOutPage = () => {
   );
 };
 
-export default FlightCheckOutPage;
+export default CarCheckOutPage;

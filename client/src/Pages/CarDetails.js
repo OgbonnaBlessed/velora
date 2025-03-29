@@ -19,32 +19,6 @@ const CarDetails = () => {
         }, 5000);
     }, [])
 
-    if (pageLoading) {
-        return (
-            <div className='min-h-screen w-full flex items-center justify-center'>
-                <BounceLoader 
-                    color="#48aadf"
-                    loading={pageLoading}
-                />
-            </div>
-        )
-    }
-
-    // Fallback if car data is missing
-    if (!car) {
-        return (
-            <div className="p-8 text-center">
-                <h2 className="text-xl font-semibold mb-4">Car Not Found</h2>
-                <button
-                    className="bg-[#48aadf] text-white px-6 py-2 rounded-full hover:bg-[#48aadf]/80"
-                    onClick={() => navigate(-1)}
-                >
-                    Go Back
-                </button>
-            </div>
-        );
-    }
-
     const {
         cancellationRules,
         vehicle,
@@ -74,13 +48,42 @@ const CarDetails = () => {
     const total = monetaryAmount + tax; // Total price including tax
 
     // Function to handle booking
-    const handleBooking = () => {
+    const proceedToCheckout = () => {
         setLoading(true);
         setTimeout(() => {
-            alert("Booking functionality coming soon!");
+            setTimeout(() => {
+                navigate('/car-check-out', { state: { car, tax, total } })
+            }, 1000);
+
             setLoading(false);
         }, 5000);
     };
+
+    if (pageLoading) {
+        return (
+            <div className='min-h-screen w-full flex items-center justify-center'>
+                <BounceLoader 
+                    color="#48aadf"
+                    loading={pageLoading}
+                />
+            </div>
+        )
+    }
+
+    // Fallback if car data is missing
+    if (!car) {
+        return (
+            <div className="p-8 text-center">
+                <h2 className="text-xl font-semibold mb-4">Car Not Found</h2>
+                <button
+                    className="bg-[#48aadf] text-white px-6 py-2 rounded-full hover:bg-[#48aadf]/80"
+                    onClick={() => navigate(-1)}
+                >
+                    Go Back
+                </button>
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col items-center lg:items-start gap-5 px-6 sm:px-8 lg:px-24 pt-28 md:pt-36 pb-12 bg-white font-Grotesk">
@@ -110,7 +113,7 @@ const CarDetails = () => {
                 <div className="flex flex-col w-full">
                     <img 
                         src={vehicle?.imageURL || `${process.env.PUBLIC_URL}/images/placeholder-car.png`}
-                        alt={`Car-${car.id} image`} 
+                        alt={`Car-${car?.id} image`} 
                         onError={(e) => e.target.src = `${process.env.PUBLIC_URL}/images/placeholder-car.png`}
                         className="object-cover hover:scale-105 cursor-pointer transition-all duration-300"
                     />
@@ -125,7 +128,7 @@ const CarDetails = () => {
                                     Seats:
                                 </p> 
                                 {vehicle?.seats?.map((seat) => (
-                                    <p className="text-sm">{seat.count}</p>
+                                    <p className="text-sm">{seat?.count}</p>
                                 )) || "N/A" }
                             </div>
                             <div className="flex items-baseline gap-2">
@@ -141,7 +144,7 @@ const CarDetails = () => {
                                     Baggages:
                                 </p> 
                                 {vehicle?.baggages?.map((baggage) => (
-                                    <p className="text-sm">{baggage.count}, {baggage.size}</p>
+                                    <p className="text-sm">{baggage?.count}, {baggage?.size}</p>
                                 )) || "N/A" }
                             </div>
 
@@ -178,12 +181,12 @@ const CarDetails = () => {
                             <div className="font-Grotesk">
                                 <h2 className="font-semibold">Terms & Conditions</h2>
                                 <p className="text-gray-600 text-sm ml-4">
-                                    {cancellationRules.map((rules, index) => (
+                                    {cancellationRules?.map((rules, index) => (
                                         <div className="flex items-start gap-1 mb-1">
                                             <span>{index + 1}.</span>
                                             <p>{rules?.ruleDescription}</p>
                                         </div>
-                                    ))}
+                                    )) || "N/A" }
                                 </p>
                             </div>
                         </div>
@@ -209,7 +212,7 @@ const CarDetails = () => {
                             type="button"
                             disabled={loading}
                             className={`${loading ? 'bg-[#48aadf]/50 cursor-not-allowed' : 'bg-[#48aadf] cursor-pointer'} hover:bg-[#48aadf]/50 active:scale-90 rounded-lg py-3 w-full font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2 relative text-sm sm:text-base`}
-                            onClick={handleBooking} // Trigger checkout process
+                            onClick={proceedToCheckout} // Trigger checkout process
                         >
                             {loading ? (
                                 <>

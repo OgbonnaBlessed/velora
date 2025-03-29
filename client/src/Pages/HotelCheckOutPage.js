@@ -1,4 +1,4 @@
-import { CheckCheck, ChevronDown } from "lucide-react";
+import { CheckCheck, ChevronDown, Loader2 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import DebitCard from "../Components/DebitCard";
 import ClickToPay from "../Components/ClickToPay";
@@ -6,7 +6,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { listItems, subListItems } from "../Data/ListItems";
 import { countries } from '../Data/Locations';
-import { SyncLoader } from 'react-spinners';
+import { BounceLoader } from 'react-spinners';
 import { updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice';
 import { motion } from "framer-motion";
 
@@ -22,6 +22,7 @@ const HotelCheckOutPage = () => {
   const [updateUserSuccess, setUpdateUserSuccess] = useState(null); // State for storing success messages
   const [visible, setVisible] = useState('debit-card'); // Manage visible tab (e.g., 'debit-card')
   const [validationError, setValidationError] = useState(false); // State for validation errors
+  const [pageLoading, setPageLoading] = useState(false);
   const indicatorRef = useRef(null); // Reference for the tab indicator
   const tabContainerRef = useRef(null); // Reference for the tab container
   const { hotelDetails, total } = location.state; // Extract hotel details and total price from location state
@@ -44,6 +45,13 @@ const HotelCheckOutPage = () => {
       setFormData(userData); // Set user data to formData state
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    setPageLoading(true);
+    setTimeout(() => {
+      setPageLoading(false);
+    }, 5000);
+  }, [])
 
   // Handle updating form data when debit card changes
   const handleDebitCardChange = (updatedData) => {
@@ -205,10 +213,14 @@ const HotelCheckOutPage = () => {
         setUpdateUserSuccess("Update successful");
         setLoading(false);
 
-        // Navigate to 'booking-completed' page after 3 seconds
+        // Redirect to booking confirmation page
         setTimeout(() => {
-          navigate('/booking-completed');
-        }, 3000);
+          setTimeout(() => {
+            navigate('/booking-completed', { state: { fromCheckout: true } });
+          }, 1000);
+
+          setLoading(false);
+        }, 5000);
       }
     } catch (error) {
       dispatch(updateFailure(error.message)); // Handle request failure
@@ -229,12 +241,16 @@ const HotelCheckOutPage = () => {
     }
   }, [updateUserSuccess, updateUserError]);
 
-  // Redirect to hotel search page if state is null
-  useEffect(() => {
-    if (location.state === null) {
-      navigate('/hotel-search');
-    }
-  }, [location.state, navigate]);
+  if (pageLoading) {
+    return (
+      <div className='min-h-screen w-full flex items-center justify-center'>
+        <BounceLoader
+          color="#48aadf"
+          loading={pageLoading}
+        />
+      </div>
+    )
+  }
 
   return (
     <motion.div 
@@ -253,7 +269,7 @@ const HotelCheckOutPage = () => {
         onSubmit={handleSubmit}
         className="w-full flex-1 flex flex-col gap-5 lg:w-2/3 relative"
       >
-        <div className="w-full flex-1 p-6 bg-blue-100 shadow shadow-[#48aadf] rounded-3xl flex flex-col gap-5">
+        <div className="w-full flex-1 p-6 bg-blue-100 rounded-3xl flex flex-col gap-5">
           {/* Container for the whole form with padding, background color, shadow, and rounded corners */}
 
           <div className="flex flex-col gap-2">
@@ -525,7 +541,7 @@ const HotelCheckOutPage = () => {
                   {/* Underline Indicator */}
                   <div
                     ref={indicatorRef}
-                    className="absolute bottom-0 h-[2px] bg-white shadow shadow-gray-300 rounded-full transition-all duration-300 ease-in-out"
+                    className="absolute bottom-0 h-[2px] bg-white rounded-full transition-all duration-300 ease-in-out"
                   />
                 </div>
 
@@ -541,7 +557,7 @@ const HotelCheckOutPage = () => {
             </div>
           </div>
         </div>
-        <div className="bg-blue-100 shadow shadow-[#48aadf] rounded-3xl p-6 flex flex-col gap-4 relative">
+        <div className="bg-blue-100 rounded-3xl p-6 flex flex-col gap-4 relative">
           {/* Wrapper div for the card-like component, styled with blue background, shadows, rounded corners, padding, and flexible layout */}
           
           <div className="flex flex-col gap-3">
@@ -605,27 +621,18 @@ const HotelCheckOutPage = () => {
 
             <button
               type="submit"
-              className={`w-52 max-w-full py-3 text-white font-semibold outline-none mt-5 self-center text-sm rounded-full shrink-button 
-                          transition-all duration-300 ease-in-out
-                        ${loading 
-                          ? 'bg-[#48aadf96] cursor-not-allowed' 
-                          : 'bg-[#48aadf] cursor-pointer'
-                        }`
-              }
+              disabled={loading}
+              className={`${loading ? 'bg-[#48aadf]/50 cursor-not-allowed' : 'bg-[#48aadf] cursor-pointer'} hover:bg-[#48aadf]/50 active:scale-90 rounded-lg py-3 w-80 max-w-full self-center mt-8 font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2 relative text-sm sm:text-base`}
             >
               {/* Button to complete booking, with dynamic styling based on loading state */}
-              <p>
-                {loading 
-                  ? <SyncLoader 
-                      color="#fff" // Customize the color of the loader
-                      loading={loading} 
-                      size={7} // Customize the size of the loader
-                      margin={2} // Customize the margin between loader circles
-                    />
-                  : 'Complete Booking'
-                }
-                {/* Displaying either a loader or the button text based on the loading state */}
-              </p>
+              {loading ? (
+                <>
+                  <span>Completing booking...</span>
+                  <Loader2 className="animate-spin w-6 h-6 text-white absolute right-3" />
+                </>
+              ) : (
+                'Complete Booking'
+              )}
             </button>
           </div>
 
@@ -646,7 +653,7 @@ const HotelCheckOutPage = () => {
       </form>
 
       {/* Right Section - Price Summary */}
-      <div className="w-full bg-blue-100 shadow shadow-[#48aadf] p-5 rounded-3xl flex flex-col lg:w-1/3">
+      <div className="w-full bg-blue-100 p-5 rounded-3xl flex flex-col lg:w-1/3">
         {/* Container for the price summary section, with responsive design */}
         
         <div className="py-3 border-b-2 border-white">
