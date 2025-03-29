@@ -1,140 +1,147 @@
-import { CheckCheck, ChevronDown, Loader2 } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
-import DebitCard from "../Components/DebitCard";
-import ClickToPay from "../Components/ClickToPay";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux';
-import { listItems, subListItems } from "../Data/ListItems";
-import { countries } from '../Data/Locations';
-import { BounceLoader } from 'react-spinners';
-import { updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice';
-import { motion } from "framer-motion";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { CheckCheck, ChevronDown, Loader2 } from "lucide-react"; // Importing icons from lucide-react library
+import React, { useEffect, useRef, useState } from "react"; // Importing hooks and components from React
+import DebitCard from "../../Components/DebitCard"; // Importing DebitCard component
+import ClickToPay from "../../Components/ClickToPay"; // Importing ClickToPay component
+import { Link, useLocation, useNavigate } from "react-router-dom"; // Importing routing hooks from react-router-dom
+import { useDispatch, useSelector } from 'react-redux'; // Importing Redux hooks for state management
+import { listItems, subListItems } from "../../Data/ListItems"; // Importing data for list items
+import { countries } from '../../Data/Locations' // Importing country data
+import { updateFailure, updateStart, updateSuccess } from '../../redux/user/userSlice'; // Redux actions for user updates
+import { motion } from "framer-motion"; // Importing motion for animation from framer-motion library
+import { BounceLoader } from "react-spinners";
+import { formatDate, formatTime } from "../../Components/Common/helpers/functions";
 
-const HotelCheckOutPage = () => {
-  const location = useLocation(); // Get current location/state
-  const navigate = useNavigate(); // For navigation after form submission
-  const dispatch = useDispatch(); // To dispatch Redux actions
-  const { currentUser } = useSelector((state) => state.user); // Retrieve current user from Redux state
-  const [receiveSMS, setRecieveSMS] = useState(false); // State to handle SMS subscription
-  const [formData, setFormData] = useState({}); // State to manage form data
-  const [loading, setLoading] = useState(false); // State to handle loading indicator
-  const [updateUserError, setUpdateUserError] = useState(null); // State for storing error messages
-  const [updateUserSuccess, setUpdateUserSuccess] = useState(null); // State for storing success messages
-  const [visible, setVisible] = useState('debit-card'); // Manage visible tab (e.g., 'debit-card')
-  const [validationError, setValidationError] = useState(false); // State for validation errors
+const CarCheckOutPage = () => {
+  // React router hooks to access location and navigation properties
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Redux hooks to access the dispatch function and user state
+  const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.user);
+  
+  // State variables to manage form data, loading state, errors, etc.
+  const [receiveSMS, setRecieveSMS] = useState(false);
+  const [formData, setFormData] = useState({});
+  const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(false);
-  const indicatorRef = useRef(null); // Reference for the tab indicator
-  const tabContainerRef = useRef(null); // Reference for the tab container
-  const { hotelDetails, total } = location.state; // Extract hotel details and total price from location state
-  console.log(hotelDetails); // Log hotel details for debugging
+  const [updateUserError, setUpdateUserError] = useState(null);
+  const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
+  const [visible, setVisible] = useState('debit-card');
+  const [validationError, setValidationError] = useState(false);
 
+  // References to DOM elements for tabs
+  const indicatorRef = useRef(null);
+  const tabContainerRef = useRef(null);
+
+  const car = location?.state?.car
+  const total = location?.state?.total
+
+  // Side effect to populate the formData state with currentUser's data
   useEffect(() => {
-    // Prepopulate form data if currentUser is available
     if (currentUser) {
       const userData = {
-        firstName: currentUser.firstName || '',
-        lastName: currentUser.lastName || '',
-        middleName: currentUser.middleName || '',
-        number: currentUser.number || '',
-        countryCode: currentUser.countryCode || '',
-        DOB: currentUser.DOB || '',
-        travelDocument: {
+          firstName: currentUser.firstName || '',
+          lastName: currentUser.lastName || '',
+          middleName: currentUser.middleName || '',
+          number: currentUser.number || '',
+          countryCode: currentUser.countryCode || '',
+          DOB: currentUser.DOB || '',
+          travelDocument: {
           country: currentUser.travelDocument?.country || '',
         },
       };
-      setFormData(userData); // Set user data to formData state
+      setFormData(userData); // Update form data state
     }
-  }, [currentUser]);
+  }, [currentUser]); // Re-run the effect when currentUser changes
 
-  useEffect(() => {
-    setPageLoading(true);
-    setTimeout(() => {
-      setPageLoading(false);
-    }, 5000);
-  }, [])
-
-  // Handle updating form data when debit card changes
+  // Function to handle changes in the debit card form
   const handleDebitCardChange = (updatedData) => {
     setFormData((prev) => ({
       ...prev,
-      ...updatedData,
+      ...updatedData, // Update formData with the new debit card data
     }));
   };
 
-  // Handle validation error flag
+  // Function to handle validation error changes
   const handleValidateError = (hasError) => {
     setValidationError(hasError);
-  };
+  }
 
-  // Handle changes to input fields (e.g., text fields, dropdowns)
+  // Generic handler for form input changes (handles nested objects like formData.location.city)
   const handleChange = (e) => {
-    const { id, value } = e.target; // Get input field ID and value
-
+    const { id, value } = e.target;
+      
+    // Split nested keys (e.g., "location.city") into an array
     setFormData((prev) => {
-      const keys = id.split('.'); // Split nested keys (e.g., "location.city")
-      let updatedData = { ...prev };
+    const keys = id.split('.'); // Split nested keys
+    let updatedData = { ...prev }; // Make a copy of formData
 
-      // Traverse and update nested fields
-      let currentLevel = updatedData;
-      keys.forEach((key, index) => {
-        if (index === keys.length - 1) {
-          currentLevel[key] = value; // Set final value
-        } else {
-          currentLevel[key] = { ...currentLevel[key] }; // Create nested object if not exist
-          currentLevel = currentLevel[key];
-        }
-      });
+    let currentLevel = updatedData;
+    keys.forEach((key, index) => {
+      if (index === keys.length - 1) {
+        currentLevel[key] = value; // Set the final value for the nested key
+      } else {
+        currentLevel[key] = { ...currentLevel[key] }; // Create new object for each nested level
+        currentLevel = currentLevel[key];
+      }
+    });
 
-      return updatedData; // Return updated form data
+    return updatedData;
     });
   };
 
-  // Handle changes to phone number input
+  // Handler for phone number input to only allow digits
   const handleNumberChange = (e) => {
     const { value } = e.target;
   
-    // Only allow numeric input or empty value
+    // Check if the input is a valid phone number (only digits)
     const isValid = /^\d*$/.test(value);
     if (isValid) {
       setFormData((prev) => ({
         ...prev,
-        number: value,
+        number: value, // Update the phone number in formData
       }));
     }
   };
 
-  // Validate Date of Birth
+  // Function to validate the date of birth
   const isValidDOB = (month, day, year) => {
     if (!month || !day || !year) return false;
 
-    // Convert to integers and validate
     const m = parseInt(month, 10);
     const d = parseInt(day, 10);
     const y = parseInt(year, 10);
 
+    // Validate month, day, year ranges
     if (isNaN(m) || isNaN(d) || isNaN(y) || m < 1 || m > 12 || d < 1 || d > 31 || y < 1900 || y > new Date().getFullYear() - 16) {
       return false;
     }
 
-    const date = new Date(y, m - 1, d); // JavaScript months are 0-indexed
-    return date.getMonth() + 1 === m && date.getDate() === d && date.getFullYear() === y; // Validate the date
+    // Check for valid date
+    const date = new Date(y, m - 1, d); // JS months are 0-indexed
+    return date.getMonth() + 1 === m && date.getDate() === d && date.getFullYear() === y;
   };
 
-  // Handle checkbox change for receiving SMS updates
+  // Handle checkbox change for receiving SMS
   const handleCheckboxChange = () => {
-    setRecieveSMS(!receiveSMS);
+    setRecieveSMS(!receiveSMS); // Toggle receiveSMS state
+  }
+
+  // Function to handle tab switching
+  const OpenTab = (tabName) => {
+    setVisible(tabName);
   };
 
-  // Handle tab switching
-  const OpenTab = (tabname) => {
-    setVisible(tabname); // Update visible tab
-  };
+  // Function to update the underline indicator position
+  const updateIndicator = () => {
+    const tabs = tabContainerRef.current?.querySelectorAll("p");
+    if (!tabs) return; // Exit if tabs are undefined
 
-  useEffect(() => {
-    // Adjust the indicator position whenever the active tab changes
-    const tabs = tabContainerRef.current?.querySelectorAll('p');
+    // Find the active tab based on visible state
     const activeTab = Array.from(tabs).find(
-      (tab) => tab.textContent.toLowerCase().replace(/\s+/g, '-') === visible
+      (tab) => tab.textContent.toLowerCase().replace(/\s+/g, "-") === visible
     );
 
     if (activeTab && indicatorRef.current) {
@@ -142,23 +149,61 @@ const HotelCheckOutPage = () => {
       indicatorRef.current.style.width = `${offsetWidth}px`; // Set indicator width
       indicatorRef.current.style.left = `${offsetLeft}px`; // Set indicator position
     }
-  }, [visible]);
-
-  // Helper function to format time
-  const formatTime = (date) =>
-    new Intl.DateTimeFormat('en-US', {
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true,
-  }).format(new Date(date)); // Convert date to time format
-
-  // Helper function to format date
-  const formatDate = (dateString) => {
-    const options = { month: 'short', day: 'numeric', year: 'numeric' };
-    return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString)); // Convert to date format
   };
 
-  // Handle form submission
+  // Side effect to update indicator on visible state change
+  useEffect(() => {
+    updateIndicator();
+  }, [visible]);
+
+  // Run once on component mount
+  useEffect(() => {
+    // Update on initial mount
+    updateIndicator();
+
+    // Create a ResizeObserver to watch for changes
+    const observer = new ResizeObserver(() => {
+      updateIndicator();
+    });
+
+    if (tabContainerRef.current) {
+      observer.observe(tabContainerRef.current);
+    }
+
+    // Cleanup the observer
+    return () => observer.disconnect();
+  }, []);
+
+  // Helper function to calculate car duration in minutes
+  const getCarDuration = (car) => {
+    const startTime = new Date(car?.start?.dateTime).getTime();
+    const endTime = new Date(car?.end?.dateTime).getTime();
+    
+    if (isNaN(startTime) || isNaN(endTime)) {
+      console.error("Invalid start or end time");
+      return null;
+    }
+    
+    return (endTime - startTime) / (1000 * 60); // Duration in minutes
+  };
+
+  // Helper function to calculate arrival date from start time and duration
+  const getArrivalDate = (car) => {
+    const startTime = new Date(car?.start?.dateTime).getTime();
+    const durationInMinutes = getCarDuration(car);
+    
+    if (startTime && durationInMinutes !== null) {
+      const arrivalTime = startTime + (durationInMinutes * 60 * 1000);
+      return new Date(arrivalTime);
+    }
+    
+    return null;
+  };
+
+  // Usage
+  const arrivalDate = getArrivalDate(car);
+
+  // Handle form submission for booking
   const handleSubmit = async (e) => {
     e.preventDefault();
     setUpdateUserError(null);
@@ -176,43 +221,43 @@ const HotelCheckOutPage = () => {
       return;
     }
 
-    // Validate DOB
+    // Validate date of birth format
     const [month, day, year] = formData.DOB?.split('/') || [];
     if (!isValidDOB(month, day, year)) {
       setUpdateUserError('Please provide a valid Date of Birth.');
       return;
     }
 
-    // Check if any validation error exists
+    // If validation errors exist, stop submission
     if (validationError) {
       setUpdateUserError('Please fix the highlighted errors before submitting.');
       return;
     }
 
     try {
-      // Start loading and dispatch update start action
       dispatch(updateStart());
       setLoading(true);
 
-      const res = await fetch(`/api/user/book-hotel/${currentUser._id}`, {
+      // Send form data and flight data to backend for booking
+      const res = await fetch(`/api/user/book-car/${currentUser._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ formData, hotelDetails, total }), // Send formData, hotel details, and total price
+        body: JSON.stringify({ formData, car, total }),
       });
-
-      const data = await res.json(); // Parse server response
-
+              
+      const data = await res.json();
+              
       if (!res.ok) {
-        dispatch(updateFailure(data.message)); // Dispatch failure if request failed
+        dispatch(updateFailure(data.message));
         setUpdateUserError(data.message);
         setLoading(false);
+  
       } else {
-        dispatch(updateSuccess(data)); // Dispatch success if request was successful
+        dispatch(updateSuccess(data));
         setUpdateUserSuccess("Update successful");
-        setLoading(false);
-
+        
         // Redirect to booking confirmation page
         setTimeout(() => {
           setTimeout(() => {
@@ -223,23 +268,29 @@ const HotelCheckOutPage = () => {
         }, 5000);
       }
     } catch (error) {
-      dispatch(updateFailure(error.message)); // Handle request failure
+      dispatch(updateFailure(error.message));
       setUpdateUserError(error.message);
-      console.log(error);
     }
-  };
+  }
 
-  // Reset success/error message after 3 seconds
+  // Auto-clear success and error messages after a delay
   useEffect(() => {
     if (updateUserSuccess || updateUserError) {
       const timer = setTimeout(() => {
         setUpdateUserSuccess(null);
         setUpdateUserError(null);
-      }, 3000); // 3 seconds
-
-      return () => clearTimeout(timer); // Cleanup timer if the component unmounts or state changes
+      }, 3000);
+  
+      return () => clearTimeout(timer); // Clean up the timer when the component unmounts
     }
   }, [updateUserSuccess, updateUserError]);
+
+  useEffect(() => {
+    setPageLoading(true);
+    setTimeout(() => {
+      setPageLoading(false);
+    }, 5000);
+  }, []);
 
   if (pageLoading) {
     return (
@@ -261,7 +312,7 @@ const HotelCheckOutPage = () => {
         duration: .5,
         ease: "easeInOut"
       }}
-      className="flex flex-col-reverse lg:flex-row bg-white rounded-lg overflow-hidden items-start gap-5 px-4 sm:px-6 lg:px-20 pt-28 md:pt-36 pb-10"
+      className="flex flex-col-reverse lg:flex-row bg-white rounded-lg overflow-hidden items-start gap-5 px-4 sm:px-6 lg:px-20 pt-28 md:pt-36 pb-10 font-Grotesk"
     >
 
       {/* Left Section - Checkout Form */}
@@ -654,44 +705,43 @@ const HotelCheckOutPage = () => {
 
       {/* Right Section - Price Summary */}
       <div className="w-full bg-blue-100 p-5 rounded-3xl flex flex-col lg:w-1/3">
-        {/* Container for the price summary section, with responsive design */}
-        
+        {/* This is the container for the Price Summary section, styled with blue background, shadow, padding, and rounded corners.
+            On larger screens, the width is set to 1/3 using Tailwind's lg:w-1/3 class, and it takes up full width on smaller screens. */}
+
         <div className="py-3 border-b-2 border-white">
-          {/* Header section with hotel details */}
+          {/* Header section for flight details, with top and bottom padding and a white border separating it from the rest of the content */}
+          
           <p className="font-medium">
-            {/* Display the hotel name and city code */}
-            {hotelDetails?.data[0]?.hotel?.name} • {hotelDetails?.data[0]?.hotel?.cityCode}
+           {car?.start?.locationCode} to {car?.end?.address?.cityName}
           </p>
           
           <p className="text-sm">
-            {/* Display the formatted check-in and check-out date */}
-            {formatDate(hotelDetails?.data[0].offers[0]?.checkInDate)} | {formatDate(hotelDetails?.data[0].offers[0]?.checkOutDate)}
+            {formatDate(car?.start?.dateTime)} | {" "} 
+            {`${formatTime(car?.start?.dateTime)} - ${formatTime(car?.end?.dateTime)}`}
           </p>
           
-          <p className="text-sm">
-            {/* Display the formatted cancellation deadline time */}
-            Arrives at {formatTime(hotelDetails?.data[0].offers[0]?.policies?.cancellations[0]?.deadline)}
-          </p>
+          <p className="text-sm">Arrives {formatDate(arrivalDate)}</p>
+          {/* Displays the formatted arrival date of the flight */}
         </div>
-        
+
         <div className="flex flex-col gap-2 pt-3">
-          {/* Section for displaying price summary and number of guests */}
+          {/* Container for the price summary section, with flex column layout and some spacing between items */}
+          
           <div>
             <p className="font-semibold">Your Price Summary</p>
-            {/* Display the number of guests and whether they are adults (handling singular/plural for 'adult') */}
-            <span className='font-semibold'>Guests: </span> 
-            {hotelDetails?.data[0].offers[0]?.guests?.adults} 
-            {hotelDetails?.data[0].offers[0]?.guests?.adults > 1 ? 'Adults' : 'Adult'}
+            {/* Header text indicating that this section shows the price summary */}
+            <p>
+              Traveler {car?.vehicle?.seats?.map((seat) => (<>{seat.count}</>))}: {car?.vehicle?.seats?.map((seat) => (<>{seat.count > 1 ? 'Adults' : 'Adult'}</>))}
+            </p>
+            {/* Text indicating that this price is for the first adult traveler */}
           </div>
-          
-          {/* Display the total price with currency formatting */}
-          <p className="text-xl font-semibold">
-            {total.toFixed(2)} {hotelDetails?.data[0].offers[0]?.price?.currency}
-          </p>
+
+          <p className="text-xl font-semibold">${total.toFixed(2)}</p>
+          {/* The total price is displayed here with a fixed number of decimal points, ensuring two decimals with .toFixed(2) */}
         </div>
       </div>
     </motion.div>
   );
 };
 
-export default HotelCheckOutPage;
+export default CarCheckOutPage;

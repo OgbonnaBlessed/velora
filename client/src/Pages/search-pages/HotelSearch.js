@@ -11,6 +11,7 @@ import dayjs from 'dayjs'; // For date manipulation
 import HotelList from '../../Components/Common/lists/HotelList'; // Component to display list of hotels
 import { useSelector } from 'react-redux'; // To access Redux state
 import { AnimatePresence, motion } from 'framer-motion'; // For animations
+import { formatTime } from '../../Components/Common/helpers/functions';
 
 function HotelSearch() {
     // Access location state from react-router to get previous search data if available
@@ -121,14 +122,6 @@ function HotelSearch() {
             setLoading(false); // Stop loading regardless of success or failure
         }
     };
-
-    // Helper function to format date/time for display
-    const formatTime = (date) =>
-        new Intl.DateTimeFormat('en-US', {
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: true,
-    }).format(new Date(date));
 
     return (
         <motion.div 

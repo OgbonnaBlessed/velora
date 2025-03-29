@@ -78,7 +78,6 @@ const CarList = ({ cars, getCarDuration }) => {
                             key={car.id} 
                             // Use the index as the key for each carCard (for rendering optimization)
                             car={car}
-                            // Pass the formatTime function as a prop to carCard
                             getCarDuration={getCarDuration} 
                             // Pass the getcarDuration function as a prop to carCard
                         />

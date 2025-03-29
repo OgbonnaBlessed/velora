@@ -117,7 +117,7 @@ const HotelInput = ({ formData, setFormData, hotels, label }) => {
 
             {/* Destination list dropdown */}
             <div 
-                className={`absolute top-16 bg-white max-h-64 overflow-y-auto shadow shadow-gray-300 rounded-lg w-64 transition-all duration-300 ease-in-out z-10 font-Roboto
+                className={`absolute top-16 bg-white max-h-64 overflow-y-auto shadow shadow-gray-300 rounded-lg w-64 transition-all duration-300 ease-in-out z-20 font-Roboto
                     ${isDestinationListVisible 
                         ? 'translate-y-0 pointer-events-auto opacity-1' // Visible state of the list
                         : '-translate-y-5 pointer-events-none opacity-0' // Hidden state of the list

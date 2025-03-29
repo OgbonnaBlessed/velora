@@ -583,7 +583,7 @@ export const bookCar = async (req, res, next) => {
                 <!-- Email Body -->
                 <div style="padding: 20px; background-color: #ffffff; border: 1px solid #ddd; border-radius: 5px; margin: 20px auto; max-width: 600px;">
                     <p><strong>Dear ${formData.firstName} ${formData.lastName},</strong></p>
-                    <p>We are pleased to confirm your hotel booking. Here are your hotel details:</p>
+                    <p>We are pleased to confirm your car booking. Here are your booking details:</p>
                     <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
                         <tr>
                             <td style="padding: 10px; border: 1px solid #ddd;"><strong>Car ID:</strong></td>

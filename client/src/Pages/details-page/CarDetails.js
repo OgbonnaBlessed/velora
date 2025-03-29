@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { BounceLoader } from "react-spinners";
+import { formatDate, formatTime } from "../../Components/Common/helpers/functions";
 
 const CarDetails = () => {
     const [loading, setLoading] = useState(false);
@@ -27,20 +28,6 @@ const CarDetails = () => {
         start,
         end,
     } = car;
-
-    // Helper function to format the time in 12-hour format (e.g., 10:30 AM)
-    const formatTime = (date) =>
-        new Intl.DateTimeFormat('en-US', {
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true,
-    }).format(new Date(date));
-
-    // Helper function to format the date (e.g., Tue, Jan 9)
-    const formatDate = (dateString) => {
-        const options = { weekday: 'short', month: 'short', day: 'numeric' };
-        return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
-    };
 
     // Ensure monetaryAmount is a number
     const monetaryAmount = Number(converted?.monetaryAmount) || 0; 

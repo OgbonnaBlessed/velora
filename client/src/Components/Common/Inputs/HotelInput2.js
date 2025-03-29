@@ -108,7 +108,7 @@ const HotelInput2 = ({ formData, setFormData, hotels, label }) => {
 
             {/* Origin list dropdown */}
             <div
-                className={`absolute top-16 bg-white max-h-64 overflow-y-auto shadow shadow-gray-300 rounded-lg w-64 transition-all duration-300 ease-in-out z-10 font-Roboto
+                className={`absolute top-16 bg-white max-h-64 overflow-y-auto shadow shadow-gray-300 rounded-lg w-64 transition-all duration-300 ease-in-out z-20 font-Roboto
                 ${isOriginListVisible
                         ? 'translate-y-0 pointer-events-auto opacity-1'
                         : '-translate-y-5 pointer-events-none opacity-0'

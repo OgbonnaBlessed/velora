@@ -3,6 +3,7 @@ import { BounceLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
+import { formatDate, formatTime } from '../../Components/Common/helpers/functions';
 
 const HotelDetails = () => {
     // Hooks to manage state and navigation
@@ -51,20 +52,6 @@ const HotelDetails = () => {
             navigate('/hotel-search');
         }
     }, [hotel, navigate]); // Re-run effect if hotel or navigate changes
-
-    // Helper function to format date into a readable string
-    const formatDate = (dateString) => {
-        const options = { weekday: 'short', month: 'short', day: 'numeric' };
-        return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
-    };
-
-    // Helper function to format time into a 12-hour time format
-    const formatTime = (date) =>
-        new Intl.DateTimeFormat('en-US', {
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true,
-    }).format(new Date(date));
 
     // Show loading spinner while waiting for data
     if (pageLoading) {

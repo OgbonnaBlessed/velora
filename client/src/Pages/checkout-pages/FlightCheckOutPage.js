@@ -1,15 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { CheckCheck, ChevronDown, Loader2 } from "lucide-react"; // Importing icons from lucide-react library
 import React, { useEffect, useRef, useState } from "react"; // Importing hooks and components from React
-import DebitCard from "../Components/DebitCard"; // Importing DebitCard component
-import ClickToPay from "../Components/ClickToPay"; // Importing ClickToPay component
+import DebitCard from "../../Components/DebitCard"; // Importing DebitCard component
+import ClickToPay from "../../Components/ClickToPay"; // Importing ClickToPay component
 import { Link, useLocation, useNavigate } from "react-router-dom"; // Importing routing hooks from react-router-dom
 import { useDispatch, useSelector } from 'react-redux'; // Importing Redux hooks for state management
-import { listItems, subListItems } from "../Data/ListItems"; // Importing data for list items
-import { countries } from '../Data/Locations' // Importing country data
-import { updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice'; // Redux actions for user updates
+import { listItems, subListItems } from "../../Data/ListItems"; // Importing data for list items
+import { countries } from '../../Data/Locations' // Importing country data
+import { updateFailure, updateStart, updateSuccess } from '../../redux/user/userSlice'; // Redux actions for user updates
 import { motion } from "framer-motion"; // Importing motion for animation from framer-motion library
 import { BounceLoader } from "react-spinners";
+import { formatDate, formatTime } from "../../Components/Common/helpers/functions";
 
 const FlightCheckOutPage = () => {
   // React router hooks to access location and navigation properties
@@ -173,20 +174,6 @@ const FlightCheckOutPage = () => {
   };
 
   const arrivalDate = getArrivalDate(flight);
-
-  // Helper function to format time as 'hour:minute AM/PM'
-  const formatTime = (date) =>
-    new Intl.DateTimeFormat('en-US', {
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true,
-  }).format(new Date(date));
-
-  // Helper function to format date as 'Month Day, Year'
-  const formatDate = (dateString) => {
-    const options = { month: 'short', day: 'numeric', year: 'numeric' };
-    return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
-  };
 
   // Helper function to format words (e.g., title case)
   const formatWord = (word) => {

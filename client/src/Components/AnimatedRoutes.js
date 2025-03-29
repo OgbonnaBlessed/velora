@@ -20,11 +20,11 @@ import ConnectedDevices from './ConnectedDevices';
 import AirportSecurity from './AirportSecurity';
 import TravelDocument from './TravelDocument';
 import Preferences from './Preferences';
-import FlightDetails from '../Pages/FlightDetails';
+import FlightDetails from '../Pages/details-page/FlightDetails';
 import BookingCompleted from '../Pages/BookingCompleted';
-import HotelDetails from '../Pages/HotelDetails';
-import FlightCheckOutPage from '../Pages/FlightCheckOutPage';
-import HotelCheckOutPage from '../Pages/HotelCheckOutPage';
+import HotelDetails from '../Pages/details-page/HotelDetails';
+import FlightCheckOutPage from '../Pages/checkout-pages/FlightCheckOutPage';
+import HotelCheckOutPage from '../Pages/checkout-pages/HotelCheckOutPage';
 import MultiCitySearch from '../Pages/search-pages/MultiCitySearch';
 import RoundTripCarSearch from '../Pages/search-pages/RoundTripCarSearch';
 import HotelToAirportCarSearch from '../Pages/search-pages/HotelToAirportCarSearch';
@@ -32,8 +32,8 @@ import AirportToHotelCarSearch from '../Pages/search-pages/AirportToHotelCarSear
 import CarSearchPage from '../Pages/search-pages/CarSearchPage';
 import SearchPage from '../Pages/search-pages/SearchPage';
 import HotelSearch from '../Pages/search-pages/HotelSearch';
-import CarDetails from '../Pages/CarDetails';
-import CarCheckOutPage from '../Pages/CarCheckOutPage';
+import CarDetails from '../Pages/details-page/CarDetails';
+import CarCheckOutPage from '../Pages/checkout-pages/CarCheckOutPage';
 import StateRequiredRoutes from './StateRequiredRoutes';
 
 const AnimatedRoutes = () => {

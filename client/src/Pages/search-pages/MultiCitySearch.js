@@ -14,6 +14,7 @@ import axios from 'axios';
 import DestinationInput2 from '../../Components/Common/Inputs/DestinationInput2';
 import OriginInput2 from '../../Components/Common/Inputs/OriginInput2';
 import TravelersInput2 from '../../Components/Common/Inputs/TravelerInput2';
+import { formatTime } from '../../Components/Common/helpers/functions';
 
 function MultiCitySearch() {
     // Accessing the current user from the Redux store
@@ -217,14 +218,6 @@ function MultiCitySearch() {
         const arrivalTime = new Date(segments[segments.length - 1].arrival.at).getTime();
         return (arrivalTime - departureTime) / (1000 * 60); // Duration in minutes
     };
-
-    // Helper function to format flight times into a readable format
-    const formatTime = (date) =>
-        new Intl.DateTimeFormat('en-US', {
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true,
-    }).format(new Date(date));
 
     return (
         <motion.div 

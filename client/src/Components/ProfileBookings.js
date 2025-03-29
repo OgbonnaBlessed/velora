@@ -7,6 +7,7 @@ import { updateUserBookings } from "../redux/user/userSlice"; // Action to updat
 import { AnimatePresence, motion } from "framer-motion"; // Animation library for transitions
 import { X } from "lucide-react"; // Close icon component from Lucide Icons
 import ScrollToTop from "./ScrollToTop"; // Component to scroll to the top of the page
+import { formatTime } from "./Common/helpers/functions";
 
 // ProfileBookings component
 const ProfileBookings = () => {
@@ -35,14 +36,6 @@ const ProfileBookings = () => {
         const arrivalTime = new Date(segments[segments.length - 1].arrival.at).getTime(); // Convert arrival time to milliseconds
         return (arrivalTime - departureTime) / (1000 * 60); // Return the duration in minutes
     };
-
-    // Helper function to format the time into a 12-hour format (e.g., 3:00 PM)
-    const formatTime = (date) =>
-        new Intl.DateTimeFormat("en-US", {
-            hour: "numeric", // Only display the hour
-            minute: "numeric", // Only display the minute
-            hour12: true, // Use 12-hour format
-        }).format(new Date(date)); // Format the given date
 
     // Function to handle the cancel booking action
     const handleCancelClick = (bookingId) => {

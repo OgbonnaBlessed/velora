@@ -11,6 +11,7 @@ import { useLocation } from 'react-router-dom'; // Hook to get the location from
 import dayjs from 'dayjs'; // Dayjs for date manipulation
 import { useSelector } from 'react-redux'; // Hook to access the Redux store
 import { AnimatePresence, motion } from 'framer-motion'; // Framer Motion for animations
+import { formatTime } from '../../Components/Common/helpers/functions';
 
 function SearchPage() {
   // Accessing the current user from the Redux store
@@ -142,14 +143,6 @@ function SearchPage() {
     const arrivalTime = new Date(segments[segments.length - 1].arrival.at).getTime();
     return (arrivalTime - departureTime) / (1000 * 60); // Duration in minutes
   };
-
-  // Helper function to format flight times into a readable format
-  const formatTime = (date) =>
-    new Intl.DateTimeFormat('en-US', {
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true,
-  }).format(new Date(date));
 
   return (
     <motion.div 

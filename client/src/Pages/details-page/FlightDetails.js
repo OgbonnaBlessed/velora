@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'; // Importing React
 import { useLocation, useNavigate } from 'react-router-dom'; // Importing hooks for routing
 import { motion } from 'framer-motion'; // Importing motion for page transitions with framer-motion library
 import { BounceLoader } from 'react-spinners';
+import { formatDate, formatTime } from '../../Components/Common/helpers/functions';
 
 const FlightDetails = () => {
   const location = useLocation(); // Hook to access the current location (used to retrieve flight data passed via state)
@@ -46,20 +47,6 @@ const FlightDetails = () => {
 
       setLoading(false);
     }, 5000);
-  };
-
-  // Helper function to format the time in 12-hour format (e.g., 10:30 AM)
-  const formatTime = (date) =>
-    new Intl.DateTimeFormat('en-US', {
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true,
-  }).format(new Date(date));
-
-  // Helper function to format the date (e.g., Tue, Jan 9)
-  const formatDate = (dateString) => {
-    const options = { weekday: 'short', month: 'short', day: 'numeric' };
-    return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
   };
 
   // Helper function to format words with capitalized initials
