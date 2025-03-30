@@ -90,7 +90,7 @@ const HotelCard = ({ hotel, hotelName, cancelBooking }) => {
                         {/* 'View Details' button to navigate to the hotel details */}
                         <button
                             onClick={handleSelect}
-                            className="sm:px-4 px-2 sm:py-2 py-1 bg-[#48aadf] hover:bg-[#48aadf]/80 active:scale-90 text-white sm:rounded-md rounded-sm text-nowrap max-sm:text-xs transition-all duration-300 ease-in-out font-semibold"
+                            className="px-4 py-2 bg-[#48aadf] hover:bg-[#48aadf]/80 active:scale-90 text-white rounded-md text-nowrap max-sm:text-[0.7rem] transition-all ease-in-out duration-300 font-Grotesk"
                             type="button"
                         >
                             View Details
@@ -100,7 +100,7 @@ const HotelCard = ({ hotel, hotelName, cancelBooking }) => {
                     // 'Cancel Booking' button when cancelBooking function is available
                     <button 
                         onClick={() => cancelBooking(hotel.id)} // Call cancelBooking when clicked
-                        className="sm:px-4 px-2 sm:py-2 py-1 bg-blue-500 text-white sm:rounded-md rounded-sm text-nowrap max-sm:text-[0.7rem]"
+                        className="px-4 py-2 bg-[#48aadf] hover:bg-[#48aadf]/80 active:scale-90 text-white rounded-md text-nowrap max-sm:text-[0.7rem] transition-all ease-in-out duration-300 font-Grotesk"
                         type="button"
                     >
                         Cancel booking

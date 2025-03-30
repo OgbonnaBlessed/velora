@@ -54,7 +54,7 @@ const CarCard = ({ car, getCarDuration, cancelBooking }) => {
             {cancelBooking ? (
                 <button 
                     onClick={() => cancelBooking(car.id)} // Call cancelBooking when clicked
-                    className="sm:px-4 px-2 sm:py-2 py-1 bg-[#48aadf] hover:bg-[#48aadf]/80 active:scale-90 text-white sm:rounded-md rounded-sm text-nowrap max-sm:text-[0.7rem] transition-all duration-300 ease-in-out"
+                    className="px-6 py-2 bg-[#48aadf] hover:bg-[#48aadf]/80 active:scale-90 text-white rounded-md text-nowrap max-sm:text-[0.7rem] transition-all duration-300 ease-in-out"
                     type="button"
                 >
                     Cancel booking
@@ -63,7 +63,7 @@ const CarCard = ({ car, getCarDuration, cancelBooking }) => {
                 <button
                     type="button"
                     onClick={handleSelect} // Navigate to car details when "Select" is clicked
-                    className="bg-[#48aadf] hover:bg-[#48aadf]/80 active:scale-90 sm:rounded-md rounded-sm font-semibold text-white cursor-pointer sm:px-4 px-2 sm:py-2 py-1 self-center transition-all duration-300 ease-in-out text-base"
+                    className="bg-[#48aadf] hover:bg-[#48aadf]/80 active:scale-90 rounded-md font-semibold text-white cursor-pointer px-6 py-2 self-center transition-all duration-300 ease-in-out text-base"
                 >
                     Select
                 </button>
