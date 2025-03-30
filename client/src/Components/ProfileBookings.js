@@ -8,11 +8,13 @@ import { AnimatePresence, motion } from "framer-motion"; // Animation library fo
 import { X } from "lucide-react"; // Close icon component from Lucide Icons
 import ScrollToTop from "./ScrollToTop"; // Component to scroll to the top of the page
 import { formatTime } from "./Common/helpers/functions";
+import CarCard from './Common/Cards/CarCard'
 
 // ProfileBookings component
 const ProfileBookings = () => {
     const dispatch = useDispatch(); // Redux dispatch function to trigger actions
     const { currentUser } = useSelector((state) => state.user); // Getting current user from Redux store
+    console.log(currentUser?.bookings)
 
     // Local state management for confirmation and success modals
     const [showConfirmModal, setShowConfirmModal] = useState(false); // State to show confirmation modal
@@ -29,6 +31,10 @@ const ProfileBookings = () => {
         (booking) => booking?.data?.[0]?.type === "hotel-offers" // Filter bookings by type "hotel-offers"
     );
 
+    const carBookings = currentUser?.bookings?.filter(
+        (booking) => booking.type === "transfer-offer"
+    )
+
     // Helper function to calculate flight duration in minutes
     const getFlightDuration = (flight) => {
         const segments = flight.itineraries[0]?.segments; // Get the segments of the flight itinerary
@@ -41,6 +47,13 @@ const ProfileBookings = () => {
     const handleCancelClick = (bookingId) => {
         setSelectedBookingId(bookingId); // Set the selected booking ID
         setShowConfirmModal(true); // Show the confirmation modal
+    };
+
+    // Helper function to calculate the car duration in minutes
+    const getCarDuration = (car) => {
+        const departureTime = new Date(car?.start?.dateTime).getTime();
+        const arrivalTime = new Date(car?.end?.dateTime).getTime();
+        return (arrivalTime - departureTime) / (1000 * 60); // Duration in minutes
     };
 
     // Function to cancel the booking (called when the user confirms the cancellation)
@@ -83,7 +96,7 @@ const ProfileBookings = () => {
                 duration: .5,  // Transition duration of 0.5 seconds
                 ease: "easeInOut"  // Smooth easing for the animation
             }}
-            className="bg-blue-100 rounded-3xl sm:p-14 p-5 flex-1 flex flex-col gap-10"
+            className="bg-blue-100 rounded-3xl sm:p-14 p-5 flex-1 flex flex-col gap-10 font-Grotesk"
         >   
             {/* ScrollToTop component, likely scrolls the user to the top when they visit this page */}
             <ScrollToTop/>  
@@ -131,6 +144,28 @@ const ProfileBookings = () => {
                 ) : (
                     // Show message if there are no hotel bookings
                     <p className="text-gray-500">No hotel bookings yet.</p>
+                )}
+            </div>
+
+            {/* Car Bookings Section */}
+            <div className="flex flex-col gap-3">
+                <h3 className="font-medium sm:text-2xl text-xl">Car Bookings</h3>
+                {carBookings?.length > 0 ? (
+                    // Conditionally render hotel bookings if there are any
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {carBookings.map((booking, index) => (
+                            // Render CarCard for each hotel booking
+                            <CarCard
+                                key={index}
+                                car={booking}
+                                getCarDuration={getCarDuration}
+                                cancelBooking={() => handleCancelClick(booking.id)} // Trigger cancel modal when cancel button is clicked
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    // Show message if there are no hotel bookings
+                    <p className="text-gray-500">No car bookings yet.</p>
                 )}
             </div>
 
