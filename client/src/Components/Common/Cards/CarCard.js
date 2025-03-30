@@ -3,7 +3,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const CarCard = ({ car, getCarDuration }) => {
+const CarCard = ({ car, getCarDuration, cancelBooking }) => {
     // Get the total flight duration using the getFlightDuration function
     const flightDuration = getCarDuration(car);
 
@@ -20,7 +20,7 @@ const CarCard = ({ car, getCarDuration }) => {
     };
 
     return (
-        <div className='flex flex-col gap-6 p-4 bg-[#dbeafe] rounded-md h-fit'>
+        <div className='flex flex-col gap-6 p-4 bg-[#dbeafe] rounded-md h-fit font-Grotesk'>
             <div className='flex flex-col gap-4'>
                 <img 
                     src={car?.vehicle?.imageURL || `${process.env.PUBLIC_URL}/images/placeholder-car.png`} 
@@ -51,13 +51,23 @@ const CarCard = ({ car, getCarDuration }) => {
                     </div>
                 </div>
             </div>
-            <button
-                type="button"
-                onClick={handleSelect} // Navigate to flight details when "Select" is clicked
-                className="bg-[#48aadf] hover:bg-[#48aadf]/80 active:scale-90 rounded-full font-semibold text-white cursor-pointer px-8 py-3 h-fit w-fit self-center transition-all duration-300 ease-in-out text-base"
-            >
-                Select
-            </button>
+            {cancelBooking ? (
+                <button 
+                    onClick={() => cancelBooking(car.id)} // Call cancelBooking when clicked
+                    className="sm:px-4 px-2 sm:py-2 py-1 bg-[#48aadf] hover:bg-[#48aadf]/80 active:scale-90 text-white sm:rounded-md rounded-sm text-nowrap max-sm:text-[0.7rem] transition-all duration-300 ease-in-out"
+                    type="button"
+                >
+                    Cancel booking
+                </button>
+            ) : (
+                <button
+                    type="button"
+                    onClick={handleSelect} // Navigate to car details when "Select" is clicked
+                    className="bg-[#48aadf] hover:bg-[#48aadf]/80 active:scale-90 sm:rounded-md rounded-sm font-semibold text-white cursor-pointer sm:px-4 px-2 sm:py-2 py-1 self-center transition-all duration-300 ease-in-out text-base"
+                >
+                    Select
+                </button>
+            )}
         </div>
     );
 };

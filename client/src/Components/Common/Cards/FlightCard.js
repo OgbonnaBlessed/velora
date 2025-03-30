@@ -71,7 +71,7 @@ const FlightCard = ({ flight, formatTime, getFlightDuration, cancelBooking }) =>
                 <button
                     type="button"
                     onClick={() => cancelBooking(flight.id)} // Trigger cancelBooking if available
-                    className="border-2 border-white px-5 py-1 bg-blue-100 w-fit self-center rounded-full font-semibold font-Grotesk text-sm"
+                    className="bg-[#48aadf] hover:bg-[#48aadf]/80 active:scale-90 sm:rounded-md rounded-sm font-semibold text-white cursor-pointer sm:px-4 px-2 sm:py-2 py-1 self-center transition-all duration-300 ease-in-out text-base font-Grotesk"
                 >
                     Cancel
                 </button>
@@ -79,7 +79,7 @@ const FlightCard = ({ flight, formatTime, getFlightDuration, cancelBooking }) =>
                 <button
                     type="button"
                     onClick={handleSelect} // Navigate to flight details when "Select" is clicked
-                    className="border-2 border-white px-5 py-1 bg-blue-100 w-fit self-center rounded-full font-semibold font-Grotesk text-sm"
+                    className="bg-[#48aadf] hover:bg-[#48aadf]/80 active:scale-90 sm:rounded-md rounded-sm font-semibold text-white cursor-pointer sm:px-4 px-2 sm:py-2 py-1 self-center transition-all duration-300 ease-in-out text-base font-Grotesk"
                 >
                     Select
                 </button>
