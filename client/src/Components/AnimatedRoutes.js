@@ -35,6 +35,7 @@ import HotelSearch from '../Pages/search-pages/HotelSearch';
 import CarDetails from '../Pages/details-page/CarDetails';
 import CarCheckOutPage from '../Pages/checkout-pages/CarCheckOutPage';
 import StateRequiredRoutes from './StateRequiredRoutes';
+import NotFound from '../Pages/NotFound';
 
 const AnimatedRoutes = () => {
   // useLocation hook from React Router to get the current location (path)
@@ -52,6 +53,7 @@ const AnimatedRoutes = () => {
         <Route path="/signin" element={<SignIn />} /> {/* SignIn Page Route */}
         <Route path="/policy" element={<Policy />} /> {/* Privacy Policy Page Route */}
         <Route path='/user-data-deletion-policy' element={<UserData/>} /> {/* User Data Deletion Policy Route */}
+        <Route path="*" element={<NotFound />} />
 
         {/* Protected routes are wrapped in the ProtectedRoute component to ensure they can only be accessed by authenticated users */}
         <Route element={<ProtectedRoute />}>
