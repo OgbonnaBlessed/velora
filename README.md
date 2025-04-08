@@ -1,4 +1,6 @@
-# VELORA: Flight, Hotel and Car Booking Application.
+![Screenshot (128)](https://github.com/user-attachments/assets/2970da76-8d72-4673-97ca-226b9f7faad8)
+
+# VELORA
 
 ## Project Overview
 **VELORA** is a travel platform that simplifies the booking process for flights, hotels, and car rentals. Built using the MERN stack and powered by the Amadeus API, the platform ensures a seamless and comfortable travel planning experience. It addresses common challenges in travel booking, such as complex search processes, lack of personalized options, and limited access to real-time data.
