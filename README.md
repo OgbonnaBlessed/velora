@@ -57,7 +57,8 @@
 - **Travel Enthusiasts**: Adventurers and tourists looking for personalized recommendations.
 
 ## Git Setup and Version Control Workflow
-### Repository Structure: Organized for clear separation of concerns between frontend, backend, and shared resources.
+### Repository Structure
+Organized for clear separation of concerns between frontend, backend, and shared resources.
 
 ### Branching Strategy:
 - **main**: Stable production-ready code.
