@@ -30,7 +30,7 @@ const SearchDataSchema = new mongoose.Schema({
         type: Date,
         default: Date.now, // Default value is the current date/time
     },
-});
+}, { timestamps: true });
 
 // Export the SearchData model, which allows interacting with the 'SearchData' collection in MongoDB
 export default mongoose.model('SearchData', SearchDataSchema);
